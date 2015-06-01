@@ -1,7 +1,3 @@
-package com.creativemd.ingameconfigmanager.api.common.segment;
-
-import com.creativemd.ingameconfigmanager.api.common.segment.inputType.InputType;
-
 /**
  * Copyright 2015 CreativeMD & N247S
  * 
@@ -18,66 +14,116 @@ import com.creativemd.ingameconfigmanager.api.common.segment.inputType.InputType
  * limitations under the License.
  * 
  */
+package com.creativemd.ingameconfigmanager.api.common.segment;
 
-public class ConfigSegment
+import java.util.ArrayList;
+
+import com.creativemd.creativecore.common.container.SubContainer;
+import com.creativemd.creativecore.common.gui.SubGui;
+import com.creativemd.creativecore.common.gui.controls.GuiControl;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.inventory.Slot;
+
+public abstract class ConfigSegment<T>
 {
-	public enum SegmentType
-	{
-		OptionButton,
-		//OptionSelectField, - optional
-		GuiSlot,
-		GuiTextField,
-		GuiNummericField,
-		Collection,
-		LineBreaker;
-	}
-
-	public int Width;
-	public int Height;
-	public int PosX;
-	public int PosY;
-	private SegmentType segmentType;
-	private InputType inputType;
-	private Object Value;
-	private Object defaultValue;
-	private String ID;
 	
-	public ConfigSegment(String id, SegmentType segmentType, InputType inputType, Object defaultValue, int Width, int Height, int posX, int posY)
+	final Class<T> typeParameterClass = null;
+	 
+	public static enum SegmentType
+	{
+		Select,
+		Boolean,
+		//Slot,
+		String,
+		Int,
+		Float,
+		Custom;
+	}
+	
+	protected ArrayList<ConfigSegment> subSegments;
+	public ConfigSegment parent;
+	private SegmentType segmentType;
+	public T value;
+	private String ID;
+	public String Title;
+	
+	public ConfigSegment(String id, String Title, T defaultValue, SegmentType segmentType)
 	{
 		this.ID = id;
-		this.segmentType = segmentType;
-		this.inputType = inputType;
-		this.defaultValue = defaultValue;
-		this.Width = Width;
-		this.Height = Height;
-		this.PosX = posX;
-		this.PosY = posY;
+		this.Title = Title;
+		if(segmentType == null)
+		{
+			if(typeParameterClass == Integer.class)
+				this.segmentType = SegmentType.Int;
+			else if(typeParameterClass == Integer.class)
+				this.segmentType = SegmentType.Boolean;
+			else if(typeParameterClass == Integer.class)
+				this.segmentType = SegmentType.Float;
+			else if(typeParameterClass == Integer.class)
+				this.segmentType = SegmentType.String;
+			else
+				this.segmentType = SegmentType.Custom;
+		}else
+			this.segmentType = segmentType;
+		this.value = defaultValue;
+		this.subSegments = new ArrayList<ConfigSegment>();
+		parent = null;
 	}
 	
-	/** Setters */
-	
-	public ConfigSegment setDefaultValue(Object defaultValue)
+	public ConfigSegment(String id, String Title, T defaultValue)
 	{
-		this.defaultValue = defaultValue;
+		this(id, Title, defaultValue, null);
+	}
+	
+	public ArrayList<ConfigSegment> getSubSegments()
+	{
+		return subSegments;
+	}
+	
+	public ConfigSegment addSubSegment(ConfigSegment subSegment)
+	{
+		subSegments.add(subSegment);
+		subSegment.parent = this;
 		return this;
 	}
 	
-	public ConfigSegment setValue(Object value)
+	public void onSubSegmentChanged(ConfigSegment segment){}
+	
+	public void raiseChangedEvent()
 	{
-		this.Value = value;
-		return this;
+		//TODO Add something here
 	}
 	
-	public ConfigSegment setDimensions(int width, int height, int posX, int posY)
-	{
-		this.Width = width;
-		this.Height = height;
-		this.PosX = posX;
-		this.PosY = posY;
-		return this;
-	}
+	@SideOnly(Side.CLIENT)
+	public abstract int getHeight();
 	
-	/** Getters */
+	@SideOnly(Side.CLIENT)
+	public abstract void handleRendering(int maxWidth, Minecraft mc, FontRenderer fontRenderer);
+	
+	@SideOnly(Side.CLIENT)
+	public abstract ArrayList<Slot> getSlots(SubContainer gui, int x, int y, int maxWidth);
+	
+	@SideOnly(Side.CLIENT)
+	public abstract ArrayList<GuiControl> getControls(SubGui gui, int x, int y, int maxWidth);
+	
+	public abstract String getAllPacketInformation();
+	
+	public abstract void recieveAllPacketInformation(String input);
+	
+	public ArrayList<ConfigSegment> getAllSegments()
+	{
+		ArrayList<ConfigSegment> segments = new ArrayList<ConfigSegment>();
+		segments.add(this);
+		for (int i = 0; i < segments.size(); i++) {
+			segments.addAll(segments.get(i).getAllSegments());
+		}
+		return segments;
+	}
 	
 	public String getID()
 	{
@@ -87,15 +133,5 @@ public class ConfigSegment
 	public SegmentType getSegmentType()
 	{
 		return this.segmentType;
-	}
-	
-	public Object getDefaultValue()
-	{
-		return this.defaultValue;
-	}
-	
-	public Object getValue()
-	{
-		return this.Value;
 	}
 }

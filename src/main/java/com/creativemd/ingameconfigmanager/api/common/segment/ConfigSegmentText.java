@@ -1,5 +1,3 @@
-package com.creativemd.ingameconfigmanager.api.common.segment;
-
 /**
  * Copyright 2015 CreativeMD & N247S
  * 
@@ -17,19 +15,13 @@ package com.creativemd.ingameconfigmanager.api.common.segment;
  * 
  */
 
-public class inputType
-{
-	
-	public enum InputType
-	{
-		String,
-		NummericInt,
-		NummericFloat,
-		Boolean,
-		Slot,
+package com.creativemd.ingameconfigmanager.api.common.segment;
+
+public class ConfigSegmentText extends ConfigSegment<String>{
+
+	public ConfigSegmentText(String id, String Title,String defaultValue) {
+		super(id, Title, defaultValue);
+		// TODO Auto-generated constructor stub
 	}
-	
-	//TODO translation/converting utils. (just links, or the actual methods inside one Class, close to the Segment Class Methods)
-	
-	
+
 }
