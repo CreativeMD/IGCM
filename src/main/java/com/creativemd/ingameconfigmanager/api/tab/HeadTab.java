@@ -2,7 +2,10 @@ package com.creativemd.ingameconfigmanager.api.tab;
 
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.Logger;
+
 import com.creativemd.ingameconfigmanager.api.client.representative.RepresentativeObject;
+import com.creativemd.ingameconfigmanager.core.InGameConfigManager;
 
 /**
  * Copyright 2015 CreativeMD & N247S
@@ -21,17 +24,22 @@ import com.creativemd.ingameconfigmanager.api.client.representative.Representati
  * 
  */
 
-public class HeadTab extends Tab{
+public class HeadTab extends Tab
+{
+	private Logger log = InGameConfigManager.logger;
 	
-	public HeadTab(String title, RepresentativeObject reprenstive) {
+	public HeadTab(String title, RepresentativeObject reprenstive)
+	{
 		super(title, reprenstive);
 	}
 
 	public ArrayList<SubTab> subTabs = new ArrayList<SubTab>();
 	
-	public HeadTab addSubTab(SubTab subTab)//void?
+	public HeadTab addSubTab(SubTab subTab)
 	{
-		subTabs.add(subTab);
+		if(!subTabs.contains(subTab))
+			subTabs.add(subTab);
+		else log.error("SubTab " + subTab.title + " is already added!");
 		return this;
 	}
 	

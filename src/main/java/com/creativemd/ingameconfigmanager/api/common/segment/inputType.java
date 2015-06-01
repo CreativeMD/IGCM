@@ -1,6 +1,4 @@
-package com.creativemd.ingameconfigmanager.api.common.branch;
-
-import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegmentCollection;
+package com.creativemd.ingameconfigmanager.api.common.segment;
 
 /**
  * Copyright 2015 CreativeMD & N247S
@@ -19,19 +17,19 @@ import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegmentCollec
  * 
  */
 
-public abstract class ConfigBranch extends ConfigSegmentCollection
+public class inputType
 {
-	private String[] description;
-
-	public ConfigBranch(String id)
+	
+	public enum InputType
 	{
-		super(id);
+		String,
+		NummericInt,
+		NummericFloat,
+		Boolean,
+		Slot,
 	}
 	
-	public ConfigBranch setDescription(String[] description)
-	{
-		this.description = description;
-		return this;
-	}
-
+	//TODO translation/converting utils. (just links, or the actual methods inside one Class, close to the Segment Class Methods)
+	
+	
 }
