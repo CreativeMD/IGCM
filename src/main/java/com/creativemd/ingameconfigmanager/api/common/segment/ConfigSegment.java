@@ -31,53 +31,32 @@ import net.minecraft.inventory.Slot;
 
 public abstract class ConfigSegment<T>
 {
-	
-	final Class<T> typeParameterClass = null;
 	 
-	public static enum SegmentType
+	/*public static enum SegmentType
 	{
 		Select,
 		Boolean,
-		//Slot,
 		String,
 		Int,
 		Float,
 		Custom;
-	}
+	}*/
 	
 	protected ArrayList<ConfigSegment> subSegments;
 	public ConfigSegment parent;
-	private SegmentType segmentType;
+	//private SegmentType segmentType;
 	public T value;
 	private String ID;
 	public String Title;
 	
-	public ConfigSegment(String id, String Title, T defaultValue, SegmentType segmentType)
+	public ConfigSegment(String id, String Title, T defaultValue) //, SegmentType segmentType)
 	{
 		this.ID = id;
 		this.Title = Title;
-		if(segmentType == null)
-		{
-			if(typeParameterClass == Integer.class)
-				this.segmentType = SegmentType.Int;
-			else if(typeParameterClass == Integer.class)
-				this.segmentType = SegmentType.Boolean;
-			else if(typeParameterClass == Integer.class)
-				this.segmentType = SegmentType.Float;
-			else if(typeParameterClass == Integer.class)
-				this.segmentType = SegmentType.String;
-			else
-				this.segmentType = SegmentType.Custom;
-		}else
-			this.segmentType = segmentType;
+		//this.segmentType = segmentType;
 		this.value = defaultValue;
 		this.subSegments = new ArrayList<ConfigSegment>();
 		parent = null;
-	}
-	
-	public ConfigSegment(String id, String Title, T defaultValue)
-	{
-		this(id, Title, defaultValue, null);
 	}
 	
 	public ArrayList<ConfigSegment> getSubSegments()
@@ -130,8 +109,8 @@ public abstract class ConfigSegment<T>
 		return this.ID;
 	}
 	
-	public SegmentType getSegmentType()
+	/*public SegmentType getSegmentType()
 	{
 		return this.segmentType;
-	}
+	}*/
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
-import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment.SegmentType;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

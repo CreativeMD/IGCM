@@ -1,4 +1,4 @@
-package com.creativemd.ingameconfigmanager.core;
+package com.creativemd.ingameconfigmanager.api.tab.core;
 
 import net.minecraftforge.common.MinecraftForge;
 

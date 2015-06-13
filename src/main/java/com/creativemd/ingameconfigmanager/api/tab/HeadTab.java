@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.apache.logging.log4j.Logger;
 
 import com.creativemd.ingameconfigmanager.api.client.representative.RepresentativeObject;
-import com.creativemd.ingameconfigmanager.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.tab.core.InGameConfigManager;
 
 /**
  * Copyright 2015 CreativeMD & N247S
