@@ -1,32 +1,30 @@
 package com.creativemd.ingameconfigmanager.api.common.event;
 
+import java.awt.Toolkit;
 import java.util.ArrayList;
+
+import net.minecraftforge.client.event.TextureStitchEvent;
+
+import org.lwjgl.input.Mouse;
 
 import com.creativemd.ingameconfigmanager.api.client.representative.RepresentativeIcon;
 
-import net.minecraftforge.client.event.TextureStitchEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * Copyright 2015 CreativeMD & N247S
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *     http://www.apache.org/licenses/LICENSE-2.0
- *     
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * 
- */
-
-public class ConfigEventHandler {
+public class ConfigEventHandler
+{
+	public static final Integer timerinterval = (Integer) Toolkit.getDefaultToolkit().getDesktopProperty("awt.multiClickInterval")/50; 
+	public static boolean EnableMouseHandling;
+	private static boolean isMoving;
+	private static boolean[] buttonReleased = new boolean[9];
+	private static boolean[] doubleClicked = new boolean[9];
+	private static int[] buttonTimer = new int[11];
+	private static Mouse mouse;
+	private static int mouseX;
+	private static int mouseY;
 	
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
@@ -44,4 +42,91 @@ public class ConfigEventHandler {
 		}
 	}
 	
+	@SubscribeEvent
+	public void onClientTick(TickEvent.ClientTickEvent event)
+	{
+		if(!EnableMouseHandling)
+		{
+			if (mouseX != mouse.getX() || mouseY != mouse.getY())
+			{
+				MouseEvents.onMouseMoveEvent.callActionEvents();
+				isMoving = true;
+			}
+			else isMoving = false;
+			mouseX = mouse.getX();
+			mouseY = mouse.getY();
+			
+			int wheel = mouse.getDWheel();
+			if (wheel != 0)
+				MouseEvents.onScrollEvent.callActionEvents(wheel);
+			
+			for(int i = 0; i <= 8; i++)
+			{
+				if(mouse.isButtonDown(i))
+				{
+					if (buttonTimer[i] < timerinterval && buttonReleased[i] == true)
+						doubleClicked[i] = true;
+					else MouseEvents.onButtonPressEvent.callActionEvents(i);
+					
+					if(isMoving)
+					{
+						if(i == 0)
+							MouseEvents.onleftClickDragEvent.callActionEvents();
+						if(i == 1)
+							MouseEvents.onRightClickDragEvent.callActionEvents();
+					}
+					buttonReleased[i] = false;
+					buttonTimer[i] = 0;
+				}
+				else
+				{
+					buttonTimer[i] += 1;
+					buttonReleased[i] = true;
+					
+					switch(i)
+					{
+					case 0:
+						if(doubleClicked[i])
+						{
+							MouseEvents.onDoubleLeftClickEvent.callActionEvents();
+							MouseEvents.onDoubleButtonClickEvent.callActionEvents(i);
+						}
+						else MouseEvents.onLeftClickEvent.callActionEvents();
+						MouseEvents.onLeftMouseButtonReleaseEvent.callActionEvents();
+						MouseEvents.onButtonReleaseEvent.callActionEvents(i);
+						break;
+					case 1:
+						if(doubleClicked[i])
+						{
+							MouseEvents.onDoubleRightClickEvent.callActionEvents();
+							MouseEvents.onDoubleButtonClickEvent.callActionEvents(i);
+						}
+						else MouseEvents.onRightClickEvent.callActionEvents();
+						MouseEvents.onRightMouseButtonReleaseEvent.callActionEvents();
+						MouseEvents.onButtonReleaseEvent.callActionEvents(i);
+						break;
+					case 2:
+						if(doubleClicked[i])
+							MouseEvents.onDoubleButtonClickEvent.callActionEvents(i);
+						else MouseEvents.onWheelClickEvent.callActionEvents();
+						MouseEvents.onWheelReleaseEvent.callActionEvents();
+						MouseEvents.onButtonReleaseEvent.callActionEvents(i);
+						break;
+					default:
+						if(doubleClicked[i])
+							MouseEvents.onDoubleButtonClickEvent.callActionEvents(i);
+						MouseEvents.onButtonReleaseEvent.callActionEvents(i);
+					}
+				}
+			}
+		}
+	}
+	
+/*	
+	@SubscribeEvent
+	public void onclick(KeyInputEvent event)
+	{
+		System.out.println("type!");
+	}
+*/
 }
