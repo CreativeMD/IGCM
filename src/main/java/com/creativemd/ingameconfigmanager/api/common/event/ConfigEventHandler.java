@@ -1,10 +1,18 @@
 package com.creativemd.ingameconfigmanager.api.common.event;
 
+/*
+ * Content
+ * - IconRegistryEvents
+ * - MouseEvents
+ * - KeyboardEvents
+ */
+
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
 import net.minecraftforge.client.event.TextureStitchEvent;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import com.creativemd.ingameconfigmanager.api.client.representative.RepresentativeIcon;
@@ -16,16 +24,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ConfigEventHandler
 {
-	public static final Integer timerinterval = (Integer) Toolkit.getDefaultToolkit().getDesktopProperty("awt.multiClickInterval")/50; 
-	public static boolean EnableMouseHandling;
-	private static boolean isMoving;
-	private static boolean[] buttonReleased = new boolean[9];
-	private static boolean[] doubleClicked = new boolean[9];
-	private static int[] buttonTimer = new int[11];
-	private static Mouse mouse;
-	private static int mouseX;
-	private static int mouseY;
-	
+	//////////////////////////////
+	/*
+	 * IconRegistryEvents
+	 */
+	//////////////////////////////
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onStitch(TextureStitchEvent.Pre event)
@@ -42,10 +45,28 @@ public class ConfigEventHandler
 		}
 	}
 	
+	
+	
+	
+	//////////////////////////////
+	/*
+	 * MouseEvents
+	 */
+	//////////////////////////////
+	public static final Integer timerinterval = (Integer) Toolkit.getDefaultToolkit().getDesktopProperty("awt.multiClickInterval")/50; 
+	public static boolean EnableMouseHandling;
+	private static boolean isMoving;
+	private static boolean[] buttonReleased = new boolean[9];
+	private static boolean[] doubleClicked = new boolean[9];
+	private static int[] buttonTimer = new int[11];
+	private static Mouse mouse;
+	private static int mouseX;
+	private static int mouseY;
+	
 	@SubscribeEvent
-	public void onClientTick(TickEvent.ClientTickEvent event)
+	public void handleMouseEventOnClientTick(TickEvent.ClientTickEvent event)
 	{
-		if(!EnableMouseHandling)
+		if(EnableMouseHandling)
 		{
 			if (mouseX != mouse.getX() || mouseY != mouse.getY())
 			{
@@ -53,6 +74,9 @@ public class ConfigEventHandler
 				isMoving = true;
 			}
 			else isMoving = false;
+			int dMouseX = mouse.getX() - mouseX;
+			int dMouseY = mouse.getY() - mouseY;
+			boolean isSignificantMoving = (dMouseX > 3 || dMouseY > 3);
 			mouseX = mouse.getX();
 			mouseY = mouse.getY();
 			
@@ -64,11 +88,11 @@ public class ConfigEventHandler
 			{
 				if(mouse.isButtonDown(i))
 				{
-					if (buttonTimer[i] < timerinterval && buttonReleased[i] == true)
+					if (buttonTimer[i] < timerinterval && buttonReleased[i])
 						doubleClicked[i] = true;
 					else MouseEvents.onButtonPressEvent.callActionEvents(i);
 					
-					if(isMoving)
+					if(isMoving && isSignificantMoving)
 					{
 						if(i == 0)
 							MouseEvents.onleftClickDragEvent.callActionEvents();
@@ -80,43 +104,50 @@ public class ConfigEventHandler
 				}
 				else
 				{
-					buttonTimer[i] += 1;
-					buttonReleased[i] = true;
-					
-					switch(i)
+					if(!buttonReleased[i])
 					{
-					case 0:
-						if(doubleClicked[i])
+						switch(i)
 						{
-							MouseEvents.onDoubleLeftClickEvent.callActionEvents();
-							MouseEvents.onDoubleButtonClickEvent.callActionEvents(i);
+						case 0:
+							if(doubleClicked[i] && !isSignificantMoving)
+							{
+								MouseEvents.onDoubleLeftClickEvent.callActionEvents();
+								MouseEvents.onDoubleButtonClickEvent.callActionEvents(i);
+							}
+							else if(!isSignificantMoving)
+								MouseEvents.onLeftClickEvent.callActionEvents();
+							MouseEvents.onLeftMouseButtonReleaseEvent.callActionEvents();
+							MouseEvents.onButtonReleaseEvent.callActionEvents(i);
+							break;
+						case 1:
+							if(doubleClicked[i] && !isSignificantMoving)
+							{
+								MouseEvents.onDoubleRightClickEvent.callActionEvents();
+								MouseEvents.onDoubleButtonClickEvent.callActionEvents(i);
+							}
+							else  if(!isSignificantMoving)
+								MouseEvents.onRightClickEvent.callActionEvents();
+							MouseEvents.onRightMouseButtonReleaseEvent.callActionEvents();
+							MouseEvents.onButtonReleaseEvent.callActionEvents(i);
+							break;
+						case 2:
+							if(doubleClicked[i] && !isSignificantMoving)
+								MouseEvents.onDoubleButtonClickEvent.callActionEvents(i);
+							else  if(!isSignificantMoving)
+								MouseEvents.onWheelClickEvent.callActionEvents();
+							MouseEvents.onWheelReleaseEvent.callActionEvents();
+							MouseEvents.onButtonReleaseEvent.callActionEvents(i);
+							break;
+						default:
+							if(doubleClicked[i] && !isSignificantMoving)
+								MouseEvents.onDoubleButtonClickEvent.callActionEvents(i);
+							MouseEvents.onButtonReleaseEvent.callActionEvents(i);
 						}
-						else MouseEvents.onLeftClickEvent.callActionEvents();
-						MouseEvents.onLeftMouseButtonReleaseEvent.callActionEvents();
-						MouseEvents.onButtonReleaseEvent.callActionEvents(i);
-						break;
-					case 1:
-						if(doubleClicked[i])
-						{
-							MouseEvents.onDoubleRightClickEvent.callActionEvents();
-							MouseEvents.onDoubleButtonClickEvent.callActionEvents(i);
-						}
-						else MouseEvents.onRightClickEvent.callActionEvents();
-						MouseEvents.onRightMouseButtonReleaseEvent.callActionEvents();
-						MouseEvents.onButtonReleaseEvent.callActionEvents(i);
-						break;
-					case 2:
-						if(doubleClicked[i])
-							MouseEvents.onDoubleButtonClickEvent.callActionEvents(i);
-						else MouseEvents.onWheelClickEvent.callActionEvents();
-						MouseEvents.onWheelReleaseEvent.callActionEvents();
-						MouseEvents.onButtonReleaseEvent.callActionEvents(i);
-						break;
-					default:
-						if(doubleClicked[i])
-							MouseEvents.onDoubleButtonClickEvent.callActionEvents(i);
-						MouseEvents.onButtonReleaseEvent.callActionEvents(i);
 					}
+					if(buttonTimer[i] > timerinterval)
+						buttonTimer[i] = 0;
+					else buttonTimer[i] += 1;
+					buttonReleased[i] = true;
 				}
 			}
 		}
@@ -129,4 +160,43 @@ public class ConfigEventHandler
 		System.out.println("type!");
 	}
 */
+	//////////////////////////////
+	/*
+	 * KeyboardEvents
+	 */
+	//////////////////////////////
+	public static boolean enableKeyboardHandling;
+	private static Keyboard keyboard;
+	private boolean[] isKeyDown = new boolean[keyboard.getKeyCount()];
+	private static int keyboardCount = 0;
+	
+	@SubscribeEvent
+	public void handleKeyboardEventsOnClientTick(TickEvent.ClientTickEvent event)
+	{
+		if(enableKeyboardHandling)
+		{
+			if(keyboardCount != keyboard.getKeyCount())
+			{
+				keyboardCount = keyboard.getKeyCount();
+				isKeyDown = new boolean[keyboard.getKeyCount()];
+			}
+			for(int i = 0; i < keyboardCount; i++)
+			{
+				if(keyboard.isKeyDown(i))
+				{
+					isKeyDown[i] = true;
+					KeyBoardEvents.onKeyDown.callActionEvents(i);
+				}
+				else
+				{
+					if(isKeyDown[i])
+					{
+						KeyBoardEvents.onKeyPressed.callActionEvents(i);
+						KeyBoardEvents.onKeyReleased.callActionEvents(i);
+						isKeyDown[i] = false;
+					}
+				}
+			}
+		}
+	}
 }

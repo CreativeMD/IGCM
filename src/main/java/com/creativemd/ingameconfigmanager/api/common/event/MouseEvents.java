@@ -1,17 +1,27 @@
-
+/**
+ * This Class contains mainly methods to link through the mouseInput in Minecraft.
+ * Because the given ForgeEvents aren't usable outside of an loaded world,
+ * the MouseInput is monitored twice a tick, and linked to a custom MouseInputEventHandler.
+ * Which is decent enough for guiControl, but isn't recommended for in-game use.
+ * For in-game mouseEventHandling, use the ForgeEvents instead!
+ */
 package com.creativemd.ingameconfigmanager.api.common.event;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import com.creativemd.ingameconfigmanager.api.tab.core.InGameConfigManager;
 
 public class MouseEvents extends Event
 {
+	public static final MouseEvents instance = new MouseEvents();
 	private static List<Class> mouseControlClassListnerList = new ArrayList<Class>();
 	private static Logger log = InGameConfigManager.logger;
 	private static Mouse mouse;
@@ -35,7 +45,15 @@ public class MouseEvents extends Event
 	}
 	
 	
-	
+    private static boolean isCtrlKeyDown()
+    {
+        return Minecraft.isRunningOnMac ? Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220) : Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157);
+    }
+
+    private static boolean isShiftKeyDown()
+    {
+        return Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54);
+    }
 	
 	private static void callEvents(Object eventType)
 	{
@@ -77,147 +95,339 @@ public class MouseEvents extends Event
 		superLastMousePosY = superMousePosY;
 	}
 
-	static class onLeftClickEvent
+	public static class onLeftClickEvent
 	{
 		public static int mousePosX = superMousePosX;
 		public static int mousePosY = superMousePosY;
 
-		public static void callActionEvents()
+		protected static void callActionEvents()
 		{
 			callEvents(new onLeftClickEvent());
-		}	
+		}
+		
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
+		{
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
+		}
 	}
 	
-	static class onLeftMouseButtonReleaseEvent
+	public static class onLeftMouseButtonReleaseEvent
 	{
 		public static int mousePosX = superMousePosX;
 		public static int mousePosY = superMousePosY;
 		
-		public static void callActionEvents()
+		protected static void callActionEvents()
 		{
 			callEvents(new onLeftMouseButtonReleaseEvent());
-		}	
+		}
+		
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
+		{
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
+		}
 	}
 	
-	static class onDoubleLeftClickEvent
+	public static class onDoubleLeftClickEvent
 	{
 		public static int mousePosX = superMousePosX;
 		public static int mousePosY = superMousePosY;
 		
-		public static void callActionEvents()
+		protected static void callActionEvents()
 		{
 			callEvents(new onDoubleLeftClickEvent());
-		}	
+		}
+		
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
+		{
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
+		}
 	}
 	
-	static class onRightClickEvent
+	public static class onRightClickEvent
 	{
 		public static int mousePosX = superMousePosX;
 		public static int mousePosY = superMousePosY;
 
-		public static void callActionEvents()
+		protected static void callActionEvents()
 		{
 			callEvents(new onRightClickEvent());
 		}
+		
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
+		{
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
+		}
 	}
 	
-	static class onRightMouseButtonReleaseEvent
+	public static class onRightMouseButtonReleaseEvent
 	{
 		public static int mousePosX = superMousePosX;
 		public static int mousePosY = superMousePosY;
 		
-		public static void callActionEvents()
+		protected static void callActionEvents()
 		{
 			callEvents(new onRightMouseButtonReleaseEvent());
 		}
+		
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
+		{
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
+		}
 	}
 	
-	static class onDoubleRightClickEvent
+	public static class onDoubleRightClickEvent
 	{
 		public static int mousePosX = superMousePosX;
 		public static int mousePosY = superMousePosY;
 		
-		public static void callActionEvents()
+		protected static void callActionEvents()
 		{
 			callEvents(new onDoubleRightClickEvent());
 		}
+		
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
+		{
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
+		}
 	}
 	
-	static class onButtonPressEvent
+	public static class onButtonPressEvent
 	{
 		public static int mousePosX = superMousePosX;
 		public static int mousePosY = superMousePosY;
 		public static int buttonID;
 		
-		public static void callActionEvents(int buttonid)
+		protected static void callActionEvents(int buttonid)
 		{
 			buttonID = buttonid;
 			callEvents(new onButtonPressEvent());
 		}
+		
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
+		{
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
+		}
 	}
 	
-	static class onDoubleButtonClickEvent
+	public static class onDoubleButtonClickEvent
 	{
 		public static int mousePosX = superMousePosX;
 		public static int mousePosY = superMousePosY;
 		public static int buttonID;
 		
-		public static void callActionEvents(int buttonid)
+		protected static void callActionEvents(int buttonid)
 		{
 			buttonID = buttonid;
 			callEvents(new onDoubleButtonClickEvent());
 		}
+		
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
+		{
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
+		}
 	}
 	
-	static class onButtonReleaseEvent
+	public static class onButtonReleaseEvent
 	{
 		public static int mousePosX = superMousePosX;
 		public static int mousePosY = superMousePosY;
 		public static int buttonID;
 		
-		public static void callActionEvents(int buttonid)
+		protected static void callActionEvents(int buttonid)
 		{
 			buttonID = buttonid;
 			callEvents(new onButtonReleaseEvent());
 		}
+		
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
+		{
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
+		}
 	}
 	
-	static class onWheelClickEvent
+	public static class onWheelClickEvent
 	{
 		public static int mousePosX = superMousePosX;
 		public static int mousePosY = superMousePosY;
 		
-		public static void callActionEvents()
+		protected static void callActionEvents()
 		{
 			callEvents(new onWheelClickEvent());
 		}
+		
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
+		{
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
+		}
 	}
 	
-	static class onWheelReleaseEvent
+	public static class onWheelReleaseEvent
 	{
 		public static int mousePosX = superMousePosX;
 		public static int mousePosY = superMousePosY;
 		
-		public static void callActionEvents()
+		protected static void callActionEvents()
 		{
 			callEvents(new onWheelReleaseEvent());
 		}
+		
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
+		{
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
+		}
 	}
 	
-	static class onScrollEvent
+	public static class onScrollEvent
 	{
 		public static int mousePosX = superMousePosX;
 		public static int mousePosY = superMousePosY;
 		public static int wheelScroll = superWheelScroll;
 		
-		public static void callActionEvents(int wheel)
+		protected static void callActionEvents(int wheel)
 		{
 			superWheelScroll = wheel;
 			callEvents(new onScrollEvent());
 		}
+		
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
+		{
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
+		}
 	}
 	
-	static class onMouseMoveEvent
+	public static class onMouseMoveEvent
 	{
 		public static int mousePosX = superMousePosX;
 		public static int mousePosY = superMousePosY;
@@ -226,29 +436,29 @@ public class MouseEvents extends Event
 		public static boolean isScrollingup = superIsScrollingUp;
 		public static boolean isScrollingdown = superIsScrollingDown;
 		
-		public static void callActionEvents()
+		protected static void callActionEvents()
 		{
 			callEvents(new onMouseMoveEvent());
 		}
-	}
-	
-	static class onleftClickDragEvent
-	{
-		public static int mousePosX = superMousePosX;
-		public static int mousePosY = superMousePosY;
-		public static int lastMousePosX = superLastMousePosX;
-		public static int lastMousePosY = superLastMousePosY;
-		public static int wheelScroll = superWheelScroll;
-		public static boolean isScrollingup = superIsScrollingUp;
-		public static boolean isScrollingdown = superIsScrollingDown;
 		
-		public static void callActionEvents()
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
 		{
-			callEvents(new onleftClickDragEvent());
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
 		}
 	}
 	
-	static class onRightClickDragEvent
+	public static class onleftClickDragEvent
 	{
 		public static int mousePosX = superMousePosX;
 		public static int mousePosY = superMousePosY;
@@ -258,9 +468,57 @@ public class MouseEvents extends Event
 		public static boolean isScrollingup = superIsScrollingUp;
 		public static boolean isScrollingdown = superIsScrollingDown;
 		
-		public static void callActionEvents()
+		protected static void callActionEvents()
+		{
+			callEvents(new onleftClickDragEvent());
+		}
+		
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
+		{
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
+		}
+	}
+	
+	public static class onRightClickDragEvent
+	{
+		public static int mousePosX = superMousePosX;
+		public static int mousePosY = superMousePosY;
+		public static int lastMousePosX = superLastMousePosX;
+		public static int lastMousePosY = superLastMousePosY;
+		public static int wheelScroll = superWheelScroll;
+		public static boolean isScrollingup = superIsScrollingUp;
+		public static boolean isScrollingdown = superIsScrollingDown;
+		
+		protected static void callActionEvents()
 		{
 			callEvents(new onRightClickDragEvent());
+		}
+		
+		/**
+		 * Returns true if either shift key is down
+		 */
+		public boolean isShiftPressed()
+		{
+			return isShiftKeyDown();
+		}
+		
+		/**
+		 * Returns true if either windows ctrl key is down or if either mac meta key is down
+		 */
+		public boolean isCtrlPressed()
+		{
+			return isCtrlKeyDown();
 		}
 	}
 }
