@@ -55,7 +55,7 @@ public class KeyBoardEvents
 		}
 	}
 	
-	public static class onKeyPressed
+	public static class onKeyPress
 	{
 		public static int keyNumber;
 		public static String keyName;
@@ -64,7 +64,7 @@ public class KeyBoardEvents
 		{
 			keyNumber = key;
 			keyName = Keyboard.getKeyName(key);
-			callEvents(new onKeyPressed());
+			callEvents(new onKeyPress());
 		}
 	}
 	
@@ -81,7 +81,7 @@ public class KeyBoardEvents
 		}
 	}
 	
-	public static class onKeyReleased
+	public static class onKeyRelease
 	{
 		public static int keyNumber;
 		public static String keyName;
@@ -90,7 +90,7 @@ public class KeyBoardEvents
 		{
 			keyNumber = key;
 			keyName = Keyboard.getKeyName(key);
-			callEvents(new onKeyReleased());
+			callEvents(new onKeyRelease());
 		}
 	}
 }
