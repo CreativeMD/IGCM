@@ -68,7 +68,6 @@ public abstract class ConfigSegment<T>
 	@SideOnly(Side.CLIENT)
 	public abstract void handleRendering(int maxWidth, Minecraft mc, FontRenderer fontRenderer);
 	
-	@SideOnly(Side.CLIENT)
 	public abstract ArrayList<Slot> getSlots(SubContainer gui, int x, int y, int maxWidth);
 	
 	@SideOnly(Side.CLIENT)
