@@ -16,7 +16,7 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import com.creativemd.ingameconfigmanager.api.client.representative.RepresentativeIcon;
+import com.creativemd.creativecore.client.avatar.AvatarIcon;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -36,7 +36,7 @@ public class ConfigEventHandler
 	@SubscribeEvent
 	public void onStitch(TextureStitchEvent.Pre event)
 	{
-		ArrayList<RepresentativeIcon> iconList = RepresentativeIcon.getIconList();
+		ArrayList<AvatarIcon> iconList = AvatarIcon.getIconList();
 		
 		for(int i = 0; i < iconList.size(); i++)
 		{

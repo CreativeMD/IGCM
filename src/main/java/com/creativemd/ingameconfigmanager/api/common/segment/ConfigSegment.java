@@ -3,6 +3,7 @@ package com.creativemd.ingameconfigmanager.api.common.segment;
 import java.util.ArrayList;
 
 import com.creativemd.creativecore.common.container.SubContainer;
+import com.creativemd.creativecore.common.container.slot.ContainerControl;
 import com.creativemd.creativecore.common.gui.SubGui;
 import com.creativemd.creativecore.common.gui.controls.GuiControl;
 
@@ -33,6 +34,14 @@ public abstract class ConfigSegment<T>
 	private String ID;
 	public String Title;
 	
+	public ArrayList<GuiControl> containerControls;
+	
+	@SideOnly(Side.CLIENT)
+	public ArrayList<GuiControl> guiControls;
+	
+	public int xOffset;
+	public int yOffset;
+	
 	public ConfigSegment(String id, String Title, T defaultValue) //, SegmentType segmentType)
 	{
 		this.ID = id;
@@ -41,6 +50,13 @@ public abstract class ConfigSegment<T>
 		this.value = defaultValue;
 		this.subSegments = new ArrayList<ConfigSegment>();
 		parent = null;
+	}
+	
+	public ConfigSegment<T> setOffset(int x, int y)
+	{
+		this.xOffset = x;
+		this.yOffset = y;
+		return this;
 	}
 	
 	public ArrayList<ConfigSegment> getSubSegments()
@@ -63,19 +79,34 @@ public abstract class ConfigSegment<T>
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public abstract int getHeight();
+	public int getHeight()
+	{
+		int maxHeight = 0;
+		for (int i = 0; i < subSegments.size(); i++) {
+			int tempHeight = subSegments.get(i).yOffset + subSegments.get(i).getHeight();
+			if(tempHeight > maxHeight)
+				maxHeight = tempHeight;
+		}
+		
+		for (int i = 0; i < guiControls.size(); i++) {
+			int tempHeight = guiControls.get(i).posY + guiControls.get(i).height;
+			if(tempHeight > maxHeight)
+				maxHeight = tempHeight;
+		}
+		return maxHeight;
+	}
 	
 	@SideOnly(Side.CLIENT)
 	public abstract void handleRendering(int maxWidth, Minecraft mc, FontRenderer fontRenderer);
 	
-	public abstract ArrayList<Slot> getSlots(SubContainer gui, int x, int y, int maxWidth);
+	public abstract ArrayList<ContainerControl> createContainerControls(SubContainer gui, int x, int y, int maxWidth);
 	
 	@SideOnly(Side.CLIENT)
-	public abstract ArrayList<GuiControl> getControls(SubGui gui, int x, int y, int maxWidth);
+	public abstract ArrayList<GuiControl> createGuiControls(SubGui gui, int x, int y, int maxWidth);
 	
-	public abstract String getAllPacketInformation();
+	public abstract String createPacketInformation();
 	
-	public abstract void recieveAllPacketInformation(String input);
+	public abstract void receivePacketInformation(String input);
 	
 	public ArrayList<ConfigSegment> getAllSegments()
 	{

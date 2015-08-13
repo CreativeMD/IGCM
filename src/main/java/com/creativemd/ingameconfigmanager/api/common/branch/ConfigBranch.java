@@ -8,25 +8,37 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class ConfigBranch{
 	
+	/**List should only give information and maybe helpful for some custom custom functionalities**/
+	public static ArrayList<ConfigBranch> branches = new ArrayList<ConfigBranch>();
+	
+	public static int indexOf(ConfigBranch branch)
+	{
+		return branches.indexOf(branch);
+	}
+	
 	/**The Title of the branch**/
 	public String name;
 	
+	public final int id;
+	
 	public ConfigBranch(String name)
 	{
+		this.id = branches.size();
+		branches.add(this);
 		this.name = name;
 	}
 	
-	
-	@SideOnly(Side.CLIENT)
-	/**Should return ALL segments for configuration which does only effect the client side (No synchronization)*/
-	public abstract ArrayList<ConfigSegment> getClientSegments();
+	//Using Forge libs instead
+	//@SideOnly(Side.CLIENT)
+	///**Should return ALL segments for configuration which does only effect the client side (No synchronization)*/
+	//public abstract ArrayList<ConfigSegment> getClientSegments();
 	
 	/**Should return ALL segments for configuration which does also effect the server/all other players (synchronization)*/
-	public abstract ArrayList<ConfigSegment> getServerSegments();
+	public abstract ArrayList<ConfigSegment> getConfigSegments();
 	
 	public abstract boolean needPacket();
 	
-	public abstract boolean needClientConfig();
+	//public abstract boolean needClientConfig();
 	
 	public abstract void onSegmentChanged(boolean isServer, ConfigSegment segment);
 	

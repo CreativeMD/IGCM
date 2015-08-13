@@ -4,21 +4,21 @@ import java.util.ArrayList;
 
 import org.apache.logging.log4j.Logger;
 
-import com.creativemd.ingameconfigmanager.api.client.representative.RepresentativeObject;
-import com.creativemd.ingameconfigmanager.api.tab.core.InGameConfigManager;
+import com.creativemd.creativecore.client.avatar.Avatar;
+import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 
-public class HeadTab extends Tab
+public class ModTab extends Tab
 {
 	private Logger log = InGameConfigManager.logger;
 	
-	public HeadTab(String title, RepresentativeObject reprenstive)
+	public ModTab(String modname, Avatar avatar)
 	{
-		super(title, reprenstive);
+		super(modname, avatar);
 	}
 
 	public ArrayList<SubTab> subTabs = new ArrayList<SubTab>();
 	
-	public HeadTab addSubTab(SubTab subTab)
+	public ModTab addSubTab(SubTab subTab)
 	{
 		if(!subTabs.contains(subTab))
 			subTabs.add(subTab);

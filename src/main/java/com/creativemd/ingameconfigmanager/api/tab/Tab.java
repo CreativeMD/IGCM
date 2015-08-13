@@ -1,17 +1,17 @@
 package com.creativemd.ingameconfigmanager.api.tab;
 
-import com.creativemd.ingameconfigmanager.api.client.representative.RepresentativeObject;
+import com.creativemd.creativecore.client.avatar.Avatar;
 
 public abstract class Tab {
 	
 	public String title;
 	
-	public RepresentativeObject reprenstive;
+	public Avatar avatar;
 	
-	public Tab(String title, RepresentativeObject reprenstive)
+	public Tab(String title, Avatar avatar)
 	{
 		this.title = title;
-		this.reprenstive = reprenstive;
+		this.avatar = avatar;
 	}
 	
 }

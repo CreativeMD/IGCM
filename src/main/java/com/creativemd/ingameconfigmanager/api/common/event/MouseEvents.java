@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import com.creativemd.ingameconfigmanager.api.tab.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 
 public class MouseEvents extends Event
 {

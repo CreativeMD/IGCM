@@ -14,7 +14,7 @@ import java.util.List;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 
-import com.creativemd.ingameconfigmanager.api.tab.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 
 public class KeyBoardEvents
 {

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import org.apache.logging.log4j.Logger;
 
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
-import com.creativemd.ingameconfigmanager.api.tab.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 
 public class ConfigSegmentCollection
 {
