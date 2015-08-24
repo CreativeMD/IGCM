@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.logging.log4j.Logger;
 
 import com.creativemd.creativecore.client.avatar.Avatar;
+import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 
 public class ModTab extends Tab
@@ -16,14 +17,21 @@ public class ModTab extends Tab
 		super(modname, avatar);
 	}
 
-	public ArrayList<SubTab> subTabs = new ArrayList<SubTab>();
+	//public ArrayList<SubTab> subTabs = new ArrayList<SubTab>();
+	public ArrayList<ConfigBranch> branches = new ArrayList<ConfigBranch>();
 	
-	public ModTab addSubTab(SubTab subTab)
+	/*public ModTab addSubTab(SubTab subTab)
 	{
 		if(!subTabs.contains(subTab))
 			subTabs.add(subTab);
 		else log.error("SubTab " + subTab.title + " is already added!");
 		return this;
+	}*/
+	
+	public void addBranch(ConfigBranch branch)
+	{
+		branches.add(branch);
+		branch.tab = this;
 	}
 	
 	private int id = -1;

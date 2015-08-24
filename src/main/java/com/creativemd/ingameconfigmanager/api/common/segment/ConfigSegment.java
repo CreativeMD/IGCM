@@ -96,9 +96,6 @@ public abstract class ConfigSegment<T>
 		return maxHeight;
 	}
 	
-	@SideOnly(Side.CLIENT)
-	public abstract void handleRendering(int maxWidth, Minecraft mc, FontRenderer fontRenderer);
-	
 	public abstract ArrayList<ContainerControl> createContainerControls(SubContainer gui, int x, int y, int maxWidth);
 	
 	@SideOnly(Side.CLIENT)

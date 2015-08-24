@@ -7,8 +7,11 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import com.creativemd.creativecore.common.packet.CreativeCorePacket;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
+import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
+import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,6 +22,11 @@ public class BranchInformationPacket extends CreativeCorePacket{
 	
 	public int segStart;
 	public int segEnd;
+	
+	public BranchInformationPacket()
+	{
+		
+	}
 	
 	public BranchInformationPacket(int id, int segStart, int segEnd)
 	{
@@ -34,6 +42,8 @@ public class BranchInformationPacket extends CreativeCorePacket{
 	
 	@Override
 	public void writeBytes(ByteBuf buf) {
+		branch.onPacketSend(FMLCommonHandler.instance().getEffectiveSide().isServer(), new ConfigSegmentCollection(branch.getConfigSegments()));
+		
 		buf.writeInt(branch.id);
 		buf.writeInt(segStart);
 		buf.writeInt(segEnd);
@@ -57,18 +67,39 @@ public class BranchInformationPacket extends CreativeCorePacket{
 			
 		}
 	}
+	
+	public boolean isFinalPacket()
+	{
+		return segEnd == branch.getConfigSegments().size();
+	}
+	
+	public void receiveUpdate(boolean server)
+	{
+		ConfigSegmentCollection collection = new ConfigSegmentCollection(branch.getConfigSegments());
+		
+		branch.onRecieveFromPre(false, collection);
+		branch.onRecieveFrom(false, collection);
+		branch.onRecieveFromPost(false, collection);
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void executeClient(EntityPlayer player) {
-		// TODO Auto-generated method stub
-		
+		if(isFinalPacket())
+		{
+			receiveUpdate(false);
+		}
 	}
 
 	@Override
 	public void executeServer(EntityPlayer player) {
-		// TODO Auto-generated method stub
-		
+		if(isFinalPacket())
+		{
+			receiveUpdate(true);
+			
+			InGameConfigManager.sendUpdatePacket(branch);
+			InGameConfigManager.saveConfig(branch);
+		}
 	}
 
 }

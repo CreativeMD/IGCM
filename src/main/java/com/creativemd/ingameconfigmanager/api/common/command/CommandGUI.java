@@ -45,7 +45,7 @@ public class CommandGUI implements ICommand {
 		if(icommandsender instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) icommandsender;
-			InGameConfigManager.openGui(player, 0);
+			InGameConfigManager.openModsGui(player);
 		}
 	}
 

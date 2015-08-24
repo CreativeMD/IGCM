@@ -15,7 +15,7 @@ public class TabRegistry {
 		return tab;
 	}
 	
-	public ModTab getTabByIndex(int index)
+	public static ModTab getTabByIndex(int index)
 	{
 		return tabs.get(index);
 	}
