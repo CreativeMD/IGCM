@@ -1,0 +1,94 @@
+package com.creativemd.ingameconfigmanager.api.common.branch.machine;
+
+import java.util.ArrayList;
+
+import net.minecraft.item.ItemStack;
+
+import com.creativemd.creativecore.client.avatar.Avatar;
+import com.creativemd.creativecore.common.utils.string.StringUtils;
+import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
+import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
+import com.creativemd.ingameconfigmanager.api.common.machine.RecipeMachine;
+import com.creativemd.ingameconfigmanager.api.common.segment.machine.DisableRecipeSegment;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+public class ConfigMachineDisableBranch extends ConfigBranch{
+	
+	public RecipeMachine machine;
+	public ArrayList allRecipes;
+	public ArrayList disabledRecipes;
+	
+	public ConfigMachineDisableBranch(RecipeMachine machine, String name) {
+		super(name);
+		this.machine = machine;
+		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
+			avatar = getAvatar();
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	protected Avatar getAvatar() {
+		if(machine != null)
+			return machine.getAvatar();
+		return null;
+	}
+
+	@Override
+	public void loadCore() {
+		allRecipes = machine.getAllExitingRecipes();
+		disabledRecipes = new ArrayList();
+	}
+
+	@Override
+	public void createConfigSegments() {
+		for (int i = 0; i < allRecipes.size(); i++) {
+			segments.add(new DisableRecipeSegment(recipeToString(allRecipes.get(i)), true, machine, allRecipes.get(i)));
+		}
+	}
+	
+	public String recipeToString(Object recipe)
+	{
+		ItemStack[] input = machine.fillGrid(recipe);
+		ItemStack[] output = machine.getOutput(recipe);
+		return StringUtils.ObjectsToString(input, output);
+	}
+
+	@Override
+	public boolean needPacket() {
+		return true;
+	}
+	
+	@Override
+	public void onBeforeReceived(boolean isServer)
+	{
+		for (int i = 0; i < segments.size(); i++) {
+			if(segments.get(i) instanceof DisableRecipeSegment)
+				segments.get(i).value = true;
+		}
+	}
+
+	@Override
+	public void onRecieveFrom(boolean isServer, ConfigSegmentCollection collection) {
+		machine.clearRecipeList();
+		disabledRecipes.clear();
+		for (int i = 0; i < collection.asList().size(); i++) {
+			if(collection.asList().get(i) instanceof DisableRecipeSegment)
+			{
+				if(!(boolean)collection.asList().get(i).value)
+					disabledRecipes.add(((DisableRecipeSegment)collection.asList().get(i)).recipe);
+				else
+					machine.addRecipeToList(((DisableRecipeSegment)collection.asList().get(i)).recipe);
+			}
+		}
+		if(!machine.sendingUpdate)
+		{
+			machine.sendingUpdate = true;
+			machine.addBranch.onRecieveFrom(isServer, collection);
+			machine.sendingUpdate = false;
+		}
+	}
+
+}

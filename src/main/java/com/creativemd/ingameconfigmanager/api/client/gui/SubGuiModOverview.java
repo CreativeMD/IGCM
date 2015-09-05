@@ -8,8 +8,12 @@ import com.creativemd.creativecore.common.gui.SubGui;
 import com.creativemd.creativecore.common.gui.controls.GuiAvatarButton;
 import com.creativemd.creativecore.common.gui.controls.GuiButton;
 import com.creativemd.creativecore.common.gui.controls.GuiScrollBox;
+import com.creativemd.creativecore.common.gui.event.ControlClickEvent;
+import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
+import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 import com.creativemd.ingameconfigmanager.api.core.TabRegistry;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
+import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
 public class SubGuiModOverview extends SubGui{
 	
@@ -28,6 +32,19 @@ public class SubGuiModOverview extends SubGui{
 		}
 		
 		controls.add(box);
+		controls.add(new GuiButton("Back", 5, 226, 50, 20));
+	}
+	
+	@CustomEventSubscribe
+	public void onButtonClicked(ControlClickEvent event)
+	{
+		if(event.source instanceof GuiButton)
+		{
+			if(((GuiButton)event.source).caption.equals("Back"))
+				InGameConfigManager.openModsGui(container.player);
+			else
+				InGameConfigManager.openBranchGui(container.player, tab.branches.get(((GuiButton)event.source).id));
+		}
 	}
 
 	@Override

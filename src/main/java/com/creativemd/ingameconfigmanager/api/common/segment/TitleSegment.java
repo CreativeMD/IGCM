@@ -15,10 +15,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class TitleSegment<T> extends ConfigSegment<T>{
-
-	public TitleSegment(String id, String Title, T defaultValue) {
-		super(id, Title, defaultValue);
-		
+	public String title;
+	
+	public TitleSegment(String id, String title, T defaultValue) {
+		super(id, defaultValue);
+		this.title = title;
 	}
 
 	@Override
@@ -26,7 +27,12 @@ public abstract class TitleSegment<T> extends ConfigSegment<T>{
 	public ArrayList<GuiControl> createGuiControls(SubGui gui, int x, int y,
 			int maxWidth) {
 		ArrayList<GuiControl> controls = new ArrayList<GuiControl>();
-		controls.add(new GuiLabel(Title, x+10, y+5));
+		controls.add(new GuiLabel(title, x+10, y+5));
 		return controls;
+	}
+	
+	@Override
+	public boolean contains(String search) {
+		return title.contains(search);
 	}
 }

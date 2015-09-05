@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 
+import com.creativemd.creativecore.common.container.ContainerSub;
+import com.creativemd.creativecore.common.gui.GuiContainerSub;
 import com.creativemd.creativecore.common.packet.CreativeCorePacket;
+import com.creativemd.ingameconfigmanager.api.client.gui.SubGuiBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
@@ -19,9 +22,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BranchInformationPacket extends CreativeCorePacket{
 	
 	public ConfigBranch branch;
-	
 	public int segStart;
 	public int segEnd;
+	public boolean finalPacket;
 	
 	public BranchInformationPacket()
 	{
@@ -45,37 +48,59 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		branch.onPacketSend(FMLCommonHandler.instance().getEffectiveSide().isServer(), new ConfigSegmentCollection(branch.getConfigSegments()));
 		
 		buf.writeInt(branch.id);
-		buf.writeInt(segStart);
-		buf.writeInt(segEnd);
-		
+		//buf.writeInt(segStart);
+		//buf.writeInt(segEnd);
+		int count = 0;
 		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
 		for (int i = segStart; i < segEnd; i++) {
-			ByteBufUtils.writeUTF8String(buf, segments.get(i).createPacketInformation());
+			if(segments.get(i).createPacketInformation() != null)
+				count++;
+		}
+		
+		buf.writeBoolean(segEnd == segments.size());
+		buf.writeInt(count);
+		
+		for (int i = segStart; i < segEnd; i++) {
+			String input = segments.get(i).createPacketInformation();
+			if(input != null)
+			{
+				writeString(buf, segments.get(i).getID());
+				writeString(buf, input);
+			}
 		}
 	}
-
+	
+	public ConfigSegmentCollection collection;
+	
 	@Override
 	public void readBytes(ByteBuf buf) {
 		branch = ConfigBranch.branches.get(buf.readInt());
-		segStart = buf.readInt();
-		segEnd = buf.readInt();
+		finalPacket = buf.readBoolean();
+		int count = buf.readInt();
 		
 		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
-		for (int i = segStart; i < segEnd; i++) {
-			String information = ByteBufUtils.readUTF8String(buf);
-			segments.get(i).receivePacketInformation(information);
+		branch.onBeforeReceived(FMLCommonHandler.instance().getEffectiveSide().isServer());
+		collection = new ConfigSegmentCollection(branch.getConfigSegments());
+		
+		for (int i = 0; i < count; i++) {
+			String id = readString(buf);
+			ConfigSegment segment = collection.getSegmentByID(id);
+			String information = readString(buf);
+			if(segment != null)
+				segment.receivePacketInformation(information);
+			else
+				branch.onFailedLoadingSegment(id, information);
 			
 		}
 	}
 	
 	public boolean isFinalPacket()
 	{
-		return segEnd == branch.getConfigSegments().size();
+		return finalPacket;
 	}
 	
 	public void receiveUpdate(boolean server)
 	{
-		ConfigSegmentCollection collection = new ConfigSegmentCollection(branch.getConfigSegments());
 		
 		branch.onRecieveFromPre(false, collection);
 		branch.onRecieveFrom(false, collection);
@@ -88,6 +113,14 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		if(isFinalPacket())
 		{
 			receiveUpdate(false);
+			
+			if(player.openContainer instanceof ContainerSub && ((ContainerSub) player.openContainer).gui.getTopLayer() instanceof SubGuiBranch)
+			{
+				SubGuiBranch gui = (SubGuiBranch) ((ContainerSub) player.openContainer).gui.getTopLayer();
+				if(gui.branch == branch)
+					gui.createSegmentControls();
+					//InGameConfigManager.openBranchGui(player, branch);
+			}
 		}
 	}
 

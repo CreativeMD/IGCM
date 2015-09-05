@@ -3,11 +3,13 @@ package com.creativemd.ingameconfigmanager.api.core;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
@@ -26,10 +28,12 @@ import com.creativemd.ingameconfigmanager.api.common.packets.ConfigGuiPacket;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
 import com.creativemd.ingameconfigmanager.api.tab.SubTab;
+import com.creativemd.ingameconfigmanager.mod.ConfigManagerModLoader;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -63,15 +67,22 @@ public class InGameConfigManager {
 		currentProfile.load();
 		for (int i = 0; i < ConfigBranch.branches.size(); i++) {
 			ArrayList<ConfigSegment> segments = ConfigBranch.branches.get(i).getConfigSegments();
-			for (int j = 0; j < segments.size(); j++) {
-				if(currentProfile.hasKey(getCat(ConfigBranch.branches.get(i)), segments.get(j).getID().toLowerCase()))
+			ConfigBranch.branches.get(i).onBeforeReceived(FMLCommonHandler.instance().getEffectiveSide().isServer());
+			
+			ConfigSegmentCollection collection = new ConfigSegmentCollection(segments);
+			for (Map.Entry<String, Property> entry : currentProfile.getCategory(getCat(ConfigBranch.branches.get(i))).entrySet())
+			{
+				ConfigSegment segment = collection.getSegmentByID(entry.getKey());
+				String input = entry.getValue().getString();
+				if(segment != null)
 				{
-					String input = currentProfile.get(getCat(ConfigBranch.branches.get(i)), segments.get(j).getID().toLowerCase(), "").getString();
-					segments.get(j).receivePacketInformation(input);
+					segment.receivePacketInformation(input);
+				}else{
+					ConfigBranch.branches.get(i).onFailedLoadingSegment(entry.getKey(), input);
 				}
 			}
 			boolean isServer = FMLCommonHandler.instance().getEffectiveSide().isServer();
-			ConfigSegmentCollection collection = new ConfigSegmentCollection(segments);
+			
 			ConfigBranch.branches.get(i).onRecieveFromPre(isServer, collection);
 			ConfigBranch.branches.get(i).onRecieveFrom(isServer, collection);
 			ConfigBranch.branches.get(i).onRecieveFromPost(isServer, collection);
@@ -80,15 +91,52 @@ public class InGameConfigManager {
 		currentProfile.save();
 	}
 	
+	public static void loadConfig(ConfigBranch branch)
+	{
+		currentProfile.load();
+		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
+		ConfigSegmentCollection collection = new ConfigSegmentCollection(segments);
+		branch.onBeforeReceived(FMLCommonHandler.instance().getEffectiveSide().isServer());
+		for (Map.Entry<String, Property> entry : currentProfile.getCategory(getCat(branch)).entrySet())
+		{
+			ConfigSegment segment = collection.getSegmentByID(entry.getKey());
+			String input = entry.getValue().getString();
+			if(segment != null)
+			{
+				segment.receivePacketInformation(input);
+			}else{
+				branch.onFailedLoadingSegment(entry.getKey(), input);
+			}
+		}
+		
+		/*
+		for (int j = 0; j < segments.size(); j++) {
+			if(currentProfile.hasKey(getCat(branch), segments.get(j).getID().toLowerCase()))
+			{
+				
+			}
+		}*/
+		boolean isServer = FMLCommonHandler.instance().getEffectiveSide().isServer();
+		branch.onRecieveFromPre(isServer, collection);
+		branch.onRecieveFrom(isServer, collection);
+		branch.onRecieveFromPost(isServer, collection);
+		logger.info("Loaded " + getCat(branch) + " branch");
+		currentProfile.save();
+	}
+	
 	public static void saveConfig(ConfigBranch branch)
 	{
 		currentProfile.load();
+		currentProfile.getCategory(getCat(branch)).clear();
 		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
 		ConfigSegmentCollection collection = new ConfigSegmentCollection(segments);
 		branch.onPacketSend(FMLCommonHandler.instance().getEffectiveSide().isServer(), collection);
 		for (int i = 0; i < segments.size(); i++) {
 			String input = segments.get(i).createPacketInformation();
-			currentProfile.get(getCat(branch), segments.get(i).getID().toLowerCase(), "").set(input);
+			if(input != null)
+			{
+				currentProfile.get(getCat(branch), segments.get(i).getID().toLowerCase(), "").set(input);
+			}
 		}
 		currentProfile.save();
 	}
@@ -128,6 +176,12 @@ public class InGameConfigManager {
 		
 		coreConfig.save();
 		ModConfigurationDirectory = event.getModConfigurationDirectory();
+	}
+	
+	@EventHandler
+	public static void Init(FMLInitializationEvent event)
+	{
+		ConfigManagerModLoader.loadMod();
 	}
 	
 	@EventHandler

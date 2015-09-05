@@ -32,9 +32,8 @@ public abstract class ConfigSegment<T>
 	//private SegmentType segmentType;
 	public T value;
 	private String ID;
-	public String Title;
 	
-	public ArrayList<GuiControl> containerControls;
+	public ArrayList<ContainerControl> containerControls;
 	
 	@SideOnly(Side.CLIENT)
 	public ArrayList<GuiControl> guiControls;
@@ -42,10 +41,9 @@ public abstract class ConfigSegment<T>
 	public int xOffset;
 	public int yOffset;
 	
-	public ConfigSegment(String id, String Title, T defaultValue) //, SegmentType segmentType)
+	public ConfigSegment(String id, T defaultValue) //, SegmentType segmentType)
 	{
 		this.ID = id;
-		this.Title = Title;
 		//this.segmentType = segmentType;
 		this.value = defaultValue;
 		this.subSegments = new ArrayList<ConfigSegment>();
@@ -72,6 +70,8 @@ public abstract class ConfigSegment<T>
 	}
 	
 	public void onSubSegmentChanged(ConfigSegment segment){}
+	
+	public void onSegmentLoaded(int x, int y, int maxWidth) {}
 	
 	public void raiseChangedEvent()
 	{
@@ -119,6 +119,8 @@ public abstract class ConfigSegment<T>
 	{
 		return this.ID;
 	}
+	
+	public abstract boolean contains(String search);
 	
 	/*public SegmentType getSegmentType()
 	{

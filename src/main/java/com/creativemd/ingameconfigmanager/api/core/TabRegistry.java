@@ -10,8 +10,8 @@ public class TabRegistry {
 	
 	public static ModTab registerModTab(ModTab tab)
 	{
-		tabs.add(tab);
 		tab.setID(tabs.size());
+		tabs.add(tab);
 		return tab;
 	}
 	

@@ -16,17 +16,8 @@ public class ModTab extends Tab
 	{
 		super(modname, avatar);
 	}
-
-	//public ArrayList<SubTab> subTabs = new ArrayList<SubTab>();
-	public ArrayList<ConfigBranch> branches = new ArrayList<ConfigBranch>();
 	
-	/*public ModTab addSubTab(SubTab subTab)
-	{
-		if(!subTabs.contains(subTab))
-			subTabs.add(subTab);
-		else log.error("SubTab " + subTab.title + " is already added!");
-		return this;
-	}*/
+	public ArrayList<ConfigBranch> branches = new ArrayList<ConfigBranch>();
 	
 	public void addBranch(ConfigBranch branch)
 	{
@@ -37,9 +28,14 @@ public class ModTab extends Tab
 	private int id = -1;
 	
 	/**Should never be called by a modder!**/
-	public void setID(int id)//protected?
+	public void setID(int id)
 	{
-		if(this.id != -1)
+		if(this.id == -1)
 			this.id = id;
+	}
+	
+	public int getID()
+	{
+		return id;
 	}
 }

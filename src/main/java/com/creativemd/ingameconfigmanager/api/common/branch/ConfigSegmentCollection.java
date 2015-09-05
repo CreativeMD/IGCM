@@ -10,48 +10,36 @@ import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 
 public class ConfigSegmentCollection
 {
-	private HashMap<String, ConfigSegment>	TotalSegmentMap = new HashMap<String, ConfigSegment>();
+	private ArrayList<ConfigSegment> segments;
 	private Logger log = InGameConfigManager.logger;
 	
 	public ConfigSegmentCollection(ArrayList<ConfigSegment> segment)
 	{
-		for (int i = 0; i < segment.size(); i++) {
-			addNewConfigSegment(segment.get(i));
-		}
-	}
-	
-	public ConfigSegmentCollection addNewConfigSegment(ConfigSegment configSegment)
-	{
-		String id = configSegment.getID();
-		
-		if(this.TotalSegmentMap.containsValue(configSegment))
-			log.error("ConfigSegment " + id + "is already added!");
-		else if(this.TotalSegmentMap.containsKey(id))
-			log.error("id " + id + " already occupied!");
-		else
-		{
-			this.TotalSegmentMap.put(id, configSegment);
-		}
-		return this;
+		this.segments = segment;
 	}
 	
 	
 	/** Getters */
 	
-	public ConfigSegment getSegmentByID(String segmentName)
+	public ConfigSegment getSegmentByID(String segmentID)
 	{
-		return this.TotalSegmentMap.get(segmentName);
+		for (int i = 0; i < segments.size(); i++) {
+			if(segments.get(i).getID().equalsIgnoreCase(segmentID))
+				return segments.get(i);
+		}
+		return null;
 	}
 	
-	public Object getSegmentValue(String segmentName)
+	public Object getSegmentValue(String segmentID)
 	{
-		return this.TotalSegmentMap.get(segmentName).value;
+		ConfigSegment segment = getSegmentByID(segmentID);
+		if(segment != null)
+			return segment.value;
+		return null;
 	}
 	
-	/** used for internal methods only */
-	private HashMap getSegmentMap()
+	public ArrayList<ConfigSegment> asList()
 	{
-		return this.TotalSegmentMap;
+		return segments;
 	}
-
 }

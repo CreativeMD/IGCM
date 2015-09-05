@@ -49,6 +49,12 @@ public abstract class ConfigBranch{
 	@SideOnly(Side.CLIENT)
 	protected abstract Avatar getAvatar();
 	
+	@SideOnly(Side.CLIENT)
+	public boolean isSearchable()
+	{
+		return true;
+	}
+	
 	//Using Forge libs instead
 	//@SideOnly(Side.CLIENT)
 	///**Should return ALL segments for configuration which does only effect the client side (No synchronization)*/
@@ -88,5 +94,9 @@ public abstract class ConfigBranch{
 	
 	/**Gets called before the update packets are send, only use if the branch does need custom config handling*/
 	public void onPacketSend(boolean isServer, ConfigSegmentCollection collection) {}
+	
+	public void onBeforeReceived(boolean isServer) {}
+	
+	public void onFailedLoadingSegment(String id, String input) {}
 
 }
