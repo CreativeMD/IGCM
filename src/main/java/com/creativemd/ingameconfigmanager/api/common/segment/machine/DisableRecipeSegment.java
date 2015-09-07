@@ -27,7 +27,7 @@ public class DisableRecipeSegment extends RecipeSegment<Boolean>{
 	@Override
 	public void addSubSegments() {
 		addSubSegment(new GridSegment("grid", machine.fillGrid(recipe), machine).setOffset(30, 5));
-		addSubSegment(new GridSegment("result", machine.getOutput(recipe), machine).setOffset(90, 5+18));
+		addSubSegment(new GridSegment("result", machine.getOutput(recipe), machine).setOffset(90, 5+machine.getHeight()/2*18));
 	}
 	
 	@Override

@@ -77,7 +77,7 @@ public class ConfigMachineDisableBranch extends ConfigBranch{
 		for (int i = 0; i < collection.asList().size(); i++) {
 			if(collection.asList().get(i) instanceof DisableRecipeSegment)
 			{
-				if(!(boolean)collection.asList().get(i).value)
+				if(!(Boolean)collection.asList().get(i).value)
 					disabledRecipes.add(((DisableRecipeSegment)collection.asList().get(i)).recipe);
 				else
 					machine.addRecipeToList(((DisableRecipeSegment)collection.asList().get(i)).recipe);
@@ -86,7 +86,7 @@ public class ConfigMachineDisableBranch extends ConfigBranch{
 		if(!machine.sendingUpdate)
 		{
 			machine.sendingUpdate = true;
-			machine.addBranch.onRecieveFrom(isServer, collection);
+			machine.addBranch.onRecieveFrom(isServer, new ConfigSegmentCollection(machine.addBranch.getConfigSegments()));
 			machine.sendingUpdate = false;
 		}
 	}

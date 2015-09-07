@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import com.creativemd.creativecore.common.container.ContainerSub;
 import com.creativemd.creativecore.common.gui.GuiContainerSub;
+import com.creativemd.creativecore.common.gui.controls.GuiScrollBox;
 import com.creativemd.creativecore.common.packet.CreativeCorePacket;
 import com.creativemd.ingameconfigmanager.api.client.gui.SubGuiBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
@@ -58,6 +59,7 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		}
 		
 		buf.writeBoolean(segEnd == segments.size());
+		buf.writeBoolean(segStart == 0);
 		buf.writeInt(count);
 		
 		for (int i = segStart; i < segEnd; i++) {
@@ -76,10 +78,12 @@ public class BranchInformationPacket extends CreativeCorePacket{
 	public void readBytes(ByteBuf buf) {
 		branch = ConfigBranch.branches.get(buf.readInt());
 		finalPacket = buf.readBoolean();
+		boolean firstPacket = buf.readBoolean();
 		int count = buf.readInt();
 		
 		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
-		branch.onBeforeReceived(FMLCommonHandler.instance().getEffectiveSide().isServer());
+		if(firstPacket)
+			branch.onBeforeReceived(FMLCommonHandler.instance().getEffectiveSide().isServer());
 		collection = new ConfigSegmentCollection(branch.getConfigSegments());
 		
 		for (int i = 0; i < count; i++) {
@@ -118,7 +122,11 @@ public class BranchInformationPacket extends CreativeCorePacket{
 			{
 				SubGuiBranch gui = (SubGuiBranch) ((ContainerSub) player.openContainer).gui.getTopLayer();
 				if(gui.branch == branch)
+				{
+					int scrolled = ((GuiScrollBox) gui.getControl("scrollbox")).scrolled;
 					gui.createSegmentControls();
+					((GuiScrollBox) gui.getControl("scrollbox")).scrolled = scrolled;
+				}
 					//InGameConfigManager.openBranchGui(player, branch);
 			}
 		}

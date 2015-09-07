@@ -60,7 +60,7 @@ public class ConfigMachineAddBranch extends ConfigBranch{
 		if(!machine.sendingUpdate)
 		{
 			machine.sendingUpdate = true;
-			machine.disableBranch.onRecieveFrom(isServer, collection);
+			machine.disableBranch.onRecieveFrom(isServer, new ConfigSegmentCollection(machine.disableBranch.getConfigSegments()));
 			machine.sendingUpdate = false;
 		}
 		if(segments != null)

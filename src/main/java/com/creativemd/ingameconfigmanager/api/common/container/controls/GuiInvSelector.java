@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.creativemd.creativecore.client.avatar.Avatar;
@@ -43,7 +44,11 @@ public class GuiInvSelector extends GuiComboBox{
 	
 	public void addAndSelectStack(ItemStack stack)
 	{
-		lines.add(stack.getDisplayName());
+		try{
+			lines.add(stack.getDisplayName());
+		}catch(Exception e){
+			lines.add(Item.itemRegistry.getNameForObject(stack.getItem()));
+		}
 		stacks.add(stack);
 		caption = lines.get(lines.size()-1);
 	}

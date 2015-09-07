@@ -27,7 +27,7 @@ public class AddRecipeSegment extends RecipeSegment<Object>{
 	@Override
 	public void addSubSegments() {
 		addSubSegment(new InfoGridSegment("grid", value != null ? machine.fillGridInfo(value) : null, this));
-		addSubSegment(new OutputSegment("output", value != null ? machine.getOutput(value) : null, machine).setOffset(100, 18));
+		addSubSegment(new OutputSegment("output", value != null ? machine.getOutput(value) : null, machine).setOffset(100, machine.getHeight()/2*18));
 	}
 	
 	@Override

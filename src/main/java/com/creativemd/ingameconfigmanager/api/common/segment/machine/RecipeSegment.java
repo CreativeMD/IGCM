@@ -13,6 +13,7 @@ import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ic2.neiIntegration.core.MachineRecipeHandler;
 
 public abstract class RecipeSegment<T> extends ConfigSegment<T>{
 	
@@ -31,7 +32,7 @@ public abstract class RecipeSegment<T> extends ConfigSegment<T>{
 	@Override
 	public void onSegmentLoaded(int x, int y, int maxWidth)
 	{
-		machine.onControlsCreated(value, this instanceof AddRecipeSegment, x, y, maxWidth, guiControls, containerControls);
+		machine.onControlsCreated(!(value instanceof Boolean) ? value : recipe, this instanceof AddRecipeSegment, x, y, maxWidth, guiControls, containerControls);
 	}
 
 	@Override

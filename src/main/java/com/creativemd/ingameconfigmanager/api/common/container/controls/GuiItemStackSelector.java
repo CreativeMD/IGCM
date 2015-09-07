@@ -29,16 +29,18 @@ public class GuiItemStackSelector extends GuiComboBoxExtension{
 	
 	//public GuiInvSelectorExtension extension;
 	public ArrayList<ItemStack> stacks;
+	public ArrayList<ItemStack> inv;
 	
 	public GuiItemStackSelector(String name, EntityPlayer player, int x, int y, int width, int height, GuiComboBox comboBox) {
 		super(name, player, comboBox, x, y, width, height, new ArrayList<String>());
 		//this.extension = extension;
 		
 		stacks = new ArrayList<ItemStack>();
+		inv = new ArrayList<ItemStack>();
 		
 		for (int i = 0; i < player.inventory.mainInventory.length; i++) {
 			if(player.inventory.mainInventory[i] != null)
-				stacks.add(player.inventory.mainInventory[i]);
+				inv.add(player.inventory.mainInventory[i]);
 		}
 		//CreativeTabs.tabAllSearch.displayAllReleventItems(stacks);
 		Iterator iterator = Item.itemRegistry.iterator();
@@ -70,12 +72,34 @@ public class GuiItemStackSelector extends GuiComboBoxExtension{
 				label.height = 22;
 				addControl(label);
 			}*/
+			int height = 0;
+			GuiLabel label = new GuiLabel("Inventory", 3, height);
+			label.width = width-20;
+			label.height = 14;
+			addControl(label);
+			height += label.height;
+			
+			int SlotsPerRow = width/18;
+			for (int i = 0; i < inv.size(); i++) {
+				InventoryBasic basic = new InventoryBasic("", false, 1);
+				basic.setInventorySlotContents(0, inv.get(i));
+				
+				int row = i/SlotsPerRow;
+				addControl(new SlotControlNoSync(new SlotPreview(basic, 0, (i-row*SlotsPerRow)*18, height+row*18)));
+			}
+			height += Math.floor(inv.size()/SlotsPerRow+1)*18;
+			
+			label = new GuiLabel("Items", 3, height);
+			label.width = width-20;
+			label.height = 14;
+			addControl(label);
+			height += label.height;
+
 			for (int i = 0; i < stacks.size(); i++) {
 				InventoryBasic basic = new InventoryBasic("", false, 1);
 				basic.setInventorySlotContents(0, stacks.get(i));
-				int SlotsPerRow = width/18;
 				int row = i/SlotsPerRow;
-				addControl(new SlotControlNoSync(new SlotPreview(basic, 0, (i-row*SlotsPerRow)*18, row*18)));
+				addControl(new SlotControlNoSync(new SlotPreview(basic, 0, (i-row*SlotsPerRow)*18, height+row*18)));
 			}
 		}
 	}
