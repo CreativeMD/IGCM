@@ -47,13 +47,25 @@ public abstract class RecipeMachine<T>{
 	public abstract int getOutputCount();
 	
 	/**Add the recipe to the "main" list of the "real" machine/block/whatever.
-	 * Example: Workbench: Add it to the crafting list
+	 * Workbench: Add it to the crafting list
 	 */
 	public abstract void addRecipeToList(T recipe);
 	
+	/**Clear the "main" list of the "real" machine/block/whatever.
+	 * Workbench: Remove all existing crafting recipes
+	 */
 	public abstract void clearRecipeList();
 	
 	public abstract ItemStack[] getOutput(T recipe);
+	
+	/**To add extra information or configuration to a recipe**/
+	public void onControlsCreated(T recipe, boolean isAdded, int x, int y, int maxWidth, ArrayList<GuiControl> guiControls, ArrayList<ContainerControl> containerControls) {}
+	
+	/**Don't forget to set the offset of the segments**/
+	public ArrayList<ConfigSegment> getCustomSegments()
+	{
+		return new ArrayList<ConfigSegment>();
+	}
 	
 	//==================Disabled Recipes only==================
 	
@@ -65,18 +77,13 @@ public abstract class RecipeMachine<T>{
 	
 	public abstract StackInfo[] fillGridInfo(T recipe);
 	
-	/**Don't forget to set the offset of the segments**/
-	public ArrayList<ConfigSegment> getCustomSegments()
-	{
-		return new ArrayList<ConfigSegment>();
-	}
-	
+	/**Save extra information into the nbt tag**/
 	public void onBeforeSave(T recipe, NBTTagCompound nbt) {}
 	
-	public void onControlsCreated(T recipe, boolean isAdded, int x, int y, int maxWidth, ArrayList<GuiControl> guiControls, ArrayList<ContainerControl> containerControls) {}
-	
+	/**Parse extra information into the nbt tag**/
 	public void parseExtraInfo(NBTTagCompound nbt, AddRecipeSegment segment, ArrayList<GuiControl> guiControls, ArrayList<ContainerControl> containerControls) {}
 	
+	/**Parse a recipe having input, output and your nbt tag**/
 	public abstract T parseRecipe(StackInfo[] input, ItemStack[] output, NBTTagCompound nbt);
 	
 	//==================Decoration==================
