@@ -11,8 +11,8 @@ import com.creativemd.ingameconfigmanager.mod.workbench.WorkbenchMachine;
 
 public class ConfigManagerModLoader {
 	
-	public static ModTab WorkBenchTab = new ModTab("Crafting Table", new AvatarItemStack(new ItemStack(Blocks.crafting_table)));
-	public static ModTab FurnaceTab = new ModTab("Furnace", new AvatarItemStack(new ItemStack(Blocks.furnace)));
+	public static ModTab WorkBenchTab = new ModTab("Crafting Table", new ItemStack(Blocks.crafting_table));
+	public static ModTab FurnaceTab = new ModTab("Furnace", new ItemStack(Blocks.furnace));
 	public static WorkbenchMachine workbench;
 	public static FurnaceMachine furnace;
 	

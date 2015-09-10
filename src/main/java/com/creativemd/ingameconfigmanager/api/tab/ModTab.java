@@ -8,13 +8,15 @@ import com.creativemd.creativecore.client.avatar.Avatar;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 
+import net.minecraft.item.ItemStack;
+
 public class ModTab extends Tab
 {
 	private Logger log = InGameConfigManager.logger;
 	
-	public ModTab(String modname, Avatar avatar)
+	public ModTab(String modname, ItemStack stack)
 	{
-		super(modname, avatar);
+		super(modname, stack);
 	}
 	
 	public ArrayList<ConfigBranch> branches = new ArrayList<ConfigBranch>();

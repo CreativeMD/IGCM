@@ -24,6 +24,8 @@ import com.creativemd.ingameconfigmanager.api.common.machine.RecipeMachine;
 import com.creativemd.ingameconfigmanager.api.common.segment.machine.AddRecipeSegment;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -157,6 +159,7 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public Avatar getAvatar() {
 		return new AvatarItemStack(new ItemStack(Blocks.furnace));
 	}
