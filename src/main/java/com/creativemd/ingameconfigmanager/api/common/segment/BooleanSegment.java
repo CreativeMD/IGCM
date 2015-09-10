@@ -39,8 +39,8 @@ public class BooleanSegment extends TitleSegment<Boolean>{
 	}
 
 	@Override
-	public String createPacketInformation() {
-		if(guiControls != null && guiControls.size() == 2)
+	public String createPacketInformation(boolean isServer) {
+		if(!isServer && guiControls != null && guiControls.size() == 2)
 			value = Boolean.parseBoolean(((GuiButton)guiControls.get(1)).caption);
 		return value.toString();
 	}

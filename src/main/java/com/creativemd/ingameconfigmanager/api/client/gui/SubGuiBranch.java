@@ -25,6 +25,7 @@ import com.creativemd.creativecore.common.utils.stack.StackInfoMaterial;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.container.controls.InfoSlotControl;
 import com.creativemd.ingameconfigmanager.api.common.packets.BranchInformationPacket;
+import com.creativemd.ingameconfigmanager.api.common.packets.RequestInformationPacket;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
 import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
@@ -100,7 +101,8 @@ public class SubGuiBranch extends SubGui{
 		{
 			if(event.source.is("Cancel"))
 			{
-				InGameConfigManager.loadConfig(branch);
+				PacketHandler.sendPacketToServer(new RequestInformationPacket(branch));
+				//InGameConfigManager.loadConfig(branch);
 				if(branch.tab.branches.size() > 1)
 					InGameConfigManager.openModOverviewGui(container.player, branch.tab.getID());
 				else if(branch.tab.branches.size() == 1)
@@ -176,7 +178,7 @@ public class SubGuiBranch extends SubGui{
 			search = ((GuiTextfield)event.source).text.toLowerCase();
 			ArrayList<ConfigSegment> segments = branch.getConfigSegments();
 			for (int i = 0; i < segments.size(); i++) {
-				segments.get(i).createPacketInformation();
+				segments.get(i).createPacketInformation(false);
 			}
 			createSegmentControls();
 		}

@@ -39,8 +39,8 @@ public class DisableRecipeSegment extends RecipeSegment<Boolean>{
 	}
 
 	@Override
-	public String createPacketInformation() {
-		if(guiControls != null)
+	public String createPacketInformation(boolean isServer) {
+		if(!isServer && guiControls != null)
 			for (int i = 0; i < guiControls.size(); i++)
 				if(guiControls.get(i) instanceof GuiButton)
 					value = ((GuiButton)guiControls.get(i)).caption.equals("Enabled");

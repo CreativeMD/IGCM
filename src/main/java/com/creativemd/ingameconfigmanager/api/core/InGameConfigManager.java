@@ -25,6 +25,7 @@ import com.creativemd.ingameconfigmanager.api.common.command.CommandGUI;
 import com.creativemd.ingameconfigmanager.api.common.event.ConfigEventHandler;
 import com.creativemd.ingameconfigmanager.api.common.packets.BranchInformationPacket;
 import com.creativemd.ingameconfigmanager.api.common.packets.ConfigGuiPacket;
+import com.creativemd.ingameconfigmanager.api.common.packets.RequestInformationPacket;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
 import com.creativemd.ingameconfigmanager.api.tab.SubTab;
@@ -132,7 +133,7 @@ public class InGameConfigManager {
 		ConfigSegmentCollection collection = new ConfigSegmentCollection(segments);
 		branch.onPacketSend(FMLCommonHandler.instance().getEffectiveSide().isServer(), collection);
 		for (int i = 0; i < segments.size(); i++) {
-			String input = segments.get(i).createPacketInformation();
+			String input = segments.get(i).createPacketInformation(FMLCommonHandler.instance().getEffectiveSide().isServer());
 			if(input != null)
 			{
 				currentProfile.get(getCat(branch), segments.get(i).getID().toLowerCase(), "").set(input);
@@ -162,6 +163,7 @@ public class InGameConfigManager {
 		
 		CreativeCorePacket.registerPacket(BranchInformationPacket.class, "IGCMBranch");
 		CreativeCorePacket.registerPacket(ConfigGuiPacket.class, "IGCMGUI");
+		CreativeCorePacket.registerPacket(RequestInformationPacket.class, "IGCMRequest");
 		
 		coreConfig = new Configuration(event.getSuggestedConfigurationFile());
 		coreConfig.load();

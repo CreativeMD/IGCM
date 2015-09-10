@@ -101,7 +101,7 @@ public abstract class ConfigSegment<T>
 	@SideOnly(Side.CLIENT)
 	public abstract ArrayList<GuiControl> createGuiControls(SubGui gui, int x, int y, int maxWidth);
 	
-	public abstract String createPacketInformation();
+	public abstract String createPacketInformation(boolean isServer);
 	
 	public abstract void receivePacketInformation(String input);
 	

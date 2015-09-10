@@ -54,8 +54,8 @@ public class SelectSegment extends TitleSegment<String>{
 	}
 	
 	@Override
-	public String createPacketInformation() {
-		if(guiControls != null && guiControls.size() == 2)
+	public String createPacketInformation(boolean isServer) {
+		if(!isServer && guiControls != null && guiControls.size() == 2)
 			value = ((GuiComboBox)guiControls.get(1)).caption;
 		return value;
 	}

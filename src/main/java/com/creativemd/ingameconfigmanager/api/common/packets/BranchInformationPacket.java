@@ -54,7 +54,7 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		int count = 0;
 		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
 		for (int i = segStart; i < segEnd; i++) {
-			if(segments.get(i).createPacketInformation() != null)
+			if(segments.get(i).createPacketInformation(FMLCommonHandler.instance().getEffectiveSide().isServer()) != null)
 				count++;
 		}
 		
@@ -63,7 +63,7 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		buf.writeInt(count);
 		
 		for (int i = segStart; i < segEnd; i++) {
-			String input = segments.get(i).createPacketInformation();
+			String input = segments.get(i).createPacketInformation(FMLCommonHandler.instance().getEffectiveSide().isServer());
 			if(input != null)
 			{
 				writeString(buf, segments.get(i).getID());

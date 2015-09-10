@@ -48,11 +48,11 @@ public class AddRecipeSegment extends RecipeSegment<Object>{
 	}
 
 	@Override
-	public String createPacketInformation() {
-		if(guiControls != null)
+	public String createPacketInformation(boolean isServer) {
+		if(!isServer && guiControls != null)
 		{
 			for (int i = 0; i < subSegments.size(); i++) {
-				subSegments.get(i).createPacketInformation();
+				subSegments.get(i).createPacketInformation(isServer);
 			}
 			NBTTagCompound nbt = new NBTTagCompound();
 			machine.parseExtraInfo(nbt, this, guiControls, containerControls);
@@ -88,7 +88,7 @@ public class AddRecipeSegment extends RecipeSegment<Object>{
 
 	@Override
 	public boolean contains(String search) {
-		return createPacketInformation().toLowerCase().contains(search);
+		return createPacketInformation(false).toLowerCase().contains(search);
 	}
 
 }

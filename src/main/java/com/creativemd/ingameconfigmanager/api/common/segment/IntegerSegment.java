@@ -46,8 +46,8 @@ public class IntegerSegment extends TitleSegment<Integer>{
 	}
 
 	@Override
-	public String createPacketInformation() {
-		if(guiControls != null && guiControls.size() == 2)
+	public String createPacketInformation(boolean isServer) {
+		if(!isServer && guiControls != null && guiControls.size() == 2)
 		{
 			int valueBefore = value;
 			try{

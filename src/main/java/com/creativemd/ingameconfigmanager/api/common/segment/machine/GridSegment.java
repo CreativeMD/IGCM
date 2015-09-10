@@ -50,7 +50,7 @@ public class GridSegment extends ConfigSegment<ItemStack[]>{
 	}
 
 	@Override
-	public String createPacketInformation() {
+	public String createPacketInformation(boolean isServer) {
 		return "null";
 	}
 

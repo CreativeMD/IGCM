@@ -57,8 +57,8 @@ public class OutputSegment extends ConfigSegment<ItemStack[]>{
 	}
 
 	@Override
-	public String createPacketInformation() {
-		if(containerControls.size() > 0)
+	public String createPacketInformation(boolean isServer) {
+		if(!isServer && containerControls.size() > 0)
 		{
 			for (int i = 0; i < value.length; i++) {
 				value[i] = ((SlotControl)containerControls.get(i)).slot.getStack();

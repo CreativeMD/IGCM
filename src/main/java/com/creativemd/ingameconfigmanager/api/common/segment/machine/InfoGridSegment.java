@@ -54,8 +54,8 @@ public class InfoGridSegment extends ConfigSegment<StackInfo[]>{
 	}
 
 	@Override
-	public String createPacketInformation() {
-		if(containerControls.size() == value.length)
+	public String createPacketInformation(boolean isServer) {
+		if(!isServer && containerControls.size() == value.length)
 		{
 			for (int i = 0; i < value.length; i++) {
 				value[i] = ((InfoSlotControl) containerControls.get(i)).info;
