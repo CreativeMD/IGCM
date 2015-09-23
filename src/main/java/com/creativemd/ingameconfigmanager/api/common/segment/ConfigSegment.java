@@ -73,10 +73,10 @@ public abstract class ConfigSegment<T>
 	
 	public void onSegmentLoaded(int x, int y, int maxWidth) {}
 	
-	public void raiseChangedEvent()
+	/*public void raiseChangedEvent()
 	{
-		//TODO Add something here
-	}
+	
+	}*/
 	
 	@SideOnly(Side.CLIENT)
 	public int getHeight()
