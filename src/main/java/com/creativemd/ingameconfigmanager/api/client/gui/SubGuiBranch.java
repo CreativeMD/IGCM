@@ -39,6 +39,11 @@ public class SubGuiBranch extends SubGui{
 		this.branch = branch;
 	}
 	
+	public static final int loadPerTick = 20;
+	public int index;
+	public int height;
+	public ArrayList<ConfigSegment> segments;
+	
 	public String search = "";
 	
 	public void createSegmentControls()
@@ -50,7 +55,12 @@ public class SubGuiBranch extends SubGui{
 		box.maxScroll = 0;
 		box.scrolled = 0;
 		
-		int height = 5;
+		this.segments = new ArrayList<ConfigSegment>(segments);
+		height = 5;
+		index = 0;
+		onTick();
+		
+		/*int height = 5;
 		for (int i = 0; i < segments.size(); i++) {
 			boolean visible = true;
 			if(!search.equals(""))
@@ -78,7 +88,59 @@ public class SubGuiBranch extends SubGui{
 			}
 			//box.addControl(new GuiAvatarButton(tab.branches.get(i).name, 5, 5+i*20, 155, 20, i, tab.branches.get(i).avatar));
 		}
-		box.maxScroll += 5;
+		box.maxScroll += 5;*/
+	}
+	
+	@Override
+	public void onTick()
+	{
+		if(segments != null)
+		{
+			GuiScrollBox box = (GuiScrollBox) getControl("scrollbox");
+			int count = 0;
+			int countLoaded = 0;
+			for (int i = index; i < segments.size() && countLoaded < loadPerTick; i++) {
+				boolean visible = true;
+				if(!search.equals(""))
+					visible = segments.get(i).contains(search);
+				if(visible)
+				{
+					ArrayList<GuiControl> guiControls = segments.get(i).createGuiControls(this, 0, height, 220);
+					ArrayList<ContainerControl> containerControls = segments.get(i).createContainerControls(box.container, 0, height, 220);
+					
+					segments.get(i).guiControls = guiControls;
+					segments.get(i).containerControls = containerControls;
+					
+					segments.get(i).onSegmentLoaded(0, height, 220);
+					
+					for (int j = 0; j < guiControls.size(); j++) {
+						box.addControl(guiControls.get(j));
+					}
+					for (int j = 0; j < containerControls.size(); j++) {
+						box.addControl(containerControls.get(j));
+						guiControls.add(box.gui.controls.get(box.gui.controls.size()-1));
+					}
+					
+					
+					height = segments.get(i).getHeight()+5;
+					
+					countLoaded++;
+				}
+				
+				count++;
+				//box.addControl(new GuiAvatarButton(tab.branches.get(i).name, 5, 5+i*20, 155, 20, i, tab.branches.get(i).avatar));
+			}
+			
+			index += count;
+			if(index == segments.size()-1)
+			{
+				box.maxScroll += 5;
+				
+				segments = null;
+				index = 0;
+			}
+		}
+		
 	}
 
 	@Override

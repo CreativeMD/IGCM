@@ -3,6 +3,7 @@ package com.creativemd.ingameconfigmanager.api.common.branch.machine;
 import java.util.ArrayList;
 
 import com.creativemd.creativecore.client.avatar.Avatar;
+import com.creativemd.creativecore.client.avatar.AvatarItemStack;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
 import com.creativemd.ingameconfigmanager.api.common.machine.RecipeMachine;
@@ -31,7 +32,7 @@ public class ConfigMachineAddBranch extends ConfigBranch{
 	@SideOnly(Side.CLIENT)
 	protected Avatar getAvatar() {
 		if(machine != null)
-			return machine.getAvatar();
+			return new AvatarItemStack(machine.getAvatar());
 		return null;
 	}
 
@@ -59,9 +60,14 @@ public class ConfigMachineAddBranch extends ConfigBranch{
 	public void onRecieveFrom(boolean isServer, ConfigSegmentCollection collection) {
 		if(!machine.sendingUpdate)
 		{
-			machine.sendingUpdate = true;
-			machine.disableBranch.onRecieveFrom(isServer, new ConfigSegmentCollection(machine.disableBranch.getConfigSegments()));
-			machine.sendingUpdate = false;
+			if(machine.hasDisableBranch())
+			{
+				machine.sendingUpdate = true;
+				machine.disableBranch.onRecieveFrom(isServer, new ConfigSegmentCollection(machine.disableBranch.getConfigSegments()));
+				machine.sendingUpdate = false;
+			}else{
+				machine.clearRecipeList();
+			}
 		}
 		if(segments != null)
 		{

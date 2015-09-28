@@ -47,8 +47,8 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Avatar getAvatar() {
-		return new AvatarItemStack(new ItemStack(Blocks.crafting_table));
+	public ItemStack getAvatar() {
+		return new ItemStack(Blocks.crafting_table);
 	}
 
 	@Override
@@ -86,9 +86,8 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 		return new ItemStack[]{recipe.getRecipeOutput()};
 	}
 	
-	public ItemStack[] getInput(Object[] items, int size, int cols)
+	public void getInput(ItemStack[] grid, Object[] items, int size, int cols)
 	{
-		ItemStack[] result = new ItemStack[9];
 		if(cols == 0)
 		{
 			switch(size)
@@ -118,10 +117,9 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 			int index = row*3 + zahl - row*cols;
 			if(items.length > zahl && index < 9 && index > -1)
 			{
-				result[index] = getItemStack(items[zahl]);
+				grid[index] = getItemStack(items[zahl]);
 			}
 		}
-		return result;
 	}
 	
 	public ItemStack getItemStack(Object object)
@@ -157,50 +155,47 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 	}
 
 	@Override
-	public ItemStack[] fillGrid(IRecipe recipe) {
+	public void fillGrid(ItemStack[] grid, IRecipe recipe) {
 		if(recipe instanceof IRecipeInfo)
 		{
-			return getInput(((IRecipeInfo) recipe).getInput(), recipe.getRecipeSize(), ((IRecipeInfo) recipe).getWidth());
+			getInput(grid, ((IRecipeInfo) recipe).getInput(), recipe.getRecipeSize(), ((IRecipeInfo) recipe).getWidth());
 		}
 		else if(recipe instanceof ShapedRecipes)
 		{
 			ShapedRecipes newrecipe = (ShapedRecipes) recipe;
-			return getInput(newrecipe.recipeItems, newrecipe.getRecipeSize(), newrecipe.recipeWidth);
+			getInput(grid, newrecipe.recipeItems, newrecipe.getRecipeSize(), newrecipe.recipeWidth);
 		}
 		else if(recipe instanceof ShapelessOreRecipe)
 		{
 			ShapelessOreRecipe newrecipe = (ShapelessOreRecipe) recipe;
-			return getInput(newrecipe.getInput().toArray(), 9, 0);
+			getInput(grid, newrecipe.getInput().toArray(), 9, 0);
 		}	
 		else if(recipe instanceof ShapelessRecipes)
 		{
 			ShapelessRecipes newrecipe = (ShapelessRecipes) recipe;
-			return getInput(newrecipe.recipeItems.toArray(), 9, 0);
+			getInput(grid, newrecipe.recipeItems.toArray(), 9, 0);
 		}
 		else if(recipe instanceof ShapedOreRecipe)
 		{
 			ShapedOreRecipe newrecipe = (ShapedOreRecipe) recipe;
-			return getInput(newrecipe.getInput(), 9, 0);
+			getInput(grid, newrecipe.getInput(), 9, 0);
 		}
-		return new ItemStack[9];
 	}
 
 	@Override
-	public StackInfo[] fillGridInfo(IRecipe recipe) {
-		StackInfo[] info = new StackInfo[9];
+	public void fillGridInfo(StackInfo[] grid, IRecipe recipe) {
 		if(recipe instanceof BetterShapedRecipe)
 		{
 			for (int i = 0; i < ((BetterShapedRecipe) recipe).info.length; i++) {
 				int row = i/((BetterShapedRecipe) recipe).getWidth();
 				int index = row*3+(i-row*((BetterShapedRecipe) recipe).getWidth());
-				info[index] = ((BetterShapedRecipe) recipe).info[i];
+				grid[index] = ((BetterShapedRecipe) recipe).info[i];
 			}
 		}else if (recipe instanceof BetterShapelessRecipe){
 			for (int i = 0; i < ((BetterShapelessRecipe) recipe).info.size(); i++) {
-				info[i] = ((BetterShapelessRecipe) recipe).info.get(i);
+				grid[i] = ((BetterShapelessRecipe) recipe).info.get(i);
 			}
 		}
-		return info;
 	}
 	
 	@Override
@@ -230,40 +225,13 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 	}
 
 	@Override
-	public IRecipe parseRecipe(StackInfo[] input, ItemStack[] output, NBTTagCompound nbt) {
+	public IRecipe parseRecipe(StackInfo[] input, ItemStack[] output, NBTTagCompound nbt, int width, int height) {
 		if(output.length == 1 && output[0] != null)
 		{
 			ItemStack result = output[0];
 			if(nbt.getBoolean("shaped"))
 			{
-				int startX = 2;
-				int endX = 0;
-				int startY = 2;
-				int endY = 0;
-				boolean found = false;
-				for (int x = 0; x < 3; x++) {
-					for (int y = 0; y < 3; y++) {
-						if(input[x+y*3] != null)
-						{
-							startX = Math.min(startX, x);
-							endX = Math.max(endX, x);
-							startY = Math.min(startY, y);
-							endY = Math.max(endY, y);
-							found = true;
-						}
-					}
-				}
-				if(found)
-				{
-					int width = endX-startX+1;
-					int height = endY-startY+1;
-					StackInfo[] info = new StackInfo[width * height];
-					for (int i = 0; i < info.length; i++) {
-						int rows = i/width;
-						info[i] = input[startX+(startY+rows)*3+(i-rows*width)];
-					}
-					return new BetterShapedRecipe(width, info, result);
-				}	
+				return new BetterShapedRecipe(width, input, result);
 			}else{
 				ArrayList<StackInfo> info = new ArrayList<StackInfo>();
 				for (int i = 0; i < input.length; i++) {

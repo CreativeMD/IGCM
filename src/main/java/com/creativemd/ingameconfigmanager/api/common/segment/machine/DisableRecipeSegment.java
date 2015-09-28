@@ -2,7 +2,10 @@ package com.creativemd.ingameconfigmanager.api.common.segment.machine;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import com.creativemd.creativecore.common.container.SubContainer;
@@ -26,7 +29,9 @@ public class DisableRecipeSegment extends RecipeSegment<Boolean>{
 
 	@Override
 	public void addSubSegments() {
-		addSubSegment(new GridSegment("grid", machine.fillGrid(recipe), machine).setOffset(30, 5));
+		ItemStack[] items = new ItemStack[machine.getWidth()*machine.getHeight()];
+		machine.fillGrid(items, recipe);
+		addSubSegment(new GridSegment("grid", items, machine).setOffset(30, 5));
 		addSubSegment(new GridSegment("result", machine.getOutput(recipe), machine).setOffset(90, 5+machine.getHeight()/2*18));
 	}
 	
@@ -56,6 +61,18 @@ public class DisableRecipeSegment extends RecipeSegment<Boolean>{
 	
 	@Override
 	public boolean contains(String search) {
+		ItemStack[] items = new ItemStack[machine.getWidth()*machine.getHeight()];
+		machine.fillGrid(items, recipe);
+		for (int i = 0; i < items.length; i++) {
+			if(items[i] != null)
+				if(items[i].getItem() instanceof ItemBlock)
+					if(Block.blockRegistry.getNameForObject(Block.getBlockFromItem(items[i].getItem())).toLowerCase().contains(search))
+						return true;
+				else
+					if(Item.itemRegistry.getNameForObject(items[i].getItem()).toLowerCase().contains(search))
+						return true;
+		}
+		
 		if(getID().toLowerCase().contains(search))
 			return true;
 		if(value)

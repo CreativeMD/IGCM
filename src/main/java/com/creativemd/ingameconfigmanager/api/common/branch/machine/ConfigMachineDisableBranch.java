@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 
 import com.creativemd.creativecore.client.avatar.Avatar;
+import com.creativemd.creativecore.client.avatar.AvatarItemStack;
 import com.creativemd.creativecore.common.utils.string.StringUtils;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
@@ -32,7 +33,7 @@ public class ConfigMachineDisableBranch extends ConfigBranch{
 	@SideOnly(Side.CLIENT)
 	protected Avatar getAvatar() {
 		if(machine != null)
-			return machine.getAvatar();
+			return new AvatarItemStack(machine.getAvatar());
 		return null;
 	}
 
@@ -51,7 +52,8 @@ public class ConfigMachineDisableBranch extends ConfigBranch{
 	
 	public String recipeToString(Object recipe)
 	{
-		ItemStack[] input = machine.fillGrid(recipe);
+		ItemStack[] input = new ItemStack[machine.getHeight()*machine.getWidth()];
+		machine.fillGrid(input, recipe);
 		ItemStack[] output = machine.getOutput(recipe);
 		return StringUtils.ObjectsToString(input, output);
 	}
@@ -83,7 +85,7 @@ public class ConfigMachineDisableBranch extends ConfigBranch{
 					machine.addRecipeToList(((DisableRecipeSegment)collection.asList().get(i)).recipe);
 			}
 		}
-		if(!machine.sendingUpdate)
+		if(!machine.sendingUpdate && machine.hasAddedBranch())
 		{
 			machine.sendingUpdate = true;
 			machine.addBranch.onRecieveFrom(isServer, new ConfigSegmentCollection(machine.addBranch.getConfigSegments()));

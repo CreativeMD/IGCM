@@ -11,6 +11,7 @@ import com.creativemd.creativecore.common.gui.controls.GuiLabel;
 import com.creativemd.creativecore.common.gui.controls.GuiStateButton;
 import com.creativemd.creativecore.common.gui.controls.GuiTextfield;
 import com.creativemd.creativecore.common.recipe.BetterShapedRecipe;
+import com.creativemd.creativecore.common.recipe.GridRecipe;
 import com.creativemd.creativecore.common.recipe.Recipe;
 import com.creativemd.creativecore.common.recipe.entry.BetterShapelessRecipe;
 import com.creativemd.creativecore.common.utils.stack.StackInfo;
@@ -139,29 +140,26 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 	}
 
 	@Override
-	public ItemStack[] fillGrid(FurnaceRecipe recipe) {
-		ItemStack[] stack = new ItemStack[1];
+	public void fillGrid(ItemStack[] grid, FurnaceRecipe recipe) {
 		if(recipe.input[0] != null)
-			stack[0] = recipe.input[0].getItemStack();
-		return stack;
+			grid[0] = recipe.input[0].getItemStack();
 	}
 
 	@Override
-	public StackInfo[] fillGridInfo(FurnaceRecipe recipe) {
-		return recipe.input.clone();
+	public void fillGridInfo(StackInfo[] grid, FurnaceRecipe recipe) {
+		grid[0] = recipe.input[0];
 	}
 
 	@Override
-	public FurnaceRecipe parseRecipe(StackInfo[] input, ItemStack[] output, NBTTagCompound nbt) {
+	public FurnaceRecipe parseRecipe(StackInfo[] input, ItemStack[] output, NBTTagCompound nbt, int width, int height) {
 		if(input.length == 1 && input[0] != null && output.length == 1 && output[0] != null)
 			return new FurnaceRecipe(output[0], input[0], nbt.getFloat("exp"));
 		return null;
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public Avatar getAvatar() {
-		return new AvatarItemStack(new ItemStack(Blocks.furnace));
+	public ItemStack getAvatar() {
+		return new ItemStack(Blocks.furnace);
 	}
 	
 	@Override

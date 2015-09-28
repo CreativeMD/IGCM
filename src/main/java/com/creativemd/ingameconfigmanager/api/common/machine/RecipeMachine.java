@@ -34,11 +34,27 @@ public abstract class RecipeMachine<T>{
 	{
 		super();
 		this.name = name;
-		disableBranch = new ConfigMachineDisableBranch(this, name + " Disable");
-		addBranch = new ConfigMachineAddBranch(this, name + " Add");
+		if(hasDisableBranch())
+		{
+			disableBranch = new ConfigMachineDisableBranch(this, name + " Disable");
+			tab.addBranch(disableBranch);
+		}
 		
-		tab.addBranch(disableBranch);
-		tab.addBranch(addBranch);
+		if(hasAddedBranch())
+		{
+			addBranch = new ConfigMachineAddBranch(this, name + " Add");
+			tab.addBranch(addBranch);
+		}
+	}
+	
+	public boolean hasDisableBranch()
+	{
+		return true;
+	}
+	
+	public boolean hasAddedBranch()
+	{
+		return true;
 	}
 	
 	public abstract int getWidth();
@@ -71,11 +87,11 @@ public abstract class RecipeMachine<T>{
 	
 	public abstract ArrayList<T> getAllExitingRecipes();
 	
-	public abstract ItemStack[] fillGrid(T recipe);
+	public abstract void fillGrid(ItemStack[] grid, T recipe);
 	
 	//==================Added Recipes only==================
 	
-	public abstract StackInfo[] fillGridInfo(T recipe);
+	public abstract void fillGridInfo(StackInfo[] grid, T recipe);
 	
 	/**Save extra information into the nbt tag**/
 	public void onBeforeSave(T recipe, NBTTagCompound nbt) {}
@@ -84,11 +100,10 @@ public abstract class RecipeMachine<T>{
 	public void parseExtraInfo(NBTTagCompound nbt, AddRecipeSegment segment, ArrayList<GuiControl> guiControls, ArrayList<ContainerControl> containerControls) {}
 	
 	/**Parse a recipe having input, output and your nbt tag**/
-	public abstract T parseRecipe(StackInfo[] input, ItemStack[] output, NBTTagCompound nbt);
+	public abstract T parseRecipe(StackInfo[] input, ItemStack[] output, NBTTagCompound nbt, int width, int height);
 	
 	//==================Decoration==================
 	
-	@SideOnly(Side.CLIENT)
-	public abstract Avatar getAvatar();
+	public abstract ItemStack getAvatar();
 	
 }

@@ -5,8 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -30,6 +34,8 @@ import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
 import com.creativemd.ingameconfigmanager.api.tab.SubTab;
 import com.creativemd.ingameconfigmanager.mod.ConfigManagerModLoader;
+import com.creativemd.ingameconfigmanager.mod.block.BlockAdvancedWorkbench;
+import com.creativemd.ingameconfigmanager.mod.general.GeneralBranch;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -38,6 +44,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = InGameConfigManager.modid, version = InGameConfigManager.version, name = "InGameConfigManager")
 public class InGameConfigManager { 
@@ -45,21 +52,23 @@ public class InGameConfigManager {
 	public static Logger logger = LogManager.getLogger(InGameConfigManager.modid);
 	
 	public static final String modid = "ingameconfigmanager";
-	
-	public static final String version = "1.0.0";
+	public static final String version = "0.1";
 	
 	public static ConfigEventHandler eventHandler = new ConfigEventHandler();
 	
 	public static int maxSegments = 10;
 	
 	public static Configuration coreConfig;
-	
 	public static Configuration currentProfile;
-	
 	public static File ModConfigurationDirectory;
 	
 	public static String profileName;
 	public static ArrayList<String> profiles;
+	
+	public static boolean overrideWorkbench = false;
+	public static Block advancedWorkbench = new BlockAdvancedWorkbench().setBlockName("advancedWorkbench").setCreativeTab(CreativeTabs.tabDecorations);
+	
+	
 	
 	/**Used for loading configs on startup and changing profile**/
 	public static void loadConfig()
@@ -184,6 +193,8 @@ public class InGameConfigManager {
 	public static void Init(FMLInitializationEvent event)
 	{
 		ConfigManagerModLoader.loadMod();
+		
+		GameRegistry.registerBlock(advancedWorkbench, "advancedWorkbench");
 	}
 	
 	@EventHandler
