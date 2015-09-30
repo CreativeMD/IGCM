@@ -2,6 +2,7 @@ package com.creativemd.ingameconfigmanager.api.client.gui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Stack;
 
 import javax.vecmath.Vector4d;
 
@@ -32,15 +33,18 @@ import com.creativemd.creativecore.common.utils.stack.StackInfoItemStack;
 import com.creativemd.creativecore.common.utils.stack.StackInfoMaterial;
 import com.creativemd.creativecore.common.utils.stack.StackInfoOre;
 import com.creativemd.ingameconfigmanager.api.common.container.controls.GuiInvSelector;
+import com.creativemd.ingameconfigmanager.api.common.container.controls.GuiStackSelector;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
 public class SubGuiFullItemDialog extends SubGui{
+	
+	public static ArrayList<StackInfo> latest = new ArrayList<StackInfo>();
 	
 	public StackInfo info;
 	
 	public SubGuiFullItemDialog()
 	{
-		super(150, 150);
+		super(150, 175);
 	}
 
 	@Override
@@ -65,6 +69,7 @@ public class SubGuiFullItemDialog extends SubGui{
 		lines.add("Ore");
 		lines.add("Material");
 		lines.add("Fuel");
+		lines.add("Latest");
 		
 		GuiComboBox box = new GuiComboBox("type", 5, 5, 140, lines);
 		box.caption = selected;
@@ -76,12 +81,14 @@ public class SubGuiFullItemDialog extends SubGui{
 		case 0:
 			GuiInvSelector selector = new GuiInvSelector("inv", 5, 30, 140, container.player, false);
 			controls.add(selector);
-			controls.add(new GuiLabel("guilabel1", 5, 55));
-			controls.add(new GuiLabel("guilabel2", 5, 65));
+			controls.add(new GuiTextfield("search", "", 5, 55, 140, 20));
 			
-			GuiStateButton damage = new GuiStateButton("damage", 0, 5, 77, 70, 20, "Damage: Off", "Damage: On");
+			controls.add(new GuiLabel("guilabel1", 5, 80));
+			controls.add(new GuiLabel("guilabel2", 5, 90));
+			
+			GuiStateButton damage = new GuiStateButton("damage", 0, 5, 102, 70, 20, "Damage: Off", "Damage: On");
 			controls.add(damage);
-			GuiStateButton nbt = new GuiStateButton("nbt", 0, 85, 77, 60, 20, "NBT: Off", "NBT: On");
+			GuiStateButton nbt = new GuiStateButton("nbt", 0, 85, 102, 60, 20, "NBT: Off", "NBT: On");
 			controls.add(nbt);
 			
 			if(info instanceof StackInfoBlock || info instanceof StackInfoItem || info instanceof StackInfoItemStack)
@@ -113,17 +120,30 @@ public class SubGuiFullItemDialog extends SubGui{
 		case 3:
 			controls.add(new GuiLabel("Nothing to select", 5, 30));
 			break;
+		case 4:
+			selector = new GuiStackSelector("stack", 5, 30, 140, container.player, false);
+			selector.stacks.clear();
+			selector.lines.clear();
+			for (int i = 0; i < latest.size(); i++) {
+				selector.addAndSelectStack(latest.get(i).getItemStack());
+			}
+			if(selector.lines.size() > 0)
+				selector.caption = selector.lines.get(0);
+			else
+				selector.caption = "";
+			controls.add(selector);
+			break;
 		}
 		
-		controls.add(new GuiLabel("StackSize:", 5, 107));
-		GuiTextfield field = new GuiTextfield("stacksize", "1", 110, 102, 30, 20).setNumbersOnly();
+		controls.add(new GuiLabel("StackSize:", 5, 132));
+		GuiTextfield field = new GuiTextfield("stacksize", "1", 110, 127, 30, 20).setNumbersOnly();
 		if(info != null)
 			field.text = "" + info.stackSize;
 		controls.add(field);
 		
-		controls.add(new GuiButton("Cancel", 5, 125, 45, 20));
-		controls.add(new GuiButton("Remove", 52, 125, 45, 20));
-		controls.add(new GuiButton("Save", 100, 125, 45, 20));
+		controls.add(new GuiButton("Cancel", 5, 150, 45, 20));
+		controls.add(new GuiButton("Remove", 52, 150, 45, 20));
+		controls.add(new GuiButton("Save", 100, 150, 45, 20));
 	}
 	
 	@CustomEventSubscribe
@@ -175,10 +195,17 @@ public class SubGuiFullItemDialog extends SubGui{
 			case 3:
 				info = new StackInfoFuel(stacksize);
 				break;
+			case 4:
+				int stackIndex = ((GuiInvSelector)getControl("stack")).getIndex();
+				if(stackIndex >= 0 && stackIndex < latest.size())
+					info = latest.get(stackIndex).copy();
+				break;
 			}
 			if(info != null)
 			{
 				this.info = info;
+				if(!latest.contains(info))
+					latest.add(0, info.copy());
 				closeLayer(new NBTTagCompound());
 			}
 		}
@@ -215,24 +242,33 @@ public class SubGuiFullItemDialog extends SubGui{
 		}
 		if(event.source.is("search"))
 		{
-			String search = ((GuiTextfield)event.source).text;
-			String[] oreNames = OreDictionary.getOreNames();
-			ArrayList<String> ores = new ArrayList<String>();
-			for (int i = 0; i < oreNames.length; i++) {
-				if(oreNames[i].toLowerCase().contains(search.toLowerCase()))
-					ores.add(oreNames[i]);
-			}
-			GuiComboBox comboBox = (GuiComboBox) getControl("ore");
-			if(comboBox != null)
+			int index = ((GuiComboBox)controls.get(0)).lines.indexOf(((GuiComboBox)controls.get(0)).caption);
+			if(index == 1)
 			{
-				comboBox.lines = ores;
-				if(!ores.contains(comboBox.caption))
-				{
-					if(ores.size() > 0)
-						comboBox.caption = ores.get(0);
-					else
-						comboBox.caption = "";
+				String search = ((GuiTextfield)event.source).text;
+				String[] oreNames = OreDictionary.getOreNames();
+				ArrayList<String> ores = new ArrayList<String>();
+				for (int i = 0; i < oreNames.length; i++) {
+					if(oreNames[i].toLowerCase().contains(search.toLowerCase()))
+						ores.add(oreNames[i]);
 				}
+				GuiComboBox comboBox = (GuiComboBox) getControl("ore");
+				if(comboBox != null)
+				{
+					comboBox.lines = ores;
+					if(!ores.contains(comboBox.caption))
+					{
+						if(ores.size() > 0)
+							comboBox.caption = ores.get(0);
+						else
+							comboBox.caption = "";
+					}
+				}
+			}else if(index == 0){
+				GuiInvSelector inv = (GuiInvSelector) getControl("inv");
+				inv.search = ((GuiTextfield)event.source).text.toLowerCase();
+				inv.updateItems(container.player);
+				inv.closeBox();
 			}
 		}
 	}

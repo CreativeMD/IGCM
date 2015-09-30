@@ -1,6 +1,7 @@
 package com.creativemd.ingameconfigmanager.api.common.container.controls;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.vecmath.Vector4d;
 
@@ -9,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,18 +26,55 @@ public class GuiInvSelector extends GuiComboBox{
 	
 	public ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
 	
-	public GuiInvSelector(String name, int x, int y, int width, EntityPlayer player, boolean onlyBlocks) {
+	public boolean onlyBlocks;
+	public String search;
+	
+	public GuiInvSelector(String name, int x, int y, int width, EntityPlayer player, boolean onlyBlocks, String search) {
 		super(name, x, y, width, new ArrayList<String>());
+		this.search = search;
+		this.onlyBlocks = onlyBlocks;
+		updateItems(player);
+		
+	}
+	
+	public GuiInvSelector(String name, int x, int y, int width, EntityPlayer player, boolean onlyBlocks) {
+		
+		this(name, x, y, width, player, onlyBlocks, "");
+	}
+	
+	public void updateItems(EntityPlayer player)
+	{
+		boolean shouldSearch = search.equals("");
+		ArrayList<ItemStack> newStacks = new ArrayList<ItemStack>();
 		for (int i = 0; i < player.inventory.mainInventory.length; i++) {
 			if(player.inventory.mainInventory[i] != null)
 			{
-				if(!onlyBlocks || !(Block.getBlockFromItem(player.inventory.mainInventory[i].getItem()) instanceof BlockAir))
-				{
-					stacks.add(player.inventory.mainInventory[i]);
-					lines.add(player.inventory.mainInventory[i].getDisplayName());
-				}
+				newStacks.add(player.inventory.mainInventory[i]);
 			}
 		}
+		
+		Iterator iterator = Item.itemRegistry.iterator();
+		while (iterator.hasNext())
+        {
+            Item item = (Item)iterator.next();
+
+            if (item != null && item.getCreativeTab() != null)
+            {
+                item.getSubItems(item, (CreativeTabs)null, newStacks);
+            }
+        }
+		
+		stacks.clear();
+		lines.clear();
+		
+		for (int i = 0; i < newStacks.size(); i++) {
+			if(GuiItemStackSelector.shouldShowItem(onlyBlocks, search, newStacks.get(i)))
+			{
+				stacks.add(newStacks.get(i));
+				lines.add(GuiItemStackSelector.getItemName(newStacks.get(i)));
+			}
+		}
+		
 		if(lines.size() > 0)
 			caption = lines.get(0);
 		else
@@ -62,7 +101,7 @@ public class GuiInvSelector extends GuiComboBox{
 		RenderHelper2D.drawGradientRect(1, 1, this.width-1, this.height-1, color, color);
 		
 		int index = lines.indexOf(caption);
-		if(index != -1)
+		if(index != -1 && stacks.size() > index && stacks.get(index) != null)
 		{
 			Avatar avatar = new AvatarItemStack(stacks.get(index));
 			GL11.glTranslated(1, 1, 0);
@@ -74,7 +113,7 @@ public class GuiInvSelector extends GuiComboBox{
 	@Override
 	public void openBox()
 	{
-		extension = new GuiItemStackSelector(name + "extension", parent.container.player, posX, posY+height, width, 200, this);
+		extension = new GuiItemStackSelector(name + "extension", parent.container.player, posX, posY+height, width, 200, this, onlyBlocks, search);
 		//extension = new GuiInvSelectorExtension(name + "extension", parent.container.player, this, posX, posY+height, width, 150, lines, stacks);
 		parent.controls.add(extension);
 		
@@ -83,6 +122,11 @@ public class GuiInvSelector extends GuiComboBox{
 		extension.init();
 		parent.refreshControls();
 		extension.rotation = rotation;
+	}
+	
+	public int getIndex()
+	{
+		return lines.indexOf(caption);
 	}
 	
 	public ItemStack getStack()
