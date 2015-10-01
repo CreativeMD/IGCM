@@ -18,6 +18,8 @@ import com.creativemd.ingameconfigmanager.api.common.container.SubContainerBranc
 import com.creativemd.ingameconfigmanager.api.common.container.SubContainerMods;
 import com.creativemd.ingameconfigmanager.api.core.TabRegistry;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
+import com.creativemd.ingameconfigmanager.mod.block.SubContainerAdvancedWorkbench;
+import com.creativemd.ingameconfigmanager.mod.block.SubGuiAdvancedWorkbench;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
@@ -84,6 +86,9 @@ public class ConfigGuiPacket extends CreativeCorePacket{
 		case 3:
 			FMLCommonHandler.instance().showGuiScreen(new GuiContainerSub(player, new SubGuiProfile(), new SubContainerMods(player)));
 			break;
+		case 4:
+			FMLCommonHandler.instance().showGuiScreen(new GuiContainerSub(player, new SubGuiAdvancedWorkbench(), new SubContainerAdvancedWorkbench(player)));
+			break;
 		}
 	}
 
@@ -112,6 +117,9 @@ public class ConfigGuiPacket extends CreativeCorePacket{
 			{
 				openContainerOnServer((EntityPlayerMP)player, new ContainerSub(player, new SubContainerBranch(player, branch)));
 			}
+			break;
+		case 4:
+			openContainerOnServer((EntityPlayerMP) player, new ContainerSub(player, new SubContainerAdvancedWorkbench(player)));
 			break;
 		}
 	}

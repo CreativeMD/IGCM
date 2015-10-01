@@ -54,7 +54,7 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		int count = 0;
 		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
 		for (int i = segStart; i < segEnd; i++) {
-			if(segments.get(i).createPacketInformation(FMLCommonHandler.instance().getEffectiveSide().isServer()) != null)
+			if(segments.size() > i && segments.get(i).createPacketInformation(FMLCommonHandler.instance().getEffectiveSide().isServer()) != null)
 				count++;
 		}
 		
@@ -63,11 +63,14 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		buf.writeInt(count);
 		
 		for (int i = segStart; i < segEnd; i++) {
-			String input = segments.get(i).createPacketInformation(FMLCommonHandler.instance().getEffectiveSide().isServer());
-			if(input != null)
+			if(segments.size() > i)
 			{
-				writeString(buf, segments.get(i).getID());
-				writeString(buf, input);
+				String input = segments.get(i).createPacketInformation(FMLCommonHandler.instance().getEffectiveSide().isServer());
+				if(input != null)
+				{
+					writeString(buf, segments.get(i).getID());
+					writeString(buf, input);
+				}
 			}
 		}
 	}
@@ -81,7 +84,7 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		boolean firstPacket = buf.readBoolean();
 		int count = buf.readInt();
 		
-		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
+		//ArrayList<ConfigSegment> segments = branch.getConfigSegments();
 		if(firstPacket)
 			branch.onBeforeReceived(FMLCommonHandler.instance().getEffectiveSide().isServer());
 		collection = new ConfigSegmentCollection(branch.getConfigSegments());

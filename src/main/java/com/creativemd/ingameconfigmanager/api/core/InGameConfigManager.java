@@ -29,6 +29,7 @@ import com.creativemd.ingameconfigmanager.api.common.command.CommandGUI;
 import com.creativemd.ingameconfigmanager.api.common.event.ConfigEventHandler;
 import com.creativemd.ingameconfigmanager.api.common.packets.BranchInformationPacket;
 import com.creativemd.ingameconfigmanager.api.common.packets.ConfigGuiPacket;
+import com.creativemd.ingameconfigmanager.api.common.packets.CraftResultPacket;
 import com.creativemd.ingameconfigmanager.api.common.packets.RequestInformationPacket;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
@@ -173,6 +174,7 @@ public class InGameConfigManager {
 		CreativeCorePacket.registerPacket(BranchInformationPacket.class, "IGCMBranch");
 		CreativeCorePacket.registerPacket(ConfigGuiPacket.class, "IGCMGUI");
 		CreativeCorePacket.registerPacket(RequestInformationPacket.class, "IGCMRequest");
+		CreativeCorePacket.registerPacket(CraftResultPacket.class, "IGCMCraftResult");
 		
 		coreConfig = new Configuration(event.getSuggestedConfigurationFile());
 		coreConfig.load();
@@ -293,7 +295,7 @@ public class InGameConfigManager {
 	public static void sendUpdatePacket(ConfigBranch branch, EntityPlayer player)
 	{
 		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
-		int amount = (int) Math.floor((double)segments.size()/(double)maxSegments);
+		int amount = (int) Math.ceil((double)segments.size()/(double)maxSegments);
 		for (int i = 0; i < amount; i++) {
 			CreativeCorePacket packet = new BranchInformationPacket(branch, i*maxSegments, Math.min(i*maxSegments+maxSegments, segments.size()));
 			if(FMLCommonHandler.instance().getEffectiveSide().isClient())

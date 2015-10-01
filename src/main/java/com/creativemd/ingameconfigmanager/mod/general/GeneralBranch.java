@@ -5,6 +5,7 @@ import com.creativemd.creativecore.client.avatar.AvatarItemStack;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
 import com.creativemd.ingameconfigmanager.api.common.segment.BooleanSegment;
+import com.creativemd.ingameconfigmanager.api.common.segment.IntegerSegment;
 import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 
 import net.minecraft.init.Items;
@@ -28,7 +29,8 @@ public class GeneralBranch extends ConfigBranch{
 
 	@Override
 	public void createConfigSegments() {
-		segments.add(new BooleanSegment("overrideWorkbench", "Override Default Workbench", false));
+		segments.add(new BooleanSegment("overrideWorkbench", "override default workbench", false));
+		segments.add(new IntegerSegment("maxSegments", "segments per packet", 10, 1, 1000));
 	}
 
 	@Override
@@ -39,6 +41,7 @@ public class GeneralBranch extends ConfigBranch{
 	@Override
 	public void onRecieveFrom(boolean isServer, ConfigSegmentCollection collection) {
 		InGameConfigManager.overrideWorkbench = (Boolean)collection.getSegmentValue("overrideWorkbench");
+		InGameConfigManager.maxSegments = (Integer)collection.getSegmentValue("maxSegments");
 	}
 
 }

@@ -131,8 +131,10 @@ public class SubGuiBranch extends SubGui{
 				//box.addControl(new GuiAvatarButton(tab.branches.get(i).name, 5, 5+i*20, 155, 20, i, tab.branches.get(i).avatar));
 			}
 			
+			//System.out.println("Loaded " + countLoaded + "/" + count + " segments=" + segments.size());
+			
 			index += count;
-			if(index == segments.size()-1)
+			if(index >= segments.size())
 			{
 				box.maxScroll += 5;
 				
