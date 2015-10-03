@@ -26,9 +26,9 @@ public class SubContainerAdvancedWorkbench extends SubContainer{
 
 	@Override
 	public void createControls() {
-		for (int x = 0; x < BlockAdvancedWorkbench.gridSize; x++) {
-			for (int y = 0; y < BlockAdvancedWorkbench.gridSize; y++) {
-				addSlotToContainer(new Slot(crafting, x*BlockAdvancedWorkbench.gridSize+y, 8+x*18, 5+y*18));
+		for (int y = 0; y < BlockAdvancedWorkbench.gridSize; y++) {
+			for (int x = 0; x < BlockAdvancedWorkbench.gridSize; x++) {
+				addSlotToContainer(new Slot(crafting, y*BlockAdvancedWorkbench.gridSize+x, 8+x*18, 5+y*18));
 			}
 		}
 		for (int i = 0; i < BlockAdvancedWorkbench.outputs; i++) {
