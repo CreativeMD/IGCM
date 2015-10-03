@@ -50,6 +50,12 @@ public class ConfigMachineDisableBranch extends ConfigBranch{
 		}
 	}
 	
+	@Override
+	public boolean doesInputSupportStackSize()
+	{
+		return machine.doesSupportStackSize();
+	}
+	
 	public String recipeToString(Object recipe)
 	{
 		ItemStack[] input = new ItemStack[machine.getHeight()*machine.getWidth()];

@@ -91,6 +91,8 @@ public abstract class RecipeMachine<T>{
 	
 	//==================Added Recipes only==================
 	
+	public abstract boolean doesSupportStackSize();
+	
 	public abstract void fillGridInfo(StackInfo[] grid, T recipe);
 	
 	/**Save extra information into the nbt tag**/

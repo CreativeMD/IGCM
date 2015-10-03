@@ -35,7 +35,13 @@ public class ConfigMachineAddBranch extends ConfigBranch{
 			return new AvatarItemStack(machine.getAvatar());
 		return null;
 	}
-
+	
+	@Override
+	public boolean doesInputSupportStackSize()
+	{
+		return machine.doesSupportStackSize();
+	}
+	
 	@Override
 	public void loadCore() {
 		

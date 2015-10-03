@@ -196,4 +196,9 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 		}
 	}
 
+	@Override
+	public boolean doesSupportStackSize() {
+		return false;
+	}
+
 }

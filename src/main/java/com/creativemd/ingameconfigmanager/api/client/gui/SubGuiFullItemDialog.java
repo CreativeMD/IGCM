@@ -42,9 +42,12 @@ public class SubGuiFullItemDialog extends SubGui{
 	
 	public StackInfo info;
 	
-	public SubGuiFullItemDialog()
+	public boolean supportStackSize;
+	
+	public SubGuiFullItemDialog(boolean supportStackSize)
 	{
 		super(150, 175);
+		this.supportStackSize = supportStackSize;
 	}
 
 	@Override
@@ -135,11 +138,14 @@ public class SubGuiFullItemDialog extends SubGui{
 			break;
 		}
 		
-		controls.add(new GuiLabel("StackSize:", 5, 132));
-		GuiTextfield field = new GuiTextfield("stacksize", "1", 110, 127, 30, 20).setNumbersOnly();
-		if(info != null)
-			field.text = "" + info.stackSize;
-		controls.add(field);
+		if(supportStackSize)
+		{
+			controls.add(new GuiLabel("StackSize:", 5, 132));
+			GuiTextfield field = new GuiTextfield("stacksize", "1", 110, 127, 30, 20).setNumbersOnly();
+			if(info != null)
+				field.text = "" + info.stackSize;
+			controls.add(field);
+		}
 		
 		controls.add(new GuiButton("Cancel", 5, 150, 45, 20));
 		controls.add(new GuiButton("Remove", 52, 150, 45, 20));
@@ -154,9 +160,12 @@ public class SubGuiFullItemDialog extends SubGui{
 			int index = ((GuiComboBox)controls.get(0)).lines.indexOf(((GuiComboBox)controls.get(0)).caption);
 			int stacksize = 0;
 			try{
-				stacksize = Integer.parseInt(((GuiTextfield)getControl("stacksize")).text);
+				if(supportStackSize)
+					stacksize = Integer.parseInt(((GuiTextfield)getControl("stacksize")).text);
+				else
+					stacksize = 1;
 			}catch (Exception e){
-				stacksize = 0;
+				stacksize = 1;
 			}
 			StackInfo info = null;
 			switch(index)

@@ -55,6 +55,7 @@ public class BlockAdvancedWorkbench extends Block implements IGuiCreator{
     }
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public SubGui getGui(EntityPlayer player, ItemStack stack, World world, int x, int y, int z) {
 		return new SubGuiAdvancedWorkbench();
 	}

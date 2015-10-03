@@ -245,4 +245,9 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 		return null;
 	}
 
+	@Override
+	public boolean doesSupportStackSize() {
+		return false;
+	}
+
 }

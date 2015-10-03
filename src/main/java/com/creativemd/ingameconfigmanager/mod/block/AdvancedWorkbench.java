@@ -133,4 +133,9 @@ public class AdvancedWorkbench extends RecipeMachine<AdvancedGridRecipe>{
 		return new ItemStack(Blocks.crafting_table);
 	}
 
+	@Override
+	public boolean doesSupportStackSize() {
+		return true;
+	}
+
 }

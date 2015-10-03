@@ -99,4 +99,9 @@ public abstract class ConfigBranch{
 	
 	public void onFailedLoadingSegment(String id, String input) {}
 
+	public boolean doesInputSupportStackSize()
+	{
+		return true;
+	}
+
 }

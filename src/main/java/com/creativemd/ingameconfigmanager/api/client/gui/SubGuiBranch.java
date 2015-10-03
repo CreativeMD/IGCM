@@ -219,7 +219,7 @@ public class SubGuiBranch extends SubGui{
 		{
 			if(nbt.getBoolean("fullEdit"))
 			{
-				SubGuiFullItemDialog dialog = new SubGuiFullItemDialog();
+				SubGuiFullItemDialog dialog = new SubGuiFullItemDialog(branch.doesInputSupportStackSize());
 				dialog.info = ((InfoSlotControl)openedSlot.slot).info;
 				return dialog;
 			}else{
