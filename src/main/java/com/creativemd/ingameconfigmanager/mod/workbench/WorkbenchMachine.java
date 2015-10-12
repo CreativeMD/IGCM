@@ -88,6 +88,8 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 	
 	public void getInput(ItemStack[] grid, Object[] items, int size, int cols)
 	{
+		if(items == null)
+			return ;
 		if(cols == 0)
 		{
 			switch(size)
@@ -156,7 +158,8 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 
 	@Override
 	public void fillGrid(ItemStack[] grid, IRecipe recipe) {
-		if(recipe instanceof IRecipeInfo)
+		getInput(grid, IRecipeInfo.getInput(recipe), recipe.getRecipeSize(), IRecipeInfo.getWidth(recipe));
+		/*if(recipe instanceof IRecipeInfo)
 		{
 			getInput(grid, ((IRecipeInfo) recipe).getInput(), recipe.getRecipeSize(), ((IRecipeInfo) recipe).getWidth());
 		}
@@ -179,7 +182,7 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 		{
 			ShapedOreRecipe newrecipe = (ShapedOreRecipe) recipe;
 			getInput(grid, newrecipe.getInput(), 9, 0);
-		}
+		}*/
 	}
 
 	@Override
