@@ -27,7 +27,6 @@ public class SubGuiAdvancedWorkbench extends SubGui {
 		 controls.add(new GuiProgressBar("progress", 132, 30, 36, 10));
 	}
 	
-	@SideOnly(Side.CLIENT)
 	public static long lastTick;
 	
 	@Override
