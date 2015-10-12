@@ -23,6 +23,7 @@ import com.creativemd.creativecore.common.gui.controls.GuiControl;
 import com.creativemd.creativecore.common.gui.controls.GuiStateButton;
 import com.creativemd.creativecore.common.recipe.BetterShapedRecipe;
 import com.creativemd.creativecore.common.recipe.IRecipeInfo;
+import com.creativemd.creativecore.common.recipe.RecipeLoader;
 import com.creativemd.creativecore.common.recipe.entry.BetterShapelessRecipe;
 import com.creativemd.creativecore.common.utils.stack.StackInfo;
 import com.creativemd.creativecore.common.utils.stack.StackInfoFuel;
@@ -158,7 +159,7 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 
 	@Override
 	public void fillGrid(ItemStack[] grid, IRecipe recipe) {
-		getInput(grid, IRecipeInfo.getInput(recipe), recipe.getRecipeSize(), IRecipeInfo.getWidth(recipe));
+		getInput(grid, RecipeLoader.getInput(recipe), recipe.getRecipeSize(), RecipeLoader.getWidth(recipe));
 		/*if(recipe instanceof IRecipeInfo)
 		{
 			getInput(grid, ((IRecipeInfo) recipe).getInput(), recipe.getRecipeSize(), ((IRecipeInfo) recipe).getWidth());
