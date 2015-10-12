@@ -1,12 +1,16 @@
 package com.creativemd.ingameconfigmanager.api.client.gui;
 
+import java.util.ArrayList;
+
 import javax.vecmath.Vector4d;
 
 import com.creativemd.creativecore.client.rendering.RenderHelper2D;
 import com.creativemd.creativecore.common.gui.SubGui;
 import com.creativemd.creativecore.common.gui.controls.GuiButton;
+import com.creativemd.creativecore.common.gui.controls.GuiComboBox;
 import com.creativemd.creativecore.common.gui.controls.GuiLabel;
 import com.creativemd.creativecore.common.gui.controls.GuiTextfield;
+import com.creativemd.creativecore.common.gui.event.ControlChangedEvent;
 import com.creativemd.creativecore.common.gui.event.ControlClickEvent;
 import com.creativemd.creativecore.common.utils.stack.StackInfoItemStack;
 import com.creativemd.ingameconfigmanager.api.common.container.controls.GuiInvSelector;
@@ -15,6 +19,7 @@ import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class SubGuiItemDialog extends SubGui{
 	
@@ -22,7 +27,7 @@ public class SubGuiItemDialog extends SubGui{
 	
 	public SubGuiItemDialog()
 	{
-		super(150, 80);
+		super(150, 105);
 	}
 	
 	@Override
@@ -32,19 +37,33 @@ public class SubGuiItemDialog extends SubGui{
 		if(stack != null)
 			selector.addAndSelectStack(stack);
 		
-		controls.add(new GuiLabel("StackSize:", 5, 30));		
-		GuiTextfield field = new GuiTextfield("stacksize", "1", 110, 30, 30, 20).setNumbersOnly();
+		controls.add(new GuiTextfield("search", "", 5, 30, 140, 20));
+		
+		controls.add(new GuiLabel("StackSize:", 5, 55));		
+		GuiTextfield field = new GuiTextfield("stacksize", "1", 110, 55, 30, 20).setNumbersOnly();
 		if(stack != null)
 			field.text = "" + stack.stackSize;
 		controls.add(field);
 		
-		controls.add(new GuiButton("Cancel", 5, 55, 60, 20));
-		controls.add(new GuiButton("Save", 85, 55, 60, 20));
+		controls.add(new GuiButton("Cancel", 5, 80, 60, 20));
+		controls.add(new GuiButton("Save", 85, 80, 60, 20));
 	}
 
 	@Override
 	public void drawOverlay(FontRenderer fontRenderer) {
 		
+	}
+	
+	@CustomEventSubscribe
+	public void onChanged(ControlChangedEvent event)
+	{
+		if(event.source.is("search"))
+		{
+			GuiInvSelector inv = (GuiInvSelector) getControl("inv");
+			inv.search = ((GuiTextfield)event.source).text.toLowerCase();
+			inv.updateItems(container.player);
+			inv.closeBox();
+		}
 	}
 	
 	@CustomEventSubscribe
