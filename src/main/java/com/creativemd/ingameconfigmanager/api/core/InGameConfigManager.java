@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -27,8 +28,8 @@ import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
 import com.creativemd.ingameconfigmanager.api.common.command.CommandGUI;
 import com.creativemd.ingameconfigmanager.api.common.event.ConfigEventHandler;
+import com.creativemd.ingameconfigmanager.api.common.gui.InGameGuiHandler;
 import com.creativemd.ingameconfigmanager.api.common.packets.BranchInformationPacket;
-import com.creativemd.ingameconfigmanager.api.common.packets.ConfigGuiPacket;
 import com.creativemd.ingameconfigmanager.api.common.packets.CraftResultPacket;
 import com.creativemd.ingameconfigmanager.api.common.packets.RequestInformationPacket;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
@@ -172,7 +173,6 @@ public class InGameConfigManager {
 		FMLCommonHandler.instance().bus().register(eventHandler);
 		
 		CreativeCorePacket.registerPacket(BranchInformationPacket.class, "IGCMBranch");
-		CreativeCorePacket.registerPacket(ConfigGuiPacket.class, "IGCMGUI");
 		CreativeCorePacket.registerPacket(RequestInformationPacket.class, "IGCMRequest");
 		CreativeCorePacket.registerPacket(CraftResultPacket.class, "IGCMCraftResult");
 		
@@ -191,12 +191,16 @@ public class InGameConfigManager {
 		ModConfigurationDirectory = event.getModConfigurationDirectory();
 	}
 	
+	public static final String guiID = "IGCM";
+	
 	@EventHandler
 	public static void Init(FMLInitializationEvent event)
 	{
 		ConfigManagerModLoader.loadMod();
 		
 		GameRegistry.registerBlock(advancedWorkbench, "advancedWorkbench");
+		
+		GuiHandler.registerGuiHandler(guiID, new InGameGuiHandler());
 	}
 	
 	@EventHandler
@@ -216,6 +220,11 @@ public class InGameConfigManager {
 	
 	public static void openBranchGui(EntityPlayer player, ConfigBranch branch)
 	{
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.setInteger("gui", 2);
+		nbt.setInteger("index", branch.id);
+		GuiHandler.openGui(guiID, nbt, player);
+		/*
 		ConfigGuiPacket packet = new ConfigGuiPacket(2, branch.id);
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{
@@ -224,7 +233,7 @@ public class InGameConfigManager {
 		}else{
 			PacketHandler.sendPacketToPlayer(packet, (EntityPlayerMP) player);
 			packet.executeServer(player);
-		}
+		}*/
 	}
 	
 	/*public static void openSubTabGui(EntityPlayer player, SubTab tab)
@@ -244,14 +253,18 @@ public class InGameConfigManager {
 		{
 			
 			if(tab.branches.size() > 1){
-				ConfigGuiPacket packet = new ConfigGuiPacket(1, mod);
+				NBTTagCompound nbt = new NBTTagCompound();
+				nbt.setInteger("gui", 1);
+				nbt.setInteger("index", mod);
+				GuiHandler.openGui(guiID, nbt, player);
+				/*ConfigGuiPacket packet = new ConfigGuiPacket(1, mod);
 				if(FMLCommonHandler.instance().getEffectiveSide().isClient()){
 					PacketHandler.sendPacketToServer(packet);
 					packet.executeClient(player);
 				}else{
 					PacketHandler.sendPacketToPlayer(packet, (EntityPlayerMP) player);
 					packet.executeServer(player);
-				}
+				}*/
 			}else if(tab.branches.size() == 1){
 				openBranchGui(player, tab.branches.get(0));
 			}
@@ -260,7 +273,11 @@ public class InGameConfigManager {
 	
 	public static void openModsGui(EntityPlayer player)
 	{
-		ConfigGuiPacket packet = new ConfigGuiPacket(0, 0);
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.setInteger("gui", 0);
+		nbt.setInteger("index", 0);
+		GuiHandler.openGui(guiID, nbt, player);
+		/*ConfigGuiPacket packet = new ConfigGuiPacket(0, 0);
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{
 			PacketHandler.sendPacketToServer(packet);
@@ -268,12 +285,16 @@ public class InGameConfigManager {
 		}else{
 			PacketHandler.sendPacketToPlayer(packet, (EntityPlayerMP) player);
 			packet.executeServer(player);
-		}
+		}*/
 	}
 	
 	public static void openProfileGui(EntityPlayer player)
 	{
-		ConfigGuiPacket packet = new ConfigGuiPacket(3, 0);
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.setInteger("gui", 3);
+		nbt.setInteger("index", 0);
+		GuiHandler.openGui(guiID, nbt, player);
+		/*ConfigGuiPacket packet = new ConfigGuiPacket(3, 0);
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{
 			PacketHandler.sendPacketToServer(packet);
@@ -281,7 +302,7 @@ public class InGameConfigManager {
 		}else{
 			PacketHandler.sendPacketToPlayer(packet, (EntityPlayerMP) player);
 			packet.executeServer(player);
-		}
+		}*/
 	}
 	
 	public static void sendAllUpdatePackets(EntityPlayer player)

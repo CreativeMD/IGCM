@@ -32,14 +32,14 @@ public class DisableRecipeSegment extends RecipeSegment<Boolean>{
 		ItemStack[] items = new ItemStack[machine.getWidth()*machine.getHeight()];
 		machine.fillGrid(items, recipe);
 		addSubSegment(new GridSegment("grid", items, machine).setOffset(30, 5));
-		addSubSegment(new GridSegment("result", machine.getOutput(recipe), machine).setOffset(90, 5+machine.getHeight()/2*18));
+		addSubSegment(new GridSegment("result", machine.getOutput(recipe), machine).setOffset(130, 5+machine.getHeight()/2*18));
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ArrayList<GuiControl> createGuiControls(SubGui gui, int x, int y, int maxWidth) {
 		ArrayList<GuiControl> controls = super.createGuiControls(gui, x, y, maxWidth);
-		controls.add(new GuiStateButton("Enabled", value ? 0 : 1, x+120, y+20, 50, 20, "Enabled", "Disabled"));
+		controls.add(new GuiStateButton("Enabled", value ? 0 : 1, x+150, y+20, 50, 20, "Enabled", "Disabled"));
 		return controls;		
 	}
 

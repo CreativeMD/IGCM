@@ -19,6 +19,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerOpenContainerEvent;
@@ -28,8 +29,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import com.creativemd.creativecore.client.avatar.AvatarIcon;
+import com.creativemd.creativecore.common.gui.GuiHandler;
 import com.creativemd.creativecore.common.packet.PacketHandler;
-import com.creativemd.ingameconfigmanager.api.common.packets.ConfigGuiPacket;
 import com.creativemd.ingameconfigmanager.api.common.packets.CraftResultPacket;
 import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 import com.creativemd.ingameconfigmanager.mod.workbench.WorkbenchSwitchHelper;
@@ -90,9 +91,13 @@ public class ConfigEventHandler
 				event.setCanceled(true);
 				if(event.world.isRemote)
 				{
-					ConfigGuiPacket packet = new ConfigGuiPacket(4, 0);
+					NBTTagCompound nbt = new NBTTagCompound();
+					nbt.setInteger("gui", 4);
+					nbt.setInteger("index", 0);
+					GuiHandler.openGui(InGameConfigManager.guiID, nbt, event.entityPlayer);
+					/*ConfigGuiPacket packet = new ConfigGuiPacket(4, 0);
 					packet.executeClient(event.entityPlayer);
-					PacketHandler.sendPacketToServer(packet);
+					PacketHandler.sendPacketToServer(packet);*/
 				}
 			}
 		}
