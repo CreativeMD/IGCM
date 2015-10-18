@@ -128,7 +128,10 @@ public class BranchInformationPacket extends CreativeCorePacket{
 				{
 					int scrolled = ((GuiScrollBox) gui.getControl("scrollbox")).scrolled;
 					gui.createSegmentControls();
-					((GuiScrollBox) gui.getControl("scrollbox")).scrolled = scrolled;
+					GuiScrollBox box = (GuiScrollBox) gui.getControl("scrollbox");
+					box.scrolled = scrolled;
+					if(box.scrolled > box.maxScroll)
+						box.scrolled = box.maxScroll;
 				}
 					//InGameConfigManager.openBranchGui(player, branch);
 			}

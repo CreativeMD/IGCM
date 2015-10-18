@@ -55,6 +55,9 @@ public class SubGuiBranch extends SubGui{
 		box.maxScroll = 0;
 		box.scrolled = 0;
 		
+		if(getControl("Save") != null)
+			getControl("Save").setEnabled(false);
+		
 		this.segments = new ArrayList<ConfigSegment>(segments);
 		height = 5;
 		index = 0;
@@ -137,7 +140,7 @@ public class SubGuiBranch extends SubGui{
 			if(index >= segments.size())
 			{
 				box.maxScroll += 5;
-				
+				getControl("Save").setEnabled(true);
 				segments = null;
 				index = 0;
 			}
@@ -149,11 +152,11 @@ public class SubGuiBranch extends SubGui{
 	public void createControls() {
 		GuiScrollBox box = new GuiScrollBox("scrollbox", container.player, 5, 5, 240, 220);
 		controls.add(box);
-		createSegmentControls();
 		controls.add(new GuiButton("Cancel", 5, 226, 40, 20));
-		controls.add(new GuiButton("Save", 205, 226, 40, 20));
+		controls.add(new GuiButton("Save", 205, 226, 40, 20).setEnabled(false));
 		if(branch.isSearchable())
 			controls.add(new GuiTextfield("search", "", 49, 227, 152, 18));
+		createSegmentControls();
 	}
 	
 	public GuiSlotControl openedSlot;
