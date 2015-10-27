@@ -32,7 +32,7 @@ public class CommandGUI implements ICommand {
 
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
-		return null;
+		return "/ConfigManager";
 	}
 
 	@Override
