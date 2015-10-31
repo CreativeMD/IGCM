@@ -49,7 +49,7 @@ public class GuiInvSelector extends GuiComboBox{
 		for (int i = 0; i < player.inventory.mainInventory.length; i++) {
 			if(player.inventory.mainInventory[i] != null)
 			{
-				newStacks.add(player.inventory.mainInventory[i]);
+				newStacks.add(player.inventory.mainInventory[i].copy());
 			}
 		}
 		
@@ -88,7 +88,7 @@ public class GuiInvSelector extends GuiComboBox{
 		}catch(Exception e){
 			lines.add(Item.itemRegistry.getNameForObject(stack.getItem()));
 		}
-		stacks.add(stack);
+		stacks.add(stack.copy());
 		caption = lines.get(lines.size()-1);
 	}
 	
