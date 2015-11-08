@@ -76,9 +76,14 @@ public class GuiInvSelector extends GuiComboBox{
 		}
 		
 		if(lines.size() > 0)
+		{
+			index = 0;
 			caption = lines.get(0);
-		else
+		}
+		else{
 			caption = "";
+			index = -1;
+		}
 	}
 	
 	public void addAndSelectStack(ItemStack stack)
@@ -90,6 +95,7 @@ public class GuiInvSelector extends GuiComboBox{
 		}
 		stacks.add(stack.copy());
 		caption = lines.get(lines.size()-1);
+		index = lines.size()-1;
 	}
 	
 	@Override
@@ -100,7 +106,6 @@ public class GuiInvSelector extends GuiComboBox{
 		Vector4d color = new Vector4d(60, 60, 60, 255);
 		RenderHelper2D.drawGradientRect(1, 1, this.width-1, this.height-1, color, color);
 		
-		int index = lines.indexOf(caption);
 		if(index != -1 && stacks.size() > index && stacks.get(index) != null)
 		{
 			Avatar avatar = new AvatarItemStack(stacks.get(index));
@@ -124,14 +129,8 @@ public class GuiInvSelector extends GuiComboBox{
 		extension.rotation = rotation;
 	}
 	
-	public int getIndex()
-	{
-		return lines.indexOf(caption);
-	}
-	
 	public ItemStack getStack()
 	{
-		int index = lines.indexOf(caption);
 		if(index != -1)
 			return stacks.get(index);
 		return null;

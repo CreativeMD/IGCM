@@ -232,7 +232,7 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 	public IRecipe parseRecipe(StackInfo[] input, ItemStack[] output, NBTTagCompound nbt, int width, int height) {
 		if(output.length == 1 && output[0] != null)
 		{
-			ItemStack result = output[0];
+			ItemStack result = output[0].copy();
 			if(nbt.getBoolean("shaped"))
 			{
 				return new BetterShapedRecipe(width, input, result);

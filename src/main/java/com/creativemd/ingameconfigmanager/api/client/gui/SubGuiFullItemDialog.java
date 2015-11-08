@@ -157,7 +157,7 @@ public class SubGuiFullItemDialog extends SubGui{
 	{
 		if(event.source.is("Save"))
 		{
-			int index = ((GuiComboBox)controls.get(0)).lines.indexOf(((GuiComboBox)controls.get(0)).caption);
+			int index = ((GuiComboBox)controls.get(0)).index;
 			int stacksize = 0;
 			try{
 				if(supportStackSize)
@@ -205,7 +205,7 @@ public class SubGuiFullItemDialog extends SubGui{
 				info = new StackInfoFuel(stacksize);
 				break;
 			case 4:
-				int stackIndex = ((GuiInvSelector)getControl("stack")).getIndex();
+				int stackIndex = ((GuiInvSelector)getControl("stack")).index;
 				if(stackIndex >= 0 && stackIndex < latest.size())
 					info = latest.get(stackIndex).copy();
 				break;
@@ -251,7 +251,7 @@ public class SubGuiFullItemDialog extends SubGui{
 		}
 		if(event.source.is("search"))
 		{
-			int index = ((GuiComboBox)controls.get(0)).lines.indexOf(((GuiComboBox)controls.get(0)).caption);
+			int index = ((GuiComboBox)controls.get(0)).index;
 			if(index == 1)
 			{
 				String search = ((GuiTextfield)event.source).text;
@@ -304,7 +304,7 @@ public class SubGuiFullItemDialog extends SubGui{
 			GuiInvSelector selector = (GuiInvSelector) getControl("inv");
 			if(selector != null)
 			{
-				int indexStack = selector.lines.indexOf(selector.caption);
+				int indexStack = selector.index;
 				if(indexStack != -1)
 				{
 					ItemStack stack = selector.stacks.get(indexStack);
