@@ -156,7 +156,7 @@ public class AddRecipeSegment extends RecipeSegment<Object>{
 	@Override
 	public void receivePacketInformation(String input) {
 		Object[] objects = StringUtils.StringToObjects(input);
-		if(objects.length == 3 || objects.length == 4 || objects.length == 5)
+		if(objects.length > 2 && objects[0] instanceof StackInfo[] && objects[1] instanceof ItemStack[] && objects[2] instanceof NBTTagCompound && (objects.length == 3 || objects.length == 4 || objects.length == 5))
 		{
 			StackInfo[] info = (StackInfo[]) objects[0];
 			ItemStack[] output = (ItemStack[]) objects[1];
