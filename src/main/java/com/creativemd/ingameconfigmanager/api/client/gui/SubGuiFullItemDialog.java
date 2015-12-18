@@ -75,9 +75,11 @@ public class SubGuiFullItemDialog extends SubGui{
 		lines.add("Latest");
 		
 		GuiComboBox box = new GuiComboBox("type", 5, 5, 140, lines);
-		box.caption = selected;
-		controls.add(box);
 		int index = lines.indexOf(selected);
+		box.caption = selected;
+		box.index = index;
+		controls.add(box);
+		
 		
 		switch(index)
 		{

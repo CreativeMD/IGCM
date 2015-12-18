@@ -2,8 +2,6 @@ package com.creativemd.ingameconfigmanager.api.common.segment.machine;
 
 import java.util.ArrayList;
 
-import net.minecraft.item.crafting.IRecipe;
-
 import com.creativemd.creativecore.common.container.SubContainer;
 import com.creativemd.creativecore.common.container.slot.ContainerControl;
 import com.creativemd.creativecore.common.gui.SubGui;
@@ -13,7 +11,6 @@ import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ic2.neiIntegration.core.MachineRecipeHandler;
 
 public abstract class RecipeSegment<T> extends ConfigSegment<T>{
 	
