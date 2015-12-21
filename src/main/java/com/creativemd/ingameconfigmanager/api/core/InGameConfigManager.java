@@ -33,6 +33,7 @@ import com.creativemd.ingameconfigmanager.api.common.packets.BranchInformationPa
 import com.creativemd.ingameconfigmanager.api.common.packets.CraftResultPacket;
 import com.creativemd.ingameconfigmanager.api.common.packets.RequestInformationPacket;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
+import com.creativemd.ingameconfigmanager.api.nei.NEIAdvancedRecipeHandler;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
 import com.creativemd.ingameconfigmanager.api.tab.SubTab;
 import com.creativemd.ingameconfigmanager.mod.ConfigManagerModLoader;
@@ -40,6 +41,7 @@ import com.creativemd.ingameconfigmanager.mod.block.BlockAdvancedWorkbench;
 import com.creativemd.ingameconfigmanager.mod.general.GeneralBranch;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -201,6 +203,9 @@ public class InGameConfigManager {
 		GameRegistry.registerBlock(advancedWorkbench, "advancedWorkbench");
 		
 		GuiHandler.registerGuiHandler(guiID, new InGameGuiHandler());
+		
+		if(Loader.isModLoaded("NotEnoughItems") && FMLCommonHandler.instance().getEffectiveSide().isClient())
+			NEIAdvancedRecipeHandler.load();
 	}
 	
 	@EventHandler
