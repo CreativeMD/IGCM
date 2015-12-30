@@ -109,9 +109,9 @@ public class BranchInformationPacket extends CreativeCorePacket{
 	public void receiveUpdate(boolean server)
 	{
 		
-		branch.onRecieveFromPre(false, collection);
-		branch.onRecieveFrom(false, collection);
-		branch.onRecieveFromPost(false, collection);
+		branch.onRecieveFromPre(server, collection);
+		branch.onRecieveFrom(server, collection);
+		branch.onRecieveFromPost(server, collection);
 	}
 
 	@Override
