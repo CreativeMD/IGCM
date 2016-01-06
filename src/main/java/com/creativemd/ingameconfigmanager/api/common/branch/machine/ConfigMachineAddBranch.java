@@ -61,6 +61,14 @@ public class ConfigMachineAddBranch extends ConfigBranch{
 	{
 		segments.clear();
 	}
+	
+	public int findNextId(ConfigSegmentCollection collection)
+	{
+		int id = 0;
+		while(collection.getSegmentByID("" + id) != null)
+			id++;
+		return id;
+	}
 
 	@Override
 	public void onRecieveFrom(boolean isServer, ConfigSegmentCollection collection) {
@@ -87,9 +95,7 @@ public class ConfigMachineAddBranch extends ConfigBranch{
 				}else
 					segments.remove(i);
 			}
-			int id = 0;
-			while(collection.getSegmentByID("" + id) != null)
-				id++;
+			int id = findNextId(collection);
 			segments.add(new AddRecipeSegment("" + id, machine, null));
 		}
 	}
@@ -97,7 +103,8 @@ public class ConfigMachineAddBranch extends ConfigBranch{
 	@Override
 	public void onFailedLoadingSegment(String id, String input)
 	{
-		AddRecipeSegment segment = new AddRecipeSegment(id, machine, null);
+		int index = findNextId(new ConfigSegmentCollection(segments));
+		AddRecipeSegment segment = new AddRecipeSegment("" + index, machine, null);
 		segment.receivePacketInformation(input);
 		segments.add(segment);
 		

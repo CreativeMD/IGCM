@@ -100,7 +100,7 @@ public class InGameConfigManager {
 			ConfigBranch.branches.get(i).onRecieveFromPre(isServer, collection);
 			ConfigBranch.branches.get(i).onRecieveFrom(isServer, collection);
 			ConfigBranch.branches.get(i).onRecieveFromPost(isServer, collection);
-			logger.info("Loaded " + getCat(ConfigBranch.branches.get(i)) + " branch");
+			logger.info("Loaded " + getCat(ConfigBranch.branches.get(i)) + " branch containing " + ConfigBranch.branches.get(i).getConfigSegments().size() + " segments!");
 		}
 		currentProfile.save();
 	}
