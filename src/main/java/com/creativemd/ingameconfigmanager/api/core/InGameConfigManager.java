@@ -1,7 +1,6 @@
 package com.creativemd.ingameconfigmanager.api.core;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -29,8 +28,6 @@ import com.creativemd.creativecore.core.CreativeCore;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
 import com.creativemd.ingameconfigmanager.api.common.command.CommandGUI;
-import com.creativemd.ingameconfigmanager.api.common.config.CoreConfigFile;
-import com.creativemd.ingameconfigmanager.api.common.config.ProfileConfigFile;
 import com.creativemd.ingameconfigmanager.api.common.event.ConfigEventHandler;
 import com.creativemd.ingameconfigmanager.api.common.gui.InGameGuiHandler;
 import com.creativemd.ingameconfigmanager.api.common.packets.BranchInformationPacket;
@@ -43,15 +40,6 @@ import com.creativemd.ingameconfigmanager.api.tab.SubTab;
 import com.creativemd.ingameconfigmanager.mod.ConfigManagerModLoader;
 import com.creativemd.ingameconfigmanager.mod.block.BlockAdvancedWorkbench;
 import com.creativemd.ingameconfigmanager.mod.general.GeneralBranch;
-import com.n247s.N2ConfigApi.api.N2ConfigApi;
-import com.n247s.N2ConfigApi.api.core.ConfigFile;
-import com.n247s.N2ConfigApi.api.core.ConfigHandler;
-import com.n247s.N2ConfigApi.api.core.ConfigSection;
-import com.n247s.N2ConfigApi.api.core.ConfigSectionCollection;
-import com.n247s.N2ConfigApi.api.core.DefaultConfigFile;
-import com.n247s.N2ConfigApi.api.core.InitConfigObjectManager;
-import com.n247s.N2ConfigApi.api.core.InitConfigObjectManager.Config;
-import com.n247s.N2ConfigApi.api.core.parser.ConfigParser;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -75,10 +63,9 @@ public class InGameConfigManager {
 	
 	public static int maxSegments = 10;
 	
-//	public static Configuration coreConfig;//ReplacementConfigFile
-	public static CoreConfigFile coreConfigFile; //	public static Configuration currentProfile;//ReplacementConfigFile
-	public static ProfileConfigFile currentProfileConfig;
-	public static String ModProfileConfigurationDirectoryID = modid + "_profileConfig";
+	public static Configuration coreConfig;
+	public static Configuration currentProfile;
+	public static File ModConfigurationDirectory;
 	
 	public static String profileName;
 	public static ArrayList<String> profiles;
@@ -88,100 +75,36 @@ public class InGameConfigManager {
 	
 	
 	
-	/**Used for loading configs on startup and changing profile **/
+	/**Used for loading configs on startup and changing profile**/
 	public static void loadConfig()
 	{
-<<<<<<< HEAD
-		if(!currentProfileConfig.getFileName().substring(0, currentProfileConfig.getFileName().length() - 7).equals(profileName))
-		{
-			currentProfileConfig = new ProfileConfigFile(profileName + "_Config");
-			parseOrLoadConfigFile(new File(N2ConfigApi.getFileDirFromID(ModProfileConfigurationDirectoryID), profileName + ".cfg"), currentProfileConfig, ModProfileConfigurationDirectoryID);
-		}
-		
-		for(ConfigBranch currentBranche : ConfigBranch.branches)
-		{
-			boolean isServer = FMLCommonHandler.instance().getEffectiveSide().isServer();
-			ArrayList<ConfigSegment> segments = currentBranche.getConfigSegments();
-			currentBranche.onBeforeReceived(FMLCommonHandler.instance().getEffectiveSide().isServer());
-			ConfigSegmentCollection collection = new ConfigSegmentCollection(segments);
-			ConfigSectionCollection currentSectionCollection = ((ConfigSectionCollection)currentProfileConfig.getSubSection(getCat(currentBranche)));
-			
-			if(currentSectionCollection != null)
-				for(int i = 0 ; i < currentSectionCollection.getSubSectionCount(); i++) // use getAbsoluteSubSectionCount if you use SectionCollections at this level (e.g. nested sectionCollections)
-				{
-					ConfigSection currentSection = currentSectionCollection.getConfigSectionAtIndex(i + 1); // use getConfigSectionAtAbsoluteIndex for reason described above.
-					ConfigSegment segment = collection.getSegmentByID(currentSection.getSectionName());
-					String input = (String) currentProfileConfig.getValue(currentSection.getSectionName());
-					
-					if(segment != null)
-						segment.receivePacketInformation(input);
-					else ConfigBranch.branches.get(i).onFailedLoadingSegment(currentSection.getSectionName(), input);
-				}
-			else
-			{
-				currentSectionCollection = new ConfigSectionCollection(currentBranche.name, null, true);
-				for(ConfigSegment segment : currentBranche.getConfigSegments())
-					currentSectionCollection.addNewStringSection(segment.getID(), null, segment.createPacketInformation(isServer), true);
-				currentProfileConfig.addNewSection(currentSectionCollection);
-			}
-			
-			currentBranche.onRecieveFromPre(isServer, collection);
-			currentBranche.onRecieveFrom(isServer, collection);
-			currentBranche.onRecieveFromPost(isServer, collection);
-			logger.info("Loaded " + getCat(currentBranche) + " branch containing " + currentBranche.getConfigSegments().size() + " segments!");
-=======
 		currentProfile = new Configuration(new File(ModConfigurationDirectory, "InGameConfigManager" + File.separator + profileName + ".cfg"));
 		currentProfile.load();
 		for (int i = 0; i < ConfigBranch.branches.size(); i++) {
 			loadConfig(ConfigBranch.branches.get(i), false);
->>>>>>> bb50868a447dbbd3cd93c434daa06c5fd179bf53
 		}
+		currentProfile.save();
 	}
 	
-<<<<<<< HEAD
-	/** Load branch without changing profile!*/
-	public static void loadConfig(ConfigBranch branch)
-	{
-=======
 	public static void loadConfig(ConfigBranch branch, boolean full)
 	{
 		if(full)
 			currentProfile.load();
 		
->>>>>>> bb50868a447dbbd3cd93c434daa06c5fd179bf53
 		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
 		branch.onBeforeReceived(FMLCommonHandler.instance().getEffectiveSide().isServer());
-<<<<<<< HEAD
-		ConfigSectionCollection currentSectionCollection = ((ConfigSectionCollection)currentProfileConfig.getSubSection(getCat(branch)));
-		
-		for(int i = 0 ; i < currentSectionCollection.getSubSectionCount(); i++) // use getAbsoluteSubSectionCount if you use SectionCollections at this level (e.g. nested sectionCollections)
-=======
 		
 		ConfigSegmentCollection collection = new ConfigSegmentCollection(segments);
 		ArrayList<ConfigSegment> newSegments = new ArrayList<>();
 		Set<java.util.Map.Entry<String, Property>> children = currentProfile.getCategory(getCat(branch)).entrySet();
 		int cIndex = 0;
 		for (Map.Entry<String, Property> entry : children)
->>>>>>> bb50868a447dbbd3cd93c434daa06c5fd179bf53
 		{
-			ConfigSection currentSection = currentSectionCollection.getConfigSectionAtIndex(i + 1); // use getConfigSectionAtAbsoluteIndex for reason described above.
-			ConfigSegment segment = collection.getSegmentByID(currentSection.getSectionName());
-			String input = (String) currentProfileConfig.getValue(currentSection.getSectionName());
-			
+			ConfigSegment segment = collection.getSegmentByID(entry.getKey());
+			String input = entry.getValue().getString();
 			if(segment != null)
+			{
 				segment.receivePacketInformation(input);
-<<<<<<< HEAD
-			else ConfigBranch.branches.get(i).onFailedLoadingSegment(currentSection.getSectionName(), input);
-		}
-		boolean isServer = FMLCommonHandler.instance().getEffectiveSide().isServer();
-		
-		branch.onRecieveFromPre(isServer, collection);
-		branch.onRecieveFrom(isServer, collection);
-		branch.onRecieveFromPost(isServer, collection);
-		logger.info("Loaded " + getCat(branch) + " branch");
-//		currentProfileConfig.writeAllSections();//Only call this if changes have been made to the ConfigFile at this point.
-
-=======
 			}else{
 				ConfigSegment fSegment = branch.onFailedLoadingSegment(entry.getKey(), input, cIndex);
 				if(fSegment != null)
@@ -203,34 +126,31 @@ public class InGameConfigManager {
 		
 		if(full)
 			currentProfile.save();
->>>>>>> bb50868a447dbbd3cd93c434daa06c5fd179bf53
 	}
 	
 	public static void saveConfig(ConfigBranch branch)
 	{
-		ConfigSectionCollection branchCollection = (ConfigSectionCollection) currentProfileConfig.getSubSection(getCat(branch));
-		branchCollection.clearAllConfigSections();
+		currentProfile.load();
+		currentProfile.getCategory(getCat(branch)).clear();
 		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
 		ConfigSegmentCollection collection = new ConfigSegmentCollection(segments);
 		branch.onPacketSend(FMLCommonHandler.instance().getEffectiveSide().isServer(), collection);
-		for (ConfigSegment currentSegment: segments)
-		{
-			String input = currentSegment.createPacketInformation(FMLCommonHandler.instance().getEffectiveSide().isServer());
+		for (int i = 0; i < segments.size(); i++) {
+			String input = segments.get(i).createPacketInformation(FMLCommonHandler.instance().getEffectiveSide().isServer());
 			if(input != null)
 			{
-				branchCollection.addNewStringSection(currentSegment.getID().toLowerCase(), null, input, true);
+				currentProfile.get(getCat(branch), segments.get(i).getID().toLowerCase(), "").set(input);
 			}
 		}
-		currentProfileConfig.writeAllSections();//Only do if changes should be writen at this point.
+		currentProfile.save();
 	}
 	
 	public static void saveProfiles()
 	{
-		coreConfigFile.setValue("profileName", profileName);
-		coreConfigFile.setValue("profiles", profiles.toArray(new String[profiles.size()]));
-		coreConfigFile.writeAllSections();	//Use if you need to write out changes immediately!,
-											//This can happen on a later moment, since the values are saved in a binary format.
-											//For example before serverShutDown etc.
+		coreConfig.load();
+		coreConfig.get("General", "profileName", "new1").set(profileName);
+		coreConfig.get("General", "profiles", new String[0]).set(profiles.toArray(new String[0]));
+		coreConfig.save();
 	}
 	
 	public static String getCat(ConfigBranch branch)
@@ -248,25 +168,10 @@ public class InGameConfigManager {
 		CreativeCorePacket.registerPacket(RequestInformationPacket.class, "IGCMRequest");
 		CreativeCorePacket.registerPacket(CraftResultPacket.class, "IGCMCraftResult");
 		
-		N2ConfigApi.preInit(event);
-		
-		N2ConfigApi.registerCustomConfigDirectory("InGameConfigManager", ModProfileConfigurationDirectoryID);
-		
-		// Create ConfigFiles and preinit them /parse them.
-		coreConfigFile = new CoreConfigFile(InGameConfigManager.modid + "_Core");
-		currentProfileConfig = new ProfileConfigFile(profileName + "_Config");							//default ConfigFile for now TODO
-		
-		ConfigHandler.registerConfigFile(coreConfigFile, event.getModConfigurationDirectory());				// Needed to enable configLoading.
-		ConfigHandler.registerConfigFile(currentProfileConfig, N2ConfigApi.getFileDirFromID(ModProfileConfigurationDirectoryID));
-		
-		File currentProfileForgeConfigFile = new File(N2ConfigApi.getConfigDir(), "InGameConfigManager" + File.separator + profileName + ".cfg");
-		
-		parseOrLoadConfigFile(event.getSuggestedConfigurationFile(), coreConfigFile, "Default");
-		parseOrLoadConfigFile(currentProfileForgeConfigFile, currentProfileConfig, ModProfileConfigurationDirectoryID);
-		
-		String[] profile = coreConfigFile.getProfiles();
-		profileName = coreConfigFile.getProfileName();
-		
+		coreConfig = new Configuration(event.getSuggestedConfigurationFile());
+		coreConfig.load();
+		String[] profile = coreConfig.get("General", "profiles", new String[0]).getStringList();
+		profileName = coreConfig.get("General", "profileName", "new1").getString();
 		if(profileName.equals(""))
 			profileName = "new1";
 		
@@ -274,30 +179,8 @@ public class InGameConfigManager {
 		if(!profiles.contains(profileName))
 			profiles.add(profileName);
 		
-//		coreConfigFile.writeAllSections();//Not Needed unless changes have been made before this point!
-	}
-	
-	private static void parseOrLoadConfigFile(File forgeConfigFileLocation, ConfigFile configFile, String DirectoryID)
-	{
-		File newFile = forgeConfigFileLocation.getAbsoluteFile();
-		boolean isHere = newFile.exists();
-		
-		if(forgeConfigFileLocation.getAbsoluteFile().exists())		//Check if the Forges' configFile exists.
-		{
-			Configuration coreConfig = new Configuration(forgeConfigFileLocation);
-			coreConfig.load();
-			ConfigParser.parseConfigFile(coreConfig, configFile);
-			
-			if(ConfigHandler.getConfigFileFromName(configFile.getFileName()) == null)
-				ConfigHandler.registerConfigFile(configFile, N2ConfigApi.getFileDirFromID(DirectoryID));
-			forgeConfigFileLocation.deleteOnExit();// If you want to erase parsed ConfigFiles.
-		}
-		else
-		{
-			if(ConfigHandler.getConfigFileFromName(configFile.getFileName()) == null)
-				ConfigHandler.registerConfigFile(configFile, N2ConfigApi.getFileDirFromID(DirectoryID));
-			ConfigHandler.loadAndCheckConfigFile(configFile.getFileName());
-		}
+		coreConfig.save();
+		ModConfigurationDirectory = event.getModConfigurationDirectory();
 	}
 	
 	public static final String guiID = "IGCM";
