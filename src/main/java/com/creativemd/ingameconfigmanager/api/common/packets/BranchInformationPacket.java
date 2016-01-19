@@ -96,7 +96,7 @@ public class BranchInformationPacket extends CreativeCorePacket{
 			if(segment != null)
 				segment.receivePacketInformation(information);
 			else
-				branch.onFailedLoadingSegment(id, information);
+				branch.onFailedLoadingSegment(id, information, i);
 			
 		}
 	}
