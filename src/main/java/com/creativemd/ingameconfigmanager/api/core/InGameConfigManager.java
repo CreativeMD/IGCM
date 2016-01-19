@@ -5,6 +5,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -90,6 +91,7 @@ public class InGameConfigManager {
 	/**Used for loading configs on startup and changing profile **/
 	public static void loadConfig()
 	{
+<<<<<<< HEAD
 		if(!currentProfileConfig.getFileName().substring(0, currentProfileConfig.getFileName().length() - 7).equals(profileName))
 		{
 			currentProfileConfig = new ProfileConfigFile(profileName + "_Config");
@@ -127,18 +129,40 @@ public class InGameConfigManager {
 			currentBranche.onRecieveFrom(isServer, collection);
 			currentBranche.onRecieveFromPost(isServer, collection);
 			logger.info("Loaded " + getCat(currentBranche) + " branch containing " + currentBranche.getConfigSegments().size() + " segments!");
+=======
+		currentProfile = new Configuration(new File(ModConfigurationDirectory, "InGameConfigManager" + File.separator + profileName + ".cfg"));
+		currentProfile.load();
+		for (int i = 0; i < ConfigBranch.branches.size(); i++) {
+			loadConfig(ConfigBranch.branches.get(i), false);
+>>>>>>> bb50868a447dbbd3cd93c434daa06c5fd179bf53
 		}
 	}
 	
+<<<<<<< HEAD
 	/** Load branch without changing profile!*/
 	public static void loadConfig(ConfigBranch branch)
 	{
+=======
+	public static void loadConfig(ConfigBranch branch, boolean full)
+	{
+		if(full)
+			currentProfile.load();
+		
+>>>>>>> bb50868a447dbbd3cd93c434daa06c5fd179bf53
 		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
-		ConfigSegmentCollection collection = new ConfigSegmentCollection(segments);
 		branch.onBeforeReceived(FMLCommonHandler.instance().getEffectiveSide().isServer());
+<<<<<<< HEAD
 		ConfigSectionCollection currentSectionCollection = ((ConfigSectionCollection)currentProfileConfig.getSubSection(getCat(branch)));
 		
 		for(int i = 0 ; i < currentSectionCollection.getSubSectionCount(); i++) // use getAbsoluteSubSectionCount if you use SectionCollections at this level (e.g. nested sectionCollections)
+=======
+		
+		ConfigSegmentCollection collection = new ConfigSegmentCollection(segments);
+		ArrayList<ConfigSegment> newSegments = new ArrayList<>();
+		Set<java.util.Map.Entry<String, Property>> children = currentProfile.getCategory(getCat(branch)).entrySet();
+		int cIndex = 0;
+		for (Map.Entry<String, Property> entry : children)
+>>>>>>> bb50868a447dbbd3cd93c434daa06c5fd179bf53
 		{
 			ConfigSection currentSection = currentSectionCollection.getConfigSectionAtIndex(i + 1); // use getConfigSectionAtAbsoluteIndex for reason described above.
 			ConfigSegment segment = collection.getSegmentByID(currentSection.getSectionName());
@@ -146,6 +170,7 @@ public class InGameConfigManager {
 			
 			if(segment != null)
 				segment.receivePacketInformation(input);
+<<<<<<< HEAD
 			else ConfigBranch.branches.get(i).onFailedLoadingSegment(currentSection.getSectionName(), input);
 		}
 		boolean isServer = FMLCommonHandler.instance().getEffectiveSide().isServer();
@@ -156,6 +181,29 @@ public class InGameConfigManager {
 		logger.info("Loaded " + getCat(branch) + " branch");
 //		currentProfileConfig.writeAllSections();//Only call this if changes have been made to the ConfigFile at this point.
 
+=======
+			}else{
+				ConfigSegment fSegment = branch.onFailedLoadingSegment(entry.getKey(), input, cIndex);
+				if(fSegment != null)
+				{
+					fSegment.receivePacketInformation(input);
+					newSegments.add(fSegment);
+				}
+			}
+			cIndex++;
+		}
+		boolean isServer = FMLCommonHandler.instance().getEffectiveSide().isServer();
+		
+		collection.asList().addAll(newSegments);
+		
+		branch.onRecieveFromPre(isServer, collection);
+		branch.onRecieveFrom(isServer, collection);
+		branch.onRecieveFromPost(isServer, collection);
+		logger.info("Loaded " + getCat(branch) + " branch containing " + branch.getConfigSegments().size() + " segments of " + children.size() + " config entries!");
+		
+		if(full)
+			currentProfile.save();
+>>>>>>> bb50868a447dbbd3cd93c434daa06c5fd179bf53
 	}
 	
 	public static void saveConfig(ConfigBranch branch)

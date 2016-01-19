@@ -97,7 +97,10 @@ public abstract class ConfigBranch{
 	
 	public void onBeforeReceived(boolean isServer) {}
 	
-	public void onFailedLoadingSegment(String id, String input) {}
+	public ConfigSegment onFailedLoadingSegment(String id, String input, int currentIndex)
+	{
+		return null;
+	}
 
 	public boolean doesInputSupportStackSize()
 	{
