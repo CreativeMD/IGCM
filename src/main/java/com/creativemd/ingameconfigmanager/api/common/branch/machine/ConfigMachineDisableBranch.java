@@ -10,6 +10,7 @@ import com.creativemd.creativecore.common.utils.string.StringUtils;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
 import com.creativemd.ingameconfigmanager.api.common.machine.RecipeMachine;
+import com.creativemd.ingameconfigmanager.api.common.segment.BooleanSegment;
 import com.creativemd.ingameconfigmanager.api.common.segment.machine.DisableRecipeSegment;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -20,7 +21,9 @@ public class ConfigMachineDisableBranch extends ConfigBranch{
 	
 	public RecipeMachine machine;
 	public ArrayList allRecipes;
-	public ArrayList disabledRecipes;
+	//public ArrayList disabledRecipes;
+	
+	public boolean disableAll = false;
 	
 	public ConfigMachineDisableBranch(RecipeMachine machine, String name) {
 		super(name);
@@ -40,11 +43,12 @@ public class ConfigMachineDisableBranch extends ConfigBranch{
 	@Override
 	public void loadCore() {
 		allRecipes = machine.getAllExitingRecipes();
-		disabledRecipes = new ArrayList();
+		//disabledRecipes = new ArrayList();
 	}
 
 	@Override
 	public void createConfigSegments() {
+		segments.add(new BooleanSegment("disableAll", "Disable all recipes", false));
 		for (int i = 0; i < allRecipes.size(); i++) {
 			segments.add(new DisableRecipeSegment(recipeToString(allRecipes.get(i)), true, machine, allRecipes.get(i)));
 		}
@@ -81,16 +85,23 @@ public class ConfigMachineDisableBranch extends ConfigBranch{
 	@Override
 	public void onRecieveFrom(boolean isServer, ConfigSegmentCollection collection) {
 		machine.clearRecipeList();
-		disabledRecipes.clear();
-		for (int i = 0; i < collection.asList().size(); i++) {
-			if(collection.asList().get(i) instanceof DisableRecipeSegment)
-			{
-				if(!(Boolean)collection.asList().get(i).value)
-					disabledRecipes.add(((DisableRecipeSegment)collection.asList().get(i)).recipe);
-				else
-					machine.addRecipeToList(((DisableRecipeSegment)collection.asList().get(i)).recipe);
+		//disabledRecipes.clear();
+		
+		disableAll = (Boolean) collection.getSegmentValue("disableAll");
+		
+		if(!disableAll)
+		{
+			for (int i = 1; i < collection.asList().size(); i++) {
+				if(collection.asList().get(i) instanceof DisableRecipeSegment)
+				{
+					//if(!(Boolean)collection.asList().get(i).value)
+						//disabledRecipes.add(((DisableRecipeSegment)collection.asList().get(i)).recipe);
+					if((Boolean)collection.asList().get(i).value)
+						machine.addRecipeToList(((DisableRecipeSegment)collection.asList().get(i)).recipe);
+				}
 			}
 		}
+		
 		if(!machine.sendingUpdate && machine.hasAddedBranch())
 		{
 			machine.sendingUpdate = true;
