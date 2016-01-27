@@ -2,24 +2,16 @@ package com.creativemd.ingameconfigmanager.api.client.gui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Stack;
 
 import javax.vecmath.Vector4d;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.oredict.OreDictionary;
 
 import com.creativemd.creativecore.client.rendering.RenderHelper2D;
 import com.creativemd.creativecore.common.gui.SubGui;
 import com.creativemd.creativecore.common.gui.controls.GuiButton;
 import com.creativemd.creativecore.common.gui.controls.GuiComboBox;
-import com.creativemd.creativecore.common.gui.controls.GuiControl;
+import com.creativemd.creativecore.common.gui.controls.GuiInvSelector;
 import com.creativemd.creativecore.common.gui.controls.GuiLabel;
+import com.creativemd.creativecore.common.gui.controls.GuiStackSelector;
 import com.creativemd.creativecore.common.gui.controls.GuiStateButton;
 import com.creativemd.creativecore.common.gui.controls.GuiTextfield;
 import com.creativemd.creativecore.common.gui.event.ControlChangedEvent;
@@ -32,9 +24,14 @@ import com.creativemd.creativecore.common.utils.stack.StackInfoItem;
 import com.creativemd.creativecore.common.utils.stack.StackInfoItemStack;
 import com.creativemd.creativecore.common.utils.stack.StackInfoMaterial;
 import com.creativemd.creativecore.common.utils.stack.StackInfoOre;
-import com.creativemd.ingameconfigmanager.api.common.container.controls.GuiInvSelector;
-import com.creativemd.ingameconfigmanager.api.common.container.controls.GuiStackSelector;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class SubGuiFullItemDialog extends SubGui{
 	

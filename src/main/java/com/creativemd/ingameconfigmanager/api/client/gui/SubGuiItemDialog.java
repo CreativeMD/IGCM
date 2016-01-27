@@ -1,25 +1,20 @@
 package com.creativemd.ingameconfigmanager.api.client.gui;
 
-import java.util.ArrayList;
-
 import javax.vecmath.Vector4d;
 
 import com.creativemd.creativecore.client.rendering.RenderHelper2D;
 import com.creativemd.creativecore.common.gui.SubGui;
 import com.creativemd.creativecore.common.gui.controls.GuiButton;
-import com.creativemd.creativecore.common.gui.controls.GuiComboBox;
+import com.creativemd.creativecore.common.gui.controls.GuiInvSelector;
 import com.creativemd.creativecore.common.gui.controls.GuiLabel;
 import com.creativemd.creativecore.common.gui.controls.GuiTextfield;
 import com.creativemd.creativecore.common.gui.event.ControlChangedEvent;
 import com.creativemd.creativecore.common.gui.event.ControlClickEvent;
-import com.creativemd.creativecore.common.utils.stack.StackInfoItemStack;
-import com.creativemd.ingameconfigmanager.api.common.container.controls.GuiInvSelector;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class SubGuiItemDialog extends SubGui{
 	
