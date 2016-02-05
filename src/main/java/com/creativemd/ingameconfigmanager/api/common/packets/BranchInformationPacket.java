@@ -95,8 +95,14 @@ public class BranchInformationPacket extends CreativeCorePacket{
 			String information = readString(buf);
 			if(segment != null)
 				segment.receivePacketInformation(information);
-			else
-				branch.onFailedLoadingSegment(id, information, i);
+			else{
+				ConfigSegment fSegment = branch.onFailedLoadingSegment(id, information, i);
+				if(fSegment != null)
+				{
+					fSegment.receivePacketInformation(information);
+					collection.asList().add(fSegment);
+				}
+			}
 			
 		}
 	}
