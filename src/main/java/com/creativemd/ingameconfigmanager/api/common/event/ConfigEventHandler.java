@@ -77,7 +77,10 @@ public class ConfigEventHandler
 	public void onPlayerJoin(PlayerLoggedInEvent event)
 	{
 		if(FMLCommonHandler.instance().getEffectiveSide().isServer())
+		{
 			InGameConfigManager.sendAllUpdatePackets(event.player);
+			System.out.println("Send player update packet to " + event.player.getCommandSenderName() + "!");
+		}
 	}
 	
 	@SubscribeEvent
