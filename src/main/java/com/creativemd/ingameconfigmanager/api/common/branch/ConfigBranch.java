@@ -97,7 +97,7 @@ public abstract class ConfigBranch{
 	
 	public void onBeforeReceived(boolean isServer) {}
 	
-	public ConfigSegment onFailedLoadingSegment(String id, String input, int currentIndex)
+	public ConfigSegment onFailedLoadingSegment(ConfigSegmentCollection collection, String id, String input, int currentIndex)
 	{
 		return null;
 	}

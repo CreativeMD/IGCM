@@ -106,7 +106,7 @@ public class InGameConfigManager {
 			{
 				segment.receivePacketInformation(input);
 			}else{
-				ConfigSegment fSegment = branch.onFailedLoadingSegment(entry.getKey(), input, cIndex);
+				ConfigSegment fSegment = branch.onFailedLoadingSegment(collection, entry.getKey(), input, cIndex);
 				if(fSegment != null)
 				{
 					fSegment.receivePacketInformation(input);
@@ -333,12 +333,18 @@ public class InGameConfigManager {
 	{
 		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
 		int amount = (int) Math.ceil((double)segments.size()/(double)maxSegments);
+		ArrayList<CreativeCorePacket> packets = new ArrayList<>();
 		for (int i = 0; i < amount; i++) {
 			CreativeCorePacket packet = new BranchInformationPacket(branch, i*maxSegments, Math.min(i*maxSegments+maxSegments, segments.size()));
-			if(FMLCommonHandler.instance().getEffectiveSide().isClient())
-				PacketHandler.sendPacketToServer(packet);
-			else
-				PacketHandler.sendPacketToAllPlayers(packet);
+			packets.add(packet);
 		}
+	
+		for (int i = 0; i < packets.size(); i++) {
+			if(FMLCommonHandler.instance().getEffectiveSide().isClient())
+				PacketHandler.sendPacketToServer(packets.get(i));
+			else
+				PacketHandler.sendPacketToAllPlayers(packets.get(i));
+		}
+		
 	}
 }

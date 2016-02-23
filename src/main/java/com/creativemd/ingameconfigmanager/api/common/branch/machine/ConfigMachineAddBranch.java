@@ -101,10 +101,10 @@ public class ConfigMachineAddBranch extends ConfigBranch{
 	}
 	
 	@Override
-	public ConfigSegment onFailedLoadingSegment(String id, String input, int currentIndex)
+	public ConfigSegment onFailedLoadingSegment(ConfigSegmentCollection collection, String id, String input, int currentIndex)
 	{
 		//int index = findNextId(new ConfigSegmentCollection(segments));
-		AddRecipeSegment segment = new AddRecipeSegment("" + currentIndex, machine, null);
+		AddRecipeSegment segment = new AddRecipeSegment("" + findNextId(collection), machine, null);
 		return segment;
 	}
 	

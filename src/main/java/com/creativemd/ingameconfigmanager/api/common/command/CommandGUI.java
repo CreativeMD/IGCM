@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,13 +19,7 @@ import com.creativemd.ingameconfigmanager.api.core.TabRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
-public class CommandGUI implements ICommand {
-
-	@Override
-	public int compareTo(Object o) {
-		return 0;
-	}
-
+public class CommandGUI extends CommandBase {
 	@Override
 	public String getCommandName() {
 		return "ConfigManager";
@@ -34,12 +29,7 @@ public class CommandGUI implements ICommand {
 	public String getCommandUsage(ICommandSender icommandsender) {
 		return "/ConfigManager";
 	}
-
-	@Override
-	public List getCommandAliases() {
-		return null;
-	}
-
+	
 	@Override
 	public void processCommand(ICommandSender icommandsender, String[] astring) {
 		if(icommandsender instanceof EntityPlayer)
@@ -48,26 +38,4 @@ public class CommandGUI implements ICommand {
 			InGameConfigManager.openModsGui(player);
 		}
 	}
-
-	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender icommandsender) {
-		List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
-		for (int i = 0; i < players.size(); i++) {
-			if(((EntityPlayerMP)players.get(i)).getCommandSenderName().equals(icommandsender.getCommandSenderName()))
-				return ((EntityPlayerMP)players.get(i)).canCommandSenderUseCommand(1, getCommandName());
-		}
-		return false;
-	}
-
-	@Override
-	public List addTabCompletionOptions(ICommandSender icommandsender,
-			String[] astring) {
-		return null;
-	}
-
-	@Override
-	public boolean isUsernameIndex(String[] astring, int i) {
-		return false;
-	}
-
 }
