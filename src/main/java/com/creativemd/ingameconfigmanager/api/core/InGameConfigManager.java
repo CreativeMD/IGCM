@@ -95,7 +95,7 @@ public class InGameConfigManager {
 		branch.onBeforeReceived(FMLCommonHandler.instance().getEffectiveSide().isServer());
 		
 		ConfigSegmentCollection collection = new ConfigSegmentCollection(segments);
-		ArrayList<ConfigSegment> newSegments = new ArrayList<>();
+		//ArrayList<ConfigSegment> newSegments = new ArrayList<>();
 		Set<java.util.Map.Entry<String, Property>> children = currentProfile.getCategory(getCat(branch)).entrySet();
 		int cIndex = 0;
 		for (Map.Entry<String, Property> entry : children)
@@ -110,14 +110,15 @@ public class InGameConfigManager {
 				if(fSegment != null)
 				{
 					fSegment.receivePacketInformation(input);
-					newSegments.add(fSegment);
+					collection.asList().add(fSegment);
+					//newSegments.add(fSegment);
 				}
 			}
 			cIndex++;
 		}
 		boolean isServer = FMLCommonHandler.instance().getEffectiveSide().isServer();
 		
-		collection.asList().addAll(newSegments);
+		//collection.asList().addAll(newSegments);
 		
 		branch.onRecieveFromPre(isServer, collection);
 		branch.onRecieveFrom(isServer, collection);
