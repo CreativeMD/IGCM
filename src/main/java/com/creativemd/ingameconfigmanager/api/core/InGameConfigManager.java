@@ -95,12 +95,13 @@ public class InGameConfigManager {
 		branch.onBeforeReceived(FMLCommonHandler.instance().getEffectiveSide().isServer());
 		
 		ConfigSegmentCollection collection = new ConfigSegmentCollection(segments);
+		ConfigSegmentCollection collectionOld = new ConfigSegmentCollection(new ArrayList<>(segments));
 		//ArrayList<ConfigSegment> newSegments = new ArrayList<>();
 		Set<java.util.Map.Entry<String, Property>> children = currentProfile.getCategory(getCat(branch)).entrySet();
 		int cIndex = 0;
 		for (Map.Entry<String, Property> entry : children)
 		{
-			ConfigSegment segment = collection.getSegmentByID(entry.getKey());
+			ConfigSegment segment = collectionOld.getSegmentByID(entry.getKey());
 			String input = entry.getValue().getString();
 			if(segment != null)
 			{

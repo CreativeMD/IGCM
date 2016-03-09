@@ -88,10 +88,11 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		if(firstPacket)
 			branch.onBeforeReceived(FMLCommonHandler.instance().getEffectiveSide().isServer());
 		collection = new ConfigSegmentCollection(branch.getConfigSegments());
+		ConfigSegmentCollection collectionOld = new ConfigSegmentCollection(new ArrayList<>(branch.getConfigSegments()));
 		
 		for (int i = 0; i < count; i++) {
 			String id = readString(buf);
-			ConfigSegment segment = collection.getSegmentByID(id);
+			ConfigSegment segment = collectionOld.getSegmentByID(id);
 			String information = readString(buf);
 			if(segment != null)
 				segment.receivePacketInformation(information);
