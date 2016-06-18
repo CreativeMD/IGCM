@@ -38,7 +38,7 @@ public class SelectSegment extends TitleSegment<String>{
 	public ArrayList<GuiControl> createGuiControls(SubGui gui, int x, int y,
 			int maxWidth) {
 		ArrayList<GuiControl> controls = super.createGuiControls(gui, x, y, maxWidth);
-		GuiComboBox box = new GuiComboBox(title, x+maxWidth-90, y, 80, new ArrayList<String>(Arrays.asList(options)));
+		GuiComboBox box = new GuiComboBox(title, x+maxWidth-100, y, 90, new ArrayList<String>(Arrays.asList(options)));
 		box.caption = value; 
 		controls.add(box);
 		return controls;
