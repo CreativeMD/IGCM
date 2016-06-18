@@ -1,22 +1,18 @@
 package com.creativemd.ingameconfigmanager.api.common.segment.machine;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import java.util.ArrayList;
 
-import com.creativemd.creativecore.common.gui.SubGui;
-import com.creativemd.creativecore.common.gui.controls.GuiControl;
-import com.creativemd.creativecore.common.gui.controls.GuiStateButton;
-import com.creativemd.creativecore.common.recipe.entry.BetterShapelessRecipe;
 import com.creativemd.creativecore.common.utils.stack.StackInfo;
 import com.creativemd.creativecore.common.utils.string.StringUtils;
+import com.creativemd.creativecore.gui.GuiControl;
+import com.creativemd.creativecore.gui.container.SubGui;
 import com.creativemd.ingameconfigmanager.api.common.container.controls.GuiButtonRemoveRecipe;
 import com.creativemd.ingameconfigmanager.api.common.machine.RecipeMachine;
-import com.ibm.icu.util.Output;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class AddRecipeSegment extends RecipeSegment<Object>{
 
@@ -43,7 +39,7 @@ public class AddRecipeSegment extends RecipeSegment<Object>{
 	@SideOnly(Side.CLIENT)
 	public ArrayList<GuiControl> createGuiControls(SubGui gui, int x, int y, int maxWidth) {
 		ArrayList<GuiControl> controls = super.createGuiControls(gui, x, y, maxWidth);
-		controls.add(new GuiButtonRemoveRecipe("Remove", x+maxWidth-80, y+30, 70, 20, this));
+		controls.add(new GuiButtonRemoveRecipe("Remove", x+maxWidth-80, y+30, 70, 14, this));
 		return controls;
 	}
 	

@@ -2,23 +2,20 @@ package com.creativemd.ingameconfigmanager.api.common.packets;
 
 import java.util.ArrayList;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-
-import com.creativemd.creativecore.common.container.ContainerSub;
-import com.creativemd.creativecore.common.gui.GuiContainerSub;
-import com.creativemd.creativecore.common.gui.controls.GuiScrollBox;
 import com.creativemd.creativecore.common.packet.CreativeCorePacket;
+import com.creativemd.creativecore.gui.controls.gui.GuiScrollBox;
+import com.creativemd.creativecore.gui.mc.ContainerSub;
 import com.creativemd.ingameconfigmanager.api.client.gui.SubGuiBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
 import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BranchInformationPacket extends CreativeCorePacket{
 	
@@ -133,9 +130,9 @@ public class BranchInformationPacket extends CreativeCorePacket{
 				SubGuiBranch gui = (SubGuiBranch) ((ContainerSub) player.openContainer).gui.getTopLayer();
 				if(gui.branch == branch)
 				{
-					int scrolled = ((GuiScrollBox) gui.getControl("scrollbox")).scrolled;
+					int scrolled = ((GuiScrollBox) gui.get("scrollbox")).scrolled;
 					gui.createSegmentControls();
-					GuiScrollBox box = (GuiScrollBox) gui.getControl("scrollbox");
+					GuiScrollBox box = (GuiScrollBox) gui.get("scrollbox");
 					box.scrolled = scrolled;
 					if(box.scrolled > box.maxScroll)
 						box.scrolled = box.maxScroll;

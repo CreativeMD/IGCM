@@ -1,17 +1,15 @@
 package com.creativemd.ingameconfigmanager.api.common.packets;
 
-import io.netty.buffer.ByteBuf;
-
-import java.util.ArrayList;
 import com.creativemd.creativecore.common.packet.CreativeCorePacket;
 import com.creativemd.creativecore.common.packet.PacketHandler;
 import com.creativemd.ingameconfigmanager.api.common.event.ConfigEventHandler;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class CraftResultPacket extends CreativeCorePacket{
 	

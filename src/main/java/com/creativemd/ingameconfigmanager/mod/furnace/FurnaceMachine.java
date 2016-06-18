@@ -2,18 +2,8 @@ package com.creativemd.ingameconfigmanager.mod.furnace;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-import com.creativemd.creativecore.client.avatar.Avatar;
-import com.creativemd.creativecore.client.avatar.AvatarItemStack;
-import com.creativemd.creativecore.common.container.slot.ContainerControl;
-import com.creativemd.creativecore.common.gui.controls.GuiControl;
-import com.creativemd.creativecore.common.gui.controls.GuiLabel;
-import com.creativemd.creativecore.common.gui.controls.GuiStateButton;
-import com.creativemd.creativecore.common.gui.controls.GuiTextfield;
-import com.creativemd.creativecore.common.recipe.BetterShapedRecipe;
-import com.creativemd.creativecore.common.recipe.GridRecipe;
-import com.creativemd.creativecore.common.recipe.Recipe;
-import com.creativemd.creativecore.common.recipe.entry.BetterShapelessRecipe;
 import com.creativemd.creativecore.common.utils.stack.StackInfo;
 import com.creativemd.creativecore.common.utils.stack.StackInfoBlock;
 import com.creativemd.creativecore.common.utils.stack.StackInfoFuel;
@@ -21,20 +11,20 @@ import com.creativemd.creativecore.common.utils.stack.StackInfoItem;
 import com.creativemd.creativecore.common.utils.stack.StackInfoItemStack;
 import com.creativemd.creativecore.common.utils.stack.StackInfoMaterial;
 import com.creativemd.creativecore.common.utils.stack.StackInfoOre;
+import com.creativemd.creativecore.gui.ContainerControl;
+import com.creativemd.creativecore.gui.GuiControl;
+import com.creativemd.creativecore.gui.controls.gui.GuiLabel;
+import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
 import com.creativemd.ingameconfigmanager.api.common.machine.RecipeMachine;
 import com.creativemd.ingameconfigmanager.api.common.segment.machine.AddRecipeSegment;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.oredict.OreDictionary;
@@ -67,33 +57,33 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 		if(info != null && output != null)
 		{
 			if(info instanceof StackInfoBlock)
-				FurnaceRecipes.smelting().func_151393_a(((StackInfoBlock) info).block, output, recipe.experience);
+				FurnaceRecipes.instance().addSmeltingRecipeForBlock(((StackInfoBlock) info).block, output, recipe.experience);
 			if(info instanceof StackInfoItem)
-				FurnaceRecipes.smelting().func_151396_a(((StackInfoItem) info).item, output, recipe.experience);
+				FurnaceRecipes.instance().addSmelting(((StackInfoItem) info).item, output, recipe.experience);
 			if(info instanceof StackInfoItemStack)
-				FurnaceRecipes.smelting().func_151394_a(((StackInfoItemStack) info).stack.copy(), output, recipe.experience);
+				FurnaceRecipes.instance().addSmeltingRecipe(((StackInfoItemStack) info).stack.copy(), output, recipe.experience);
 			if(info instanceof StackInfoOre)
 			{
-				ArrayList<ItemStack> stacks = OreDictionary.getOres(((StackInfoOre) info).ore);
+				List<ItemStack> stacks = OreDictionary.getOres(((StackInfoOre) info).ore);
 				for (int i = 0; i < stacks.size(); i++) {
-					FurnaceRecipes.smelting().func_151394_a(stacks.get(i), output, 0.1F);
+					FurnaceRecipes.instance().addSmeltingRecipe(stacks.get(i), output, 0.1F);
 				}
 			}
 			if(info instanceof StackInfoMaterial)
 			{
 				ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
-				for (Object name : Block.blockRegistry.getKeys()) {
+				for (Object name : Block.REGISTRY.getKeys()) {
 					Block block = Block.getBlockFromName((String) name);
-					if(block != null && block.getMaterial() == ((StackInfoMaterial) info).material)
+					if(block != null && block.getMaterial(null) == ((StackInfoMaterial) info).material)
 					{
-						FurnaceRecipes.smelting().func_151393_a(block, output, recipe.experience);
+						FurnaceRecipes.instance().addSmeltingRecipeForBlock(block, output, recipe.experience);
 					}
 				}
 			}
 			if(info instanceof StackInfoFuel)
 			{
 				ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
-				Iterator iterator = Item.itemRegistry.iterator();
+				Iterator iterator = Item.REGISTRY.iterator();
 
 		        while (iterator.hasNext())
 		        {
@@ -107,7 +97,7 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 		        
 				for (int i = 0; i < stacks.size(); i++) {
 					if(TileEntityFurnace.isItemFuel(stacks.get(i)))
-						FurnaceRecipes.smelting().func_151394_a(stacks.get(i), output, 0.1F);
+						FurnaceRecipes.instance().addSmeltingRecipe(stacks.get(i), output, 0.1F);
 				}
 			}
 		}
@@ -115,7 +105,7 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 
 	@Override
 	public void clearRecipeList() {
-		FurnaceRecipes.smelting().getSmeltingList().clear();
+		FurnaceRecipes.instance().getSmeltingList().clear();
 	}
 
 	@Override
@@ -126,14 +116,14 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 	@Override
 	public ArrayList<FurnaceRecipe> getAllExitingRecipes() {
 		ArrayList<FurnaceRecipe> recipes = new ArrayList<FurnaceRecipe>();
-		Object[] array = FurnaceRecipes.smelting().getSmeltingList().keySet().toArray();
+		Object[] array = FurnaceRecipes.instance().getSmeltingList().keySet().toArray();
 		for(int zahl = 0; zahl < array.length; zahl++)
 		{
 			if(array[zahl] != null)
 			{
-				Object object = FurnaceRecipes.smelting().getSmeltingList().get(array[zahl]);
+				Object object = FurnaceRecipes.instance().getSmeltingList().get(array[zahl]);
 				if(object instanceof ItemStack && ((ItemStack) object).getItem() != null)
-					recipes.add(new FurnaceRecipe((ItemStack)object, array[zahl], FurnaceRecipes.smelting().func_151398_b((ItemStack)object)));
+					recipes.add(new FurnaceRecipe((ItemStack)object, array[zahl], FurnaceRecipes.instance().getSmeltingExperience((ItemStack)object)));
 			}
 		}
 		return recipes;
@@ -159,7 +149,7 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 
 	@Override
 	public ItemStack getAvatar() {
-		return new ItemStack(Blocks.furnace);
+		return new ItemStack(Blocks.FURNACE);
 	}
 	
 	@Override

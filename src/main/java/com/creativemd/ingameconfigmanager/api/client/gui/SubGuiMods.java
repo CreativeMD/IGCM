@@ -2,17 +2,22 @@ package com.creativemd.ingameconfigmanager.api.client.gui;
 
 import java.util.ArrayList;
 
-import net.minecraft.client.gui.FontRenderer;
-
-import com.creativemd.creativecore.common.gui.SubGui;
-import com.creativemd.creativecore.common.gui.controls.GuiAvatarButton;
-import com.creativemd.creativecore.common.gui.controls.GuiButton;
-import com.creativemd.creativecore.common.gui.controls.GuiScrollBox;
-import com.creativemd.creativecore.common.gui.event.ControlClickEvent;
+import com.creativemd.creativecore.client.avatar.AvatarItemStack;
+import com.creativemd.creativecore.common.utils.ColorUtils;
+import com.creativemd.creativecore.gui.container.SubGui;
+import com.creativemd.creativecore.gui.controls.gui.GuiAvatarButton;
+import com.creativemd.creativecore.gui.controls.gui.GuiAvatarLabel;
+import com.creativemd.creativecore.gui.controls.gui.GuiButton;
+import com.creativemd.creativecore.gui.controls.gui.GuiScrollBox;
+import com.creativemd.creativecore.gui.event.gui.GuiControlClickEvent;
 import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 import com.creativemd.ingameconfigmanager.api.core.TabRegistry;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
+
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 
 public class SubGuiMods extends SubGui{
 	
@@ -22,31 +27,26 @@ public class SubGuiMods extends SubGui{
 	
 	@Override
 	public void createControls() {
-		GuiScrollBox box = new GuiScrollBox("scrollbox", container.player, 5, 5, 240, 220);
+		GuiScrollBox box = new GuiScrollBox("scrollbox", 0, 0, 245, 220);
 		ArrayList<ModTab> tabs = TabRegistry.getTabs();
 		for (int i = 0; i < tabs.size(); i++) {
-			box.addControl(new GuiAvatarButton(tabs.get(i).title, 5, 5+i*20, 155, 20, i, tabs.get(i).avatar));
+			box.addControl(new GuiAvatarButton("" + i, tabs.get(i).title, 5, 5+i*24, 155, 16, tabs.get(i).avatar) {
+				@Override
+				public void onClicked(int x, int y, int button)
+				{
+					InGameConfigManager.openModOverviewGui(container.player, Integer.parseInt(this.name));
+				}
+			});
 		}
 		
 		controls.add(box);
-		controls.add(new GuiButton("Profiles", 5, 226, 50, 20));
-	}
-	
-	@CustomEventSubscribe
-	public void onButtonClicked(ControlClickEvent event)
-	{
-		if(event.source instanceof GuiButton)
-		{
-			if(((GuiButton)event.source).caption.equals("Profiles"))
+		controls.add(new GuiButton("Profiles", 0, 228, 50) {
+			@Override
+			public void onClicked(int x, int y, int button)
+			{
 				InGameConfigManager.openProfileGui(container.player);
-			else
-				InGameConfigManager.openModOverviewGui(container.player, ((GuiButton)event.source).id);
-		}
-	}
-	
-	@Override
-	public void drawOverlay(FontRenderer fontRenderer) {
-		
+			}
+		});
 	}
 
 }

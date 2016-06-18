@@ -3,37 +3,26 @@ package com.creativemd.ingameconfigmanager.mod.workbench;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.creativemd.creativecore.common.recipe.BetterShapedRecipe;
+import com.creativemd.creativecore.common.recipe.BetterShapelessRecipe;
+import com.creativemd.creativecore.common.recipe.RecipeLoader;
+import com.creativemd.creativecore.common.utils.stack.StackInfo;
+import com.creativemd.creativecore.gui.ContainerControl;
+import com.creativemd.creativecore.gui.GuiControl;
+import com.creativemd.creativecore.gui.controls.gui.GuiStateButton;
+import com.creativemd.ingameconfigmanager.api.common.machine.RecipeMachine;
+import com.creativemd.ingameconfigmanager.api.common.segment.machine.AddRecipeSegment;
+import com.creativemd.ingameconfigmanager.api.tab.ModTab;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-
-import com.creativemd.creativecore.client.avatar.Avatar;
-import com.creativemd.creativecore.client.avatar.AvatarItemStack;
-import com.creativemd.creativecore.common.container.slot.ContainerControl;
-import com.creativemd.creativecore.common.gui.controls.GuiButton;
-import com.creativemd.creativecore.common.gui.controls.GuiControl;
-import com.creativemd.creativecore.common.gui.controls.GuiStateButton;
-import com.creativemd.creativecore.common.recipe.BetterShapedRecipe;
-import com.creativemd.creativecore.common.recipe.IRecipeInfo;
-import com.creativemd.creativecore.common.recipe.RecipeLoader;
-import com.creativemd.creativecore.common.recipe.entry.BetterShapelessRecipe;
-import com.creativemd.creativecore.common.utils.stack.StackInfo;
-import com.creativemd.creativecore.common.utils.stack.StackInfoFuel;
-import com.creativemd.ingameconfigmanager.api.common.machine.RecipeMachine;
-import com.creativemd.ingameconfigmanager.api.common.segment.machine.AddRecipeSegment;
-import com.creativemd.ingameconfigmanager.api.common.segment.machine.RecipeSegment;
-import com.creativemd.ingameconfigmanager.api.tab.ModTab;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 	
@@ -49,7 +38,7 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack getAvatar() {
-		return new ItemStack(Blocks.crafting_table);
+		return new ItemStack(Blocks.CRAFTING_TABLE);
 	}
 
 	@Override
@@ -224,7 +213,7 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 	{
 		if(isAdded)
 		{
-			guiControls.add(new GuiStateButton("type", recipe instanceof BetterShapelessRecipe ? 1 : 0, x+maxWidth-80, y, 70, 20, "Shaped", "Shapeless"));
+			guiControls.add(new GuiStateButton("type", recipe instanceof BetterShapelessRecipe ? 1 : 0, x+maxWidth-80, y, 70, 14, "Shaped", "Shapeless"));
 		}
 	}
 

@@ -2,24 +2,18 @@ package com.creativemd.ingameconfigmanager.api.common.segment.machine;
 
 import java.util.ArrayList;
 
+import com.creativemd.creativecore.gui.GuiControl;
+import com.creativemd.creativecore.gui.container.SubGui;
+import com.creativemd.creativecore.gui.controls.gui.GuiButton;
+import com.creativemd.creativecore.gui.controls.gui.GuiStateButton;
+import com.creativemd.ingameconfigmanager.api.common.machine.RecipeMachine;
+
 import net.minecraft.block.Block;
-import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-
-import com.creativemd.creativecore.common.container.SubContainer;
-import com.creativemd.creativecore.common.container.slot.ContainerControl;
-import com.creativemd.creativecore.common.container.slot.SlotControlNoSync;
-import com.creativemd.creativecore.common.container.slot.SlotPreview;
-import com.creativemd.creativecore.common.gui.SubGui;
-import com.creativemd.creativecore.common.gui.controls.GuiButton;
-import com.creativemd.creativecore.common.gui.controls.GuiControl;
-import com.creativemd.creativecore.common.gui.controls.GuiStateButton;
-import com.creativemd.ingameconfigmanager.api.common.machine.RecipeMachine;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class DisableRecipeSegment extends RecipeSegment<Boolean>{
 
@@ -31,7 +25,7 @@ public class DisableRecipeSegment extends RecipeSegment<Boolean>{
 	public void addSubSegments() {
 		ItemStack[] items = new ItemStack[machine.getWidth()*machine.getHeight()];
 		machine.fillGrid(items, recipe);
-		addSubSegment(new GridSegment("grid", items, machine).setOffset(30, 5));
+		addSubSegment(new GridSegment("grid", items, machine).setOffset(30, 0));
 		addSubSegment(new GridSegment("result", machine.getOutput(recipe), machine).setOffset(130, 5+machine.getHeight()/2*18));
 	}
 	
@@ -39,7 +33,7 @@ public class DisableRecipeSegment extends RecipeSegment<Boolean>{
 	@SideOnly(Side.CLIENT)
 	public ArrayList<GuiControl> createGuiControls(SubGui gui, int x, int y, int maxWidth) {
 		ArrayList<GuiControl> controls = super.createGuiControls(gui, x, y, maxWidth);
-		controls.add(new GuiStateButton("Enabled", value ? 0 : 1, x+150, y+20, 50, 20, "Enabled", "Disabled"));
+		controls.add(new GuiStateButton("Enabled", value ? 0 : 1, x+150, y+20, 50, 14, "Enabled", "Disabled"));
 		return controls;		
 	}
 
@@ -66,10 +60,10 @@ public class DisableRecipeSegment extends RecipeSegment<Boolean>{
 		for (int i = 0; i < items.length; i++) {
 			if(items[i] != null)
 				if(items[i].getItem() instanceof ItemBlock)
-					if(Block.blockRegistry.getNameForObject(Block.getBlockFromItem(items[i].getItem())).toLowerCase().contains(search))
+					if(Block.REGISTRY.getNameForObject(Block.getBlockFromItem(items[i].getItem())).toString().toLowerCase().contains(search))
 						return true;
 				else
-					if(Item.itemRegistry.getNameForObject(items[i].getItem()).toLowerCase().contains(search))
+					if(Item.REGISTRY.getNameForObject(items[i].getItem()).toString().toLowerCase().contains(search))
 						return true;
 		}
 		

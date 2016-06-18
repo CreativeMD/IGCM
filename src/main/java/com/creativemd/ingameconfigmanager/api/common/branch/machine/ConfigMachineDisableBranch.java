@@ -2,8 +2,6 @@ package com.creativemd.ingameconfigmanager.api.common.branch.machine;
 
 import java.util.ArrayList;
 
-import net.minecraft.item.ItemStack;
-
 import com.creativemd.creativecore.client.avatar.Avatar;
 import com.creativemd.creativecore.client.avatar.AvatarItemStack;
 import com.creativemd.creativecore.common.utils.string.StringUtils;
@@ -13,9 +11,10 @@ import com.creativemd.ingameconfigmanager.api.common.machine.RecipeMachine;
 import com.creativemd.ingameconfigmanager.api.common.segment.BooleanSegment;
 import com.creativemd.ingameconfigmanager.api.common.segment.machine.DisableRecipeSegment;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ConfigMachineDisableBranch extends ConfigBranch{
 	

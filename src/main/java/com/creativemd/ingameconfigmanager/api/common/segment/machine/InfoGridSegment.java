@@ -2,20 +2,17 @@ package com.creativemd.ingameconfigmanager.api.common.segment.machine;
 
 import java.util.ArrayList;
 
-import com.creativemd.creativecore.common.container.SubContainer;
-import com.creativemd.creativecore.common.container.slot.ContainerControl;
-import com.creativemd.creativecore.common.gui.SubGui;
-import com.creativemd.creativecore.common.gui.controls.GuiControl;
 import com.creativemd.creativecore.common.utils.stack.StackInfo;
-import com.creativemd.creativecore.common.utils.stack.StackInfoFuel;
 import com.creativemd.creativecore.common.utils.string.StringUtils;
+import com.creativemd.creativecore.gui.ContainerControl;
+import com.creativemd.creativecore.gui.GuiControl;
+import com.creativemd.creativecore.gui.container.SubContainer;
+import com.creativemd.creativecore.gui.container.SubGui;
 import com.creativemd.ingameconfigmanager.api.common.container.controls.InfoSlotControl;
-import com.creativemd.ingameconfigmanager.api.common.machine.RecipeMachine;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class InfoGridSegment extends ConfigSegment<StackInfo[]>{
 	
@@ -35,8 +32,7 @@ public class InfoGridSegment extends ConfigSegment<StackInfo[]>{
 	}
 
 	@Override
-	public ArrayList<ContainerControl> createContainerControls(
-			SubContainer gui, int x, int y, int maxWidth) {
+	public ArrayList<ContainerControl> createContainerControls(int x, int y, int maxWidth) {
 		ArrayList<ContainerControl> slots = new ArrayList<ContainerControl>();
 		if(value == null)
 			value = new StackInfo[parent.machine.getWidth()*parent.machine.getHeight()];

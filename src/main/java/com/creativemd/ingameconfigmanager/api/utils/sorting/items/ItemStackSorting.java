@@ -18,7 +18,7 @@ public class ItemStackSorting extends ItemSorting {
 		super(stack.getItem());
 		this.damage = stack.getItemDamage();
 		this.NeedNBT = NeedNBT;
-		this.nbt = stack.stackTagCompound;
+		this.nbt = stack.getTagCompound();
 	}
 
 	@Override
@@ -29,9 +29,9 @@ public class ItemStackSorting extends ItemSorting {
 				if(NeedNBT)
 				{
 					if(nbt == null)
-						return stack.stackTagCompound == nbt;
-					else if(stack.stackTagCompound != null)
-						return nbt.equals(stack.stackTagCompound);
+						return stack.getTagCompound() == nbt;
+					else if(stack.hasTagCompound())
+						return nbt.equals(stack.getTagCompound());
 				}else
 					return true;
 		}

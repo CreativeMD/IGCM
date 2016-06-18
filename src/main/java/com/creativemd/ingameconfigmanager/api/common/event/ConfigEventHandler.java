@@ -1,14 +1,15 @@
 package com.creativemd.ingameconfigmanager.api.common.event;
 
-/*
- * Content
- * - IconRegistryEvents
- * - MouseEvents
- * - KeyboardEvents
- */
-
-import java.awt.Toolkit;
 import java.util.ArrayList;
+
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+
+import com.creativemd.creativecore.common.packet.PacketHandler;
+import com.creativemd.creativecore.gui.opener.GuiHandler;
+import com.creativemd.ingameconfigmanager.api.common.packets.CraftResultPacket;
+import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.mod.workbench.WorkbenchSwitchHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockWorkbench;
@@ -16,57 +17,22 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerOpenContainerEvent;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-
-import com.creativemd.creativecore.client.avatar.AvatarIcon;
-import com.creativemd.creativecore.common.gui.GuiHandler;
-import com.creativemd.creativecore.common.packet.PacketHandler;
-import com.creativemd.ingameconfigmanager.api.common.packets.CraftResultPacket;
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
-import com.creativemd.ingameconfigmanager.mod.workbench.WorkbenchSwitchHelper;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ConfigEventHandler
 {
-	//////////////////////////////
-	/*
-	 * IconRegistryEvents
-	 */
-	//////////////////////////////
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public void onStitch(TextureStitchEvent.Pre event)
-	{
-		ArrayList<AvatarIcon> iconList = AvatarIcon.getIconList();
-		
-		for(int i = 0; i < iconList.size(); i++)
-		{
-			String iconPath = iconList.get(i).iconPath;
-			if((iconList.get(i).isItem && event.map.getTextureType() == 1) || (!iconList.get(i).isItem && event.map.getTextureType() == 0))
-			{
-				event.map.registerIcon(iconPath);
-			}
-		}
-	}
 	
 	//////////////////////////////
 	/*
@@ -79,25 +45,25 @@ public class ConfigEventHandler
 		if(FMLCommonHandler.instance().getEffectiveSide().isServer())
 		{
 			InGameConfigManager.sendAllUpdatePackets(event.player);
-			System.out.println("Send player update packet to " + event.player.getCommandSenderName() + "!");
+			System.out.println("Send player update packet to " + event.player.getName() + "!");
 		}
 	}
 	
 	@SubscribeEvent
-	public void onInteract(PlayerInteractEvent event)
+	public void onInteract(RightClickBlock event)
 	{
-		if(InGameConfigManager.overrideWorkbench && event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
+		if(InGameConfigManager.overrideWorkbench)
 		{
-			Block block = event.world.getBlock(event.x, event.y, event.z);
+			Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
 			if(block instanceof BlockWorkbench)
 			{
 				event.setCanceled(true);
-				if(event.world.isRemote)
+				if(event.getWorld().isRemote)
 				{
 					NBTTagCompound nbt = new NBTTagCompound();
 					nbt.setInteger("gui", 4);
 					nbt.setInteger("index", 0);
-					GuiHandler.openGui(InGameConfigManager.guiID, nbt, event.entityPlayer);
+					GuiHandler.openGui(InGameConfigManager.guiID, nbt, event.getEntityPlayer());
 					/*ConfigGuiPacket packet = new ConfigGuiPacket(4, 0);
 					packet.executeClient(event.entityPlayer);
 					PacketHandler.sendPacketToServer(packet);*/
@@ -148,10 +114,10 @@ public class ConfigEventHandler
 					GL11.glPushMatrix();
 					GL11.glDisable(GL11.GL_LIGHTING);
 					renderButton(mc.currentScreen, button, false, 0, 0);
-					ScaledResolution scaledresolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+					ScaledResolution scaledresolution = new ScaledResolution(mc);
 			        int i = scaledresolution.getScaledWidth();
 			        int j = scaledresolution.getScaledHeight();
-					mc.fontRenderer.drawString((index+1) + " of " + recipes.size(), i/2+30, j/2-65, 0);
+					mc.fontRendererObj.drawString((index+1) + " of " + recipes.size(), i/2+30, j/2-65, 0);
 					GL11.glPopMatrix();
 					if(!ItemStack.areItemStacksEqual(container.craftResult.getStackInSlot(0), recipes.get(index)))
 					{
@@ -194,7 +160,7 @@ public class ConfigEventHandler
 		int oldY = button.yPosition;
 		button.xPosition = oldX-k;
 		button.yPosition = oldY-l;
-		ScaledResolution scaledresolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+		ScaledResolution scaledresolution = new ScaledResolution(mc);
         int i = scaledresolution.getScaledWidth();
         int j = scaledresolution.getScaledHeight();
         int k2 = Mouse.getX() * i / mc.displayWidth;

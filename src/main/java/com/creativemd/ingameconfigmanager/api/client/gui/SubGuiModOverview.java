@@ -1,19 +1,14 @@
 package com.creativemd.ingameconfigmanager.api.client.gui;
 
-import java.util.ArrayList;
-
-import net.minecraft.client.gui.FontRenderer;
-
-import com.creativemd.creativecore.common.gui.SubGui;
-import com.creativemd.creativecore.common.gui.controls.GuiAvatarButton;
-import com.creativemd.creativecore.common.gui.controls.GuiButton;
-import com.creativemd.creativecore.common.gui.controls.GuiScrollBox;
-import com.creativemd.creativecore.common.gui.event.ControlClickEvent;
-import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
+import com.creativemd.creativecore.gui.container.SubGui;
+import com.creativemd.creativecore.gui.controls.gui.GuiAvatarButton;
+import com.creativemd.creativecore.gui.controls.gui.GuiButton;
+import com.creativemd.creativecore.gui.controls.gui.GuiScrollBox;
 import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
-import com.creativemd.ingameconfigmanager.api.core.TabRegistry;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
+
+import net.minecraft.client.gui.FontRenderer;
 
 public class SubGuiModOverview extends SubGui{
 	
@@ -26,29 +21,24 @@ public class SubGuiModOverview extends SubGui{
 
 	@Override
 	public void createControls() {
-		GuiScrollBox box = new GuiScrollBox("scrollbox", container.player, 5, 5, 240, 220);
+		GuiScrollBox box = new GuiScrollBox("scrollbox", 0, 0, 245, 220);
 		for (int i = 0; i < tab.branches.size(); i++) {
-			box.addControl(new GuiAvatarButton(tab.branches.get(i).name, 5, 5+i*20, 155, 20, i, tab.branches.get(i).avatar));
+			box.addControl(new GuiAvatarButton("" + i, tab.branches.get(i).name, 5, 5+i*24, 155, 16, tab.branches.get(i).avatar) {
+				@Override
+				public void onClicked(int x, int y, int button)
+				{
+					InGameConfigManager.openBranchGui(container.player, tab.branches.get(Integer.parseInt(this.name)));
+				}
+			});
 		}
 		
 		controls.add(box);
-		controls.add(new GuiButton("Back", 5, 226, 50, 20));
-	}
-	
-	@CustomEventSubscribe
-	public void onButtonClicked(ControlClickEvent event)
-	{
-		if(event.source instanceof GuiButton)
-		{
-			if(((GuiButton)event.source).caption.equals("Back"))
+		controls.add(new GuiButton("Back", 0, 228, 50) {
+			@Override
+			public void onClicked(int x, int y, int button)
+			{
 				InGameConfigManager.openModsGui(container.player);
-			else
-				InGameConfigManager.openBranchGui(container.player, tab.branches.get(((GuiButton)event.source).id));
-		}
-	}
-
-	@Override
-	public void drawOverlay(FontRenderer fontRenderer) {
-		
+			}
+		});
 	}
 }

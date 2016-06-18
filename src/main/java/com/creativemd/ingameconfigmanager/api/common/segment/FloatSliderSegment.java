@@ -2,13 +2,12 @@ package com.creativemd.ingameconfigmanager.api.common.segment;
 
 import java.util.ArrayList;
 
-import com.creativemd.creativecore.common.gui.SubGui;
-import com.creativemd.creativecore.common.gui.controls.GuiAnalogeSlider;
-import com.creativemd.creativecore.common.gui.controls.GuiControl;
-import com.creativemd.creativecore.common.gui.controls.GuiTextfield;
+import com.creativemd.creativecore.gui.GuiControl;
+import com.creativemd.creativecore.gui.container.SubGui;
+import com.creativemd.creativecore.gui.controls.gui.GuiAnalogeSlider;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class FloatSliderSegment extends FloatSegment{
 	
@@ -22,7 +21,7 @@ public class FloatSliderSegment extends FloatSegment{
 			int maxWidth) {
 		ArrayList<GuiControl> controls = super.createGuiControls(gui, x, y, maxWidth);
 		controls.remove(1);
-		controls.add(new GuiAnalogeSlider(getID(), x+maxWidth-80, y, 70, 20, 0, value, min, max));
+		controls.add(new GuiAnalogeSlider(getID(), x+maxWidth-80, y, 70, 20, value, min, max));
 		return controls;
 	}
 	

@@ -2,25 +2,17 @@ package com.creativemd.ingameconfigmanager.api.common.machine;
 
 import java.util.ArrayList;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
-
-import com.creativemd.creativecore.client.avatar.Avatar;
-import com.creativemd.creativecore.common.container.slot.ContainerControl;
-import com.creativemd.creativecore.common.gui.controls.GuiControl;
 import com.creativemd.creativecore.common.utils.stack.StackInfo;
-import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
+import com.creativemd.creativecore.gui.ContainerControl;
+import com.creativemd.creativecore.gui.GuiControl;
 import com.creativemd.ingameconfigmanager.api.common.branch.machine.ConfigMachineAddBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.machine.ConfigMachineDisableBranch;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
 import com.creativemd.ingameconfigmanager.api.common.segment.machine.AddRecipeSegment;
-import com.creativemd.ingameconfigmanager.api.common.segment.machine.DisableRecipeSegment;
-import com.creativemd.ingameconfigmanager.api.common.segment.machine.RecipeSegment;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**A machine/worbench/table. It is something which has inputs and has an output**/
 public abstract class RecipeMachine<T>{

@@ -2,17 +2,13 @@ package com.creativemd.ingameconfigmanager.api.common.segment;
 
 import java.util.ArrayList;
 
-import com.creativemd.creativecore.common.container.SubContainer;
-import com.creativemd.creativecore.common.container.slot.ContainerControl;
-import com.creativemd.creativecore.common.gui.SubGui;
-import com.creativemd.creativecore.common.gui.controls.GuiControl;
+import com.creativemd.creativecore.gui.ContainerControl;
+import com.creativemd.creativecore.gui.GuiControl;
+import com.creativemd.creativecore.gui.container.SubContainer;
+import com.creativemd.creativecore.gui.container.SubGui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.inventory.Slot;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class ConfigSegment<T>
 {
@@ -96,7 +92,7 @@ public abstract class ConfigSegment<T>
 		return maxHeight;
 	}
 	
-	public abstract ArrayList<ContainerControl> createContainerControls(SubContainer gui, int x, int y, int maxWidth);
+	public abstract ArrayList<ContainerControl> createContainerControls(int x, int y, int maxWidth);
 	
 	@SideOnly(Side.CLIENT)
 	public abstract ArrayList<GuiControl> createGuiControls(SubGui gui, int x, int y, int maxWidth);

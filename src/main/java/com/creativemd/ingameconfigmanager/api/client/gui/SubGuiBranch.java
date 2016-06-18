@@ -2,33 +2,29 @@ package com.creativemd.ingameconfigmanager.api.client.gui;
 
 import java.util.ArrayList;
 
-import org.lwjgl.opengl.GL11;
+import com.creativemd.creativecore.common.packet.PacketHandler;
+import com.creativemd.creativecore.gui.ContainerControl;
+import com.creativemd.creativecore.gui.GuiControl;
+import com.creativemd.creativecore.gui.container.SubContainer;
+import com.creativemd.creativecore.gui.container.SubGui;
+import com.creativemd.creativecore.gui.controls.container.SlotControlNoSync;
+import com.creativemd.creativecore.gui.controls.container.client.GuiSlotControl;
+import com.creativemd.creativecore.gui.controls.gui.GuiButton;
+import com.creativemd.creativecore.gui.controls.gui.GuiScrollBox;
+import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
+import com.creativemd.creativecore.gui.event.gui.GuiControlChangedEvent;
+import com.creativemd.creativecore.gui.event.gui.GuiControlClickEvent;
+import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
+import com.creativemd.ingameconfigmanager.api.common.container.controls.InfoSlotControl;
+import com.creativemd.ingameconfigmanager.api.common.packets.RequestInformationPacket;
+import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
+import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-
-import com.creativemd.creativecore.common.container.slot.ContainerControl;
-import com.creativemd.creativecore.common.container.slot.SlotControl;
-import com.creativemd.creativecore.common.container.slot.SlotControlNoSync;
-import com.creativemd.creativecore.common.gui.SubGui;
-import com.creativemd.creativecore.common.gui.controls.GuiButton;
-import com.creativemd.creativecore.common.gui.controls.GuiControl;
-import com.creativemd.creativecore.common.gui.controls.GuiScrollBox;
-import com.creativemd.creativecore.common.gui.controls.GuiTextfield;
-import com.creativemd.creativecore.common.gui.controls.container.GuiSlotControl;
-import com.creativemd.creativecore.common.gui.event.ControlChangedEvent;
-import com.creativemd.creativecore.common.gui.event.ControlClickEvent;
-import com.creativemd.creativecore.common.packet.PacketHandler;
-import com.creativemd.creativecore.common.utils.stack.StackInfoMaterial;
-import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
-import com.creativemd.ingameconfigmanager.api.common.container.controls.InfoSlotControl;
-import com.creativemd.ingameconfigmanager.api.common.packets.BranchInformationPacket;
-import com.creativemd.ingameconfigmanager.api.common.packets.RequestInformationPacket;
-import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
-import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
 public class SubGuiBranch extends SubGui{
 	
@@ -48,50 +44,19 @@ public class SubGuiBranch extends SubGui{
 	
 	public void createSegmentControls()
 	{
-		GuiScrollBox box = (GuiScrollBox) getControl("scrollbox");
+		GuiScrollBox box = (GuiScrollBox) get("scrollbox");
 		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
-		box.gui.controls.clear();
-		box.container.controls.clear();
+		box.controls.clear();
 		box.maxScroll = 0;
 		box.scrolled = 0;
 		
-		if(getControl("Save") != null)
-			getControl("Save").setEnabled(false);
+		if(get("Save") != null)
+			get("Save").setEnabled(false);
 		
 		this.segments = new ArrayList<ConfigSegment>(segments);
 		height = 5;
 		index = 0;
 		onTick();
-		
-		/*int height = 5;
-		for (int i = 0; i < segments.size(); i++) {
-			boolean visible = true;
-			if(!search.equals(""))
-				visible = segments.get(i).contains(search);
-			if(visible)
-			{
-				ArrayList<GuiControl> guiControls = segments.get(i).createGuiControls(this, 0, height, 220);
-				ArrayList<ContainerControl> containerControls = segments.get(i).createContainerControls(box.container, 0, height, 220);
-				
-				segments.get(i).guiControls = guiControls;
-				segments.get(i).containerControls = containerControls;
-				
-				segments.get(i).onSegmentLoaded(0, height, 220);
-				
-				for (int j = 0; j < guiControls.size(); j++) {
-					box.addControl(guiControls.get(j));
-				}
-				for (int j = 0; j < containerControls.size(); j++) {
-					box.addControl(containerControls.get(j));
-					guiControls.add(box.gui.controls.get(box.gui.controls.size()-1));
-				}
-				
-				
-				height = segments.get(i).getHeight()+5;
-			}
-			//box.addControl(new GuiAvatarButton(tab.branches.get(i).name, 5, 5+i*20, 155, 20, i, tab.branches.get(i).avatar));
-		}
-		box.maxScroll += 5;*/
 	}
 	
 	@Override
@@ -99,7 +64,7 @@ public class SubGuiBranch extends SubGui{
 	{
 		if(segments != null)
 		{
-			GuiScrollBox box = (GuiScrollBox) getControl("scrollbox");
+			GuiScrollBox box = (GuiScrollBox) get("scrollbox");
 			int count = 0;
 			int countLoaded = 0;
 			for (int i = index; i < segments.size() && countLoaded < loadPerTick; i++) {
@@ -109,7 +74,7 @@ public class SubGuiBranch extends SubGui{
 				if(visible)
 				{
 					ArrayList<GuiControl> guiControls = segments.get(i).createGuiControls(this, 0, height, 220);
-					ArrayList<ContainerControl> containerControls = segments.get(i).createContainerControls(box.container, 0, height, 220);
+					ArrayList<ContainerControl> containerControls = segments.get(i).createContainerControls(0, height, 220);
 					
 					segments.get(i).guiControls = guiControls;
 					segments.get(i).containerControls = containerControls;
@@ -120,10 +85,11 @@ public class SubGuiBranch extends SubGui{
 						box.addControl(guiControls.get(j));
 					}
 					for (int j = 0; j < containerControls.size(); j++) {
-						box.addControl(containerControls.get(j));
-						guiControls.add(box.gui.controls.get(box.gui.controls.size()-1));
+						containerControls.get(j).parent = container;
+						GuiControl control = containerControls.get(j).getGuiControl();
+						box.addControl(control);
+						segments.get(i).guiControls.add(control);
 					}
-					
 					
 					height = segments.get(i).getHeight()+5;
 					
@@ -140,7 +106,7 @@ public class SubGuiBranch extends SubGui{
 			if(index >= segments.size())
 			{
 				box.maxScroll += 5;
-				getControl("Save").setEnabled(true);
+				get("Save").setEnabled(true);
 				segments = null;
 				index = 0;
 			}
@@ -150,19 +116,27 @@ public class SubGuiBranch extends SubGui{
 
 	@Override
 	public void createControls() {
-		GuiScrollBox box = new GuiScrollBox("scrollbox", container.player, 5, 5, 240, 220);
+		GuiScrollBox box = new GuiScrollBox("scrollbox", 0, 0, 244, 220);
 		controls.add(box);
-		controls.add(new GuiButton("Cancel", 5, 226, 40, 20));
-		controls.add(new GuiButton("Save", 205, 226, 40, 20).setEnabled(false));
+		controls.add(new GuiButton("Cancel", 0, 228, 50) {
+			
+			@Override
+			public void onClicked(int x, int y, int button) {}
+		});
+		controls.add((GuiControl) new GuiButton("Save", 194, 228, 50) {
+			
+			@Override
+			public void onClicked(int x, int y, int button) {}
+		}.setEnabled(false));
 		if(branch.isSearchable())
-			controls.add(new GuiTextfield("search", "", 49, 227, 152, 18));
+			controls.add(new GuiTextfield("search", "", 60, 228, 124, 14));
 		createSegmentControls();
 	}
 	
 	public GuiSlotControl openedSlot;
 	
 	@CustomEventSubscribe
-	public void onButtonClicked(ControlClickEvent event)
+	public void onButtonClicked(GuiControlClickEvent event)
 	{
 		if(event.source instanceof GuiButton)
 		{
@@ -238,7 +212,7 @@ public class SubGuiBranch extends SubGui{
 	
 	
 	@CustomEventSubscribe
-	public void onTextfieldChanged(ControlChangedEvent event)
+	public void onTextfieldChanged(GuiControlChangedEvent event)
 	{
 		if(event.source instanceof GuiTextfield && event.source.is("search"))
 		{
@@ -249,12 +223,6 @@ public class SubGuiBranch extends SubGui{
 			}
 			createSegmentControls();
 		}
-	}
-	
-
-	@Override
-	public void drawOverlay(FontRenderer fontRenderer) {
-		
 	}
 
 }

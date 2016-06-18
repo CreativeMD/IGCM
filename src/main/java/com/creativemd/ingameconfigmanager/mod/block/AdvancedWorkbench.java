@@ -2,29 +2,19 @@ package com.creativemd.ingameconfigmanager.mod.block;
 
 import java.util.ArrayList;
 
-import com.creativemd.creativecore.client.avatar.Avatar;
-import com.creativemd.creativecore.client.avatar.AvatarItemStack;
-import com.creativemd.creativecore.common.container.slot.ContainerControl;
-import com.creativemd.creativecore.common.gui.controls.GuiControl;
-import com.creativemd.creativecore.common.gui.controls.GuiStateButton;
-import com.creativemd.creativecore.common.gui.controls.GuiTextfield;
-import com.creativemd.creativecore.common.recipe.BetterShapedRecipe;
-import com.creativemd.creativecore.common.recipe.GridRecipe;
-import com.creativemd.creativecore.common.recipe.Recipe;
-import com.creativemd.creativecore.common.recipe.entry.BetterShapelessRecipe;
 import com.creativemd.creativecore.common.utils.stack.StackInfo;
+import com.creativemd.creativecore.gui.ContainerControl;
+import com.creativemd.creativecore.gui.GuiControl;
+import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
 import com.creativemd.ingameconfigmanager.api.common.machine.RecipeMachine;
 import com.creativemd.ingameconfigmanager.api.common.segment.machine.AddRecipeSegment;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class AdvancedWorkbench extends RecipeMachine<AdvancedGridRecipe>{
 
@@ -130,7 +120,7 @@ public class AdvancedWorkbench extends RecipeMachine<AdvancedGridRecipe>{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack getAvatar() {
-		return new ItemStack(Blocks.crafting_table);
+		return new ItemStack(Blocks.CRAFTING_TABLE);
 	}
 
 	@Override

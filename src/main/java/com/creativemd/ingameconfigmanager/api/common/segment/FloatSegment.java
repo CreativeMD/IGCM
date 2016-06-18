@@ -2,14 +2,14 @@ package com.creativemd.ingameconfigmanager.api.common.segment;
 
 import java.util.ArrayList;
 
-import com.creativemd.creativecore.common.container.SubContainer;
-import com.creativemd.creativecore.common.container.slot.ContainerControl;
-import com.creativemd.creativecore.common.gui.SubGui;
-import com.creativemd.creativecore.common.gui.controls.GuiControl;
-import com.creativemd.creativecore.common.gui.controls.GuiTextfield;
+import com.creativemd.creativecore.gui.ContainerControl;
+import com.creativemd.creativecore.gui.GuiControl;
+import com.creativemd.creativecore.gui.container.SubContainer;
+import com.creativemd.creativecore.gui.container.SubGui;
+import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class FloatSegment extends TitleSegment<Float>{
 	
@@ -27,8 +27,7 @@ public class FloatSegment extends TitleSegment<Float>{
 	}
 
 	@Override
-	public ArrayList<ContainerControl> createContainerControls(
-			SubContainer gui, int x, int y, int maxWidth) {
+	public ArrayList<ContainerControl> createContainerControls(int x, int y, int maxWidth) {
 		ArrayList<ContainerControl> controls = new ArrayList<ContainerControl>();
 		
 		return controls;

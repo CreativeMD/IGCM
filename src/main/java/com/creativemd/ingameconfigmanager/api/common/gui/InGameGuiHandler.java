@@ -1,10 +1,8 @@
 package com.creativemd.ingameconfigmanager.api.common.gui;
 
-import com.creativemd.creativecore.common.container.ContainerSub;
-import com.creativemd.creativecore.common.container.SubContainer;
-import com.creativemd.creativecore.common.gui.CustomGuiHandler;
-import com.creativemd.creativecore.common.gui.GuiContainerSub;
-import com.creativemd.creativecore.common.gui.SubGui;
+import com.creativemd.creativecore.gui.container.SubContainer;
+import com.creativemd.creativecore.gui.container.SubGui;
+import com.creativemd.creativecore.gui.opener.CustomGuiHandler;
 import com.creativemd.ingameconfigmanager.api.client.gui.SubGuiBranch;
 import com.creativemd.ingameconfigmanager.api.client.gui.SubGuiModOverview;
 import com.creativemd.ingameconfigmanager.api.client.gui.SubGuiMods;
@@ -17,12 +15,10 @@ import com.creativemd.ingameconfigmanager.api.tab.ModTab;
 import com.creativemd.ingameconfigmanager.mod.block.SubContainerAdvancedWorkbench;
 import com.creativemd.ingameconfigmanager.mod.block.SubGuiAdvancedWorkbench;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class InGameGuiHandler extends CustomGuiHandler{
 

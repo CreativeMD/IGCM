@@ -1,9 +1,9 @@
 package com.creativemd.ingameconfigmanager.api.common.container;
 
+import com.creativemd.creativecore.gui.container.SubContainer;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-
-import com.creativemd.creativecore.common.container.SubContainer;
 
 public class SubContainerMods extends SubContainer{
 
@@ -17,7 +17,7 @@ public class SubContainerMods extends SubContainer{
 	}
 
 	@Override
-	public void onGuiPacket(int controlID, NBTTagCompound nbt, EntityPlayer player) {
+	public void onPacketReceive(NBTTagCompound nbt) {
 		
 	}
 

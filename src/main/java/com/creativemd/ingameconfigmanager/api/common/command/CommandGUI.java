@@ -1,23 +1,12 @@
 package com.creativemd.ingameconfigmanager.api.common.command;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommand;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-
-import com.creativemd.creativecore.common.packet.CreativeCorePacket;
-import com.creativemd.creativecore.common.packet.PacketHandler;
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
-import com.creativemd.ingameconfigmanager.api.core.TabRegistry;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 
 public class CommandGUI extends CommandBase {
 	@Override
@@ -31,10 +20,11 @@ public class CommandGUI extends CommandBase {
 	}
 	
 	@Override
-	public void processCommand(ICommandSender icommandsender, String[] astring) {
-		if(icommandsender instanceof EntityPlayer)
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
+	{
+		if(sender instanceof EntityPlayer)
 		{
-			EntityPlayer player = (EntityPlayer) icommandsender;
+			EntityPlayer player = (EntityPlayer) sender;
 			InGameConfigManager.openModsGui(player);
 		}
 	}

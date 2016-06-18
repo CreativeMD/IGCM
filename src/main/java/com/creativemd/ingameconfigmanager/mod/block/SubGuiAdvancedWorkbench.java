@@ -1,15 +1,12 @@
 package com.creativemd.ingameconfigmanager.mod.block;
 
-import com.creativemd.creativecore.common.gui.SubGui;
-import com.creativemd.creativecore.common.gui.controls.GuiButton;
-import com.creativemd.creativecore.common.gui.controls.GuiProgressBar;
-import com.creativemd.creativecore.common.gui.controls.container.GuiSlotControl;
-import com.creativemd.creativecore.common.gui.event.ControlClickEvent;
+import com.creativemd.creativecore.gui.container.SubGui;
+import com.creativemd.creativecore.gui.controls.container.client.GuiSlotControl;
+import com.creativemd.creativecore.gui.controls.gui.GuiButton;
+import com.creativemd.creativecore.gui.controls.gui.GuiProgressBar;
+import com.creativemd.creativecore.gui.event.gui.GuiControlClickEvent;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler.ClientHandshakeStateEvent;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -23,8 +20,12 @@ public class SubGuiAdvancedWorkbench extends SubGui {
 	
 	@Override
 	public void createControls() {
-		 controls.add(new GuiButton("Craft!", 130, 85, 40, 20));
-		 controls.add(new GuiProgressBar("progress", 132, 30, 36, 10));
+		 controls.add(new GuiButton("Craft!", 130, 85) {
+			
+			@Override
+			public void onClicked(int x, int y, int button) {}
+		});
+		 controls.add(new GuiProgressBar("progress", 132, 30, 30, 3, 100, 0));
 	}
 	
 	public static long lastTick;
@@ -36,17 +37,19 @@ public class SubGuiAdvancedWorkbench extends SubGui {
 		{
 			if(lastTick == 0)
 				lastTick = System.currentTimeMillis();
-			GuiProgressBar bar = (GuiProgressBar) getControl("progress");
+			GuiProgressBar bar = (GuiProgressBar) get("progress");
 			
 			double timeLeft = (System.currentTimeMillis() - lastTick);
 			
 			bar.pos += timeLeft;
 			if(bar.pos >= bar.max)
 			{
-				sendPacketToServer(0, new NBTTagCompound());
+				NBTTagCompound nbt = new NBTTagCompound();
+				nbt.setInteger("type", 0);
+				sendPacketToServer(nbt);
 				bar.pos = bar.max;
 				crafting = false;
-				getControl("Craft!").enabled = true;
+				get("Craft!").enabled = true;
 				
 				for (int i = 0; i < controls.size(); i++) {
 					if(controls.get(i) instanceof GuiSlotControl)
@@ -59,7 +62,7 @@ public class SubGuiAdvancedWorkbench extends SubGui {
 	}
 	
 	@CustomEventSubscribe
-	public void onClicked(ControlClickEvent event)
+	public void onClicked(GuiControlClickEvent event)
 	{
 		if(event.source.is("Craft!"))
 		{
@@ -78,18 +81,13 @@ public class SubGuiAdvancedWorkbench extends SubGui {
 						controls.get(i).enabled = false;
 				}
 				
-				GuiProgressBar bar = (GuiProgressBar) getControl("progress");
+				GuiProgressBar bar = (GuiProgressBar) get("progress");
 				bar.pos = 0;
 				bar.max = recipe.duration;
 				event.source.enabled = false;
 				crafting = true;
 			}
 		}
-	}
-
-	@Override
-	public void drawOverlay(FontRenderer fontRenderer) {
-		
 	}
 
 }

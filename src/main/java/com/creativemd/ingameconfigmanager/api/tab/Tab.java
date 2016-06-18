@@ -3,10 +3,10 @@ package com.creativemd.ingameconfigmanager.api.tab;
 import com.creativemd.creativecore.client.avatar.Avatar;
 import com.creativemd.creativecore.client.avatar.AvatarItemStack;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class Tab {
 	

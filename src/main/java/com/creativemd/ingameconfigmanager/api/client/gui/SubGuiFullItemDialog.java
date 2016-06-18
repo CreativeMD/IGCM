@@ -5,18 +5,6 @@ import java.util.Arrays;
 
 import javax.vecmath.Vector4d;
 
-import com.creativemd.creativecore.client.rendering.RenderHelper2D;
-import com.creativemd.creativecore.common.gui.SubGui;
-import com.creativemd.creativecore.common.gui.controls.GuiButton;
-import com.creativemd.creativecore.common.gui.controls.GuiComboBox;
-import com.creativemd.creativecore.common.gui.controls.GuiInvSelector;
-import com.creativemd.creativecore.common.gui.controls.GuiLabel;
-import com.creativemd.creativecore.common.gui.controls.GuiStackSelector;
-import com.creativemd.creativecore.common.gui.controls.GuiStateButton;
-import com.creativemd.creativecore.common.gui.controls.GuiTextfield;
-import com.creativemd.creativecore.common.gui.event.ControlChangedEvent;
-import com.creativemd.creativecore.common.gui.event.ControlClickEvent;
-import com.creativemd.creativecore.common.gui.event.GuiToolTipEvent;
 import com.creativemd.creativecore.common.utils.stack.StackInfo;
 import com.creativemd.creativecore.common.utils.stack.StackInfoBlock;
 import com.creativemd.creativecore.common.utils.stack.StackInfoFuel;
@@ -24,6 +12,17 @@ import com.creativemd.creativecore.common.utils.stack.StackInfoItem;
 import com.creativemd.creativecore.common.utils.stack.StackInfoItemStack;
 import com.creativemd.creativecore.common.utils.stack.StackInfoMaterial;
 import com.creativemd.creativecore.common.utils.stack.StackInfoOre;
+import com.creativemd.creativecore.gui.container.SubGui;
+import com.creativemd.creativecore.gui.controls.gui.GuiButton;
+import com.creativemd.creativecore.gui.controls.gui.GuiComboBox;
+import com.creativemd.creativecore.gui.controls.gui.GuiLabel;
+import com.creativemd.creativecore.gui.controls.gui.GuiStateButton;
+import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
+import com.creativemd.creativecore.gui.controls.gui.custom.GuiInvSelector;
+import com.creativemd.creativecore.gui.controls.gui.custom.GuiStackSelector;
+import com.creativemd.creativecore.gui.event.gui.GuiControlChangedEvent;
+import com.creativemd.creativecore.gui.event.gui.GuiControlClickEvent;
+import com.creativemd.creativecore.gui.event.gui.GuiToolTipEvent;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
 import net.minecraft.block.Block;
@@ -71,7 +70,7 @@ public class SubGuiFullItemDialog extends SubGui{
 		lines.add("Fuel");
 		lines.add("Latest");
 		
-		GuiComboBox box = new GuiComboBox("type", 5, 5, 140, lines);
+		GuiComboBox box = new GuiComboBox("type", 0, 0, 144, lines);
 		int index = lines.indexOf(selected);
 		box.caption = selected;
 		box.index = index;
@@ -81,16 +80,16 @@ public class SubGuiFullItemDialog extends SubGui{
 		switch(index)
 		{
 		case 0:
-			GuiInvSelector selector = new GuiInvSelector("inv", 5, 30, 140, container.player, false);
+			GuiInvSelector selector = new GuiInvSelector("inv", 0, 30, 122, container.player, false);
 			controls.add(selector);
-			controls.add(new GuiTextfield("search", "", 5, 55, 140, 20));
+			controls.add(new GuiTextfield("search", "", 0, 57, 144, 14));
 			
-			controls.add(new GuiLabel("guilabel1", 5, 80));
-			controls.add(new GuiLabel("guilabel2", 5, 90));
+			controls.add(new GuiLabel("guilabel1", 0, 80));
+			controls.add(new GuiLabel("guilabel2", 0, 90));
 			
-			GuiStateButton damage = new GuiStateButton("damage", 0, 5, 102, 70, 20, "Damage: Off", "Damage: On");
+			GuiStateButton damage = new GuiStateButton("damage", 0, 0, 106, 70, 14, "Damage: Off", "Damage: On");
 			controls.add(damage);
-			GuiStateButton nbt = new GuiStateButton("nbt", 0, 85, 102, 60, 20, "NBT: Off", "NBT: On");
+			GuiStateButton nbt = new GuiStateButton("nbt", 0, 80, 106, 60, 14, "NBT: Off", "NBT: On");
 			controls.add(nbt);
 			
 			if(info instanceof StackInfoBlock || info instanceof StackInfoItem || info instanceof StackInfoItemStack)
@@ -106,15 +105,15 @@ public class SubGuiFullItemDialog extends SubGui{
 			break;
 		case 1:
 			ArrayList<String> ores = new ArrayList<String>(Arrays.asList(OreDictionary.getOreNames()));
-			GuiComboBox ore = new GuiComboBox("ore", 5, 30, 140, ores);
+			GuiComboBox ore = new GuiComboBox("ore", 0, 30, 144, ores);
 			controls.add(ore);
-			controls.add(new GuiTextfield("search", "", 5, 55, 140, 20));
+			controls.add(new GuiTextfield("search", "", 0, 57, 144, 14));
 			
 			if(info instanceof StackInfoOre)
 				ore.caption = ((StackInfoOre) info).ore;
 			break;
 		case 2:
-			selector = new GuiInvSelector("inv", 5, 30, 140, container.player, true);
+			selector = new GuiInvSelector("inv", 0, 30, 122, container.player, true);
 			controls.add(selector);
 			if(info instanceof StackInfoMaterial)
 				selector.addAndSelectStack(info.getItemStack());
@@ -123,7 +122,7 @@ public class SubGuiFullItemDialog extends SubGui{
 			controls.add(new GuiLabel("Nothing to select", 5, 30));
 			break;
 		case 4:
-			selector = new GuiStackSelector("stack", 5, 30, 140, container.player, false);
+			selector = new GuiStackSelector("stack", 0, 30, 122, container.player, false);
 			selector.stacks.clear();
 			selector.lines.clear();
 			for (int i = 0; i < latest.size(); i++) {
@@ -146,13 +145,25 @@ public class SubGuiFullItemDialog extends SubGui{
 			controls.add(field);
 		}
 		
-		controls.add(new GuiButton("Cancel", 5, 150, 45, 20));
-		controls.add(new GuiButton("Remove", 52, 150, 45, 20));
-		controls.add(new GuiButton("Save", 100, 150, 45, 20));
+		controls.add(new GuiButton("Cancel", 0, 150, 41) {
+			
+			@Override
+			public void onClicked(int x, int y, int button) {}
+		});
+		controls.add(new GuiButton("Remove", 50, 150, 41) {
+			
+			@Override
+			public void onClicked(int x, int y, int button) {}
+		});
+		controls.add(new GuiButton("Save", 100, 150, 41) {
+			
+			@Override
+			public void onClicked(int x, int y, int button) {}
+		});
 	}
 	
 	@CustomEventSubscribe
-	public void onClicked(ControlClickEvent event)
+	public void onClicked(GuiControlClickEvent event)
 	{
 		if(event.source.is("Save"))
 		{
@@ -160,7 +171,7 @@ public class SubGuiFullItemDialog extends SubGui{
 			int stacksize = 0;
 			try{
 				if(supportStackSize)
-					stacksize = Integer.parseInt(((GuiTextfield)getControl("stacksize")).text);
+					stacksize = Integer.parseInt(((GuiTextfield)get("stacksize")).text);
 				else
 					stacksize = 1;
 			}catch (Exception e){
@@ -170,16 +181,16 @@ public class SubGuiFullItemDialog extends SubGui{
 			switch(index)
 			{
 			case 0:
-				ItemStack stack = ((GuiInvSelector)getControl("inv")).getStack();
+				ItemStack stack = ((GuiInvSelector)get("inv")).getStack();
 				if(stack != null)
 				{
-					boolean damage = ((GuiStateButton)getControl("damage")).getState() == 1;
-					boolean nbt = ((GuiStateButton)getControl("nbt")).getState() == 1;
+					boolean damage = ((GuiStateButton)get("damage")).getState() == 1;
+					boolean nbt = ((GuiStateButton)get("nbt")).getState() == 1;
 					if(damage)
 					{
 						info = new StackInfoItemStack(stack, nbt, stacksize);
 					}else{
-						if(!(Block.getBlockFromItem(stack.getItem()) instanceof BlockAir))
+						if(Block.getBlockFromItem(stack.getItem()) != null)
 							info = new StackInfoBlock(Block.getBlockFromItem(stack.getItem()), stacksize);
 						else
 							info = new StackInfoItem(stack.getItem(), stacksize);
@@ -187,24 +198,24 @@ public class SubGuiFullItemDialog extends SubGui{
 				}
 				break;
 			case 1:
-				String ore = ((GuiComboBox) getControl("ore")).caption;
+				String ore = ((GuiComboBox) get("ore")).caption;
 				if(!ore.equals(""))
 					info = new StackInfoOre(ore, stacksize);
 				break;
 			case 2:
-				ItemStack blockStack = ((GuiInvSelector)getControl("inv")).getStack();
+				ItemStack blockStack = ((GuiInvSelector)get("inv")).getStack();
 				if(blockStack != null)
 				{
 					Block block = Block.getBlockFromItem(blockStack.getItem());
 					if(!(block instanceof BlockAir))
-						info = new StackInfoMaterial(block.getMaterial(), stacksize);
+						info = new StackInfoMaterial(block.getMaterial(null), stacksize);
 				}
 				break;
 			case 3:
 				info = new StackInfoFuel(stacksize);
 				break;
 			case 4:
-				int stackIndex = ((GuiInvSelector)getControl("stack")).index;
+				int stackIndex = ((GuiInvSelector)get("stack")).index;
 				if(stackIndex >= 0 && stackIndex < latest.size())
 					info = latest.get(stackIndex).copy();
 				break;
@@ -241,7 +252,7 @@ public class SubGuiFullItemDialog extends SubGui{
 	}
 	
 	@CustomEventSubscribe
-	public void onChanged(ControlChangedEvent event)
+	public void onChanged(GuiControlChangedEvent event)
 	{
 		if(event.source.is("type"))
 		{
@@ -260,7 +271,7 @@ public class SubGuiFullItemDialog extends SubGui{
 					if(oreNames[i].toLowerCase().contains(search.toLowerCase()))
 						ores.add(oreNames[i]);
 				}
-				GuiComboBox comboBox = (GuiComboBox) getControl("ore");
+				GuiComboBox comboBox = (GuiComboBox) get("ore");
 				if(comboBox != null)
 				{
 					comboBox.lines = ores;
@@ -273,45 +284,33 @@ public class SubGuiFullItemDialog extends SubGui{
 					}
 				}
 			}else if(index == 0){
-				GuiInvSelector inv = (GuiInvSelector) getControl("inv");
+				GuiInvSelector inv = (GuiInvSelector) get("inv");
 				inv.search = ((GuiTextfield)event.source).text.toLowerCase();
 				inv.updateItems(container.player);
 				inv.closeBox();
 			}
 		}
 	}
-	
-	@Override
-	public void drawBackground()
-	{
-		int k = (this.width - this.width) / 2;
-		int l = (this.height - this.height) / 2;
-		
-		Vector4d color = new Vector4d(0, 0, 0, 255);
-		RenderHelper2D.drawGradientRect(k, l, k+this.width, l+this.height, color, color);
-		color = new Vector4d(120, 120, 120, 255);
-		RenderHelper2D.drawGradientRect(k+2, l+2, k+this.width-2, l+this.height-2, color, color);
-	}
 
 	@Override
-	public void drawOverlay(FontRenderer fontRenderer) {
+	public void onTick() {
 		int index = ((GuiComboBox)controls.get(0)).lines.indexOf(((GuiComboBox)controls.get(0)).caption);
 		
 		switch(index)
 		{
 		case 0:
-			GuiInvSelector selector = (GuiInvSelector) getControl("inv");
+			GuiInvSelector selector = (GuiInvSelector) get("inv");
 			if(selector != null)
 			{
 				int indexStack = selector.index;
 				if(indexStack != -1)
 				{
 					ItemStack stack = selector.stacks.get(indexStack);
-					((GuiLabel)getControl("guilabel1")).title = "damage:" + stack.getItemDamage();
-					((GuiLabel)getControl("guilabel2")).title = "nbt:" + (stack.stackTagCompound != null ? stack.stackTagCompound.toString() : "null");
+					((GuiLabel)get("guilabel1")).caption = "damage:" + stack.getItemDamage();
+					((GuiLabel)get("guilabel2")).caption = "nbt:" + (stack.hasTagCompound() ? stack.getTagCompound().toString() : "null");
 				}else{
-					((GuiLabel)getControl("guilabel1")).title = "";
-					((GuiLabel)getControl("guilabel2")).title = "";
+					((GuiLabel)get("guilabel1")).caption = "";
+					((GuiLabel)get("guilabel2")).caption = "";
 				}
 			}
 			break;

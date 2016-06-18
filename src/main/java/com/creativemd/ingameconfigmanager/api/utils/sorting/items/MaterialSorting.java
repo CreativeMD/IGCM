@@ -18,7 +18,7 @@ public class MaterialSorting extends SortingItem {
 	@Override
 	protected boolean isObject(ItemStack stack) {
 		if(stack.getItem() instanceof ItemBlock)
-			return Block.getBlockFromItem(stack.getItem()).getMaterial() == material;
+			return Block.getBlockFromItem(stack.getItem()).getMaterial(null) == material;
 		return false;
 	}
 

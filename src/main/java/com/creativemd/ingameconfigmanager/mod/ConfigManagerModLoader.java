@@ -14,12 +14,12 @@ import com.creativemd.ingameconfigmanager.mod.workbench.WorkbenchMachine;
 
 public class ConfigManagerModLoader {
 	
-	public static ModTab WorkBenchTab = new ModTab("Crafting Table", new ItemStack(Blocks.crafting_table));
-	public static ModTab FurnaceTab = new ModTab("Furnace", new ItemStack(Blocks.furnace));
+	public static ModTab WorkBenchTab = new ModTab("Crafting Table", new ItemStack(Blocks.CRAFTING_TABLE));
+	public static ModTab FurnaceTab = new ModTab("Furnace", new ItemStack(Blocks.FURNACE));
 	public static WorkbenchMachine workbench;
 	public static FurnaceMachine furnace;
 	
-	public static ModTab tab = new ModTab("InGameConfigManager", new ItemStack(Blocks.redstone_torch));
+	public static ModTab tab = new ModTab("InGameConfigManager", new ItemStack(Blocks.REDSTONE_TORCH));
 	
 	public static AdvancedWorkbench advancedWorkbench;
 	

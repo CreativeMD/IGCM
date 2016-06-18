@@ -1,14 +1,10 @@
 package com.creativemd.ingameconfigmanager.mod.block;
 
-import com.creativemd.creativecore.common.container.SubContainer;
-import com.creativemd.creativecore.common.container.slot.SlotOutput;
-import com.creativemd.creativecore.common.gui.event.container.SlotChangeEvent;
-import com.creativemd.creativecore.common.recipe.GridRecipe;
 import com.creativemd.creativecore.common.utils.InventoryUtils;
 import com.creativemd.creativecore.common.utils.WorldUtils;
-import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
+import com.creativemd.creativecore.gui.container.SubContainer;
+import com.creativemd.creativecore.slots.SlotOutput;
 
-import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
@@ -35,13 +31,13 @@ public class SubContainerAdvancedWorkbench extends SubContainer{
 			addSlotToContainer(new SlotOutput(output, i, 132+(i-i/2*2)*18, 41+i/2*18));
 		}
 		
-		
+		//System.out.println("Creating!");
 		addPlayerSlotsToContainer(player, 8, 120);
 	}
 
 	@Override
-	public void onGuiPacket(int controlID, NBTTagCompound nbt, EntityPlayer player) {
-		if(controlID == 0)
+	public void onPacketReceive(NBTTagCompound nbt) {
+		if(nbt.getInteger("type") == 0)
 		{
 			AdvancedGridRecipe recipe = null;
 			for (int i = 0; i < BlockAdvancedWorkbench.recipes.size(); i++) {
@@ -70,7 +66,7 @@ public class SubContainerAdvancedWorkbench extends SubContainer{
 	}
 	
 	@Override
-	public void onGuiClosed()
+	public void onClosed()
 	{
 		for (int i = 0; i < crafting.getSizeInventory(); i++) {
 			if(crafting.getStackInSlot(i) != null)

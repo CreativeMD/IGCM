@@ -5,17 +5,14 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.creativemd.creativecore.common.container.SubContainer;
-import com.creativemd.creativecore.common.container.slot.ContainerControl;
-import com.creativemd.creativecore.common.gui.SubGui;
-import com.creativemd.creativecore.common.gui.controls.GuiButton;
-import com.creativemd.creativecore.common.gui.controls.GuiComboBox;
-import com.creativemd.creativecore.common.gui.controls.GuiControl;
-import com.creativemd.creativecore.common.gui.controls.GuiLabel;
+import com.creativemd.creativecore.gui.ContainerControl;
+import com.creativemd.creativecore.gui.GuiControl;
+import com.creativemd.creativecore.gui.container.SubContainer;
+import com.creativemd.creativecore.gui.container.SubGui;
+import com.creativemd.creativecore.gui.controls.gui.GuiComboBox;
 
-import cpw.mods.fml.client.config.GuiSelectString;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SelectSegment extends TitleSegment<String>{
 	
@@ -48,8 +45,7 @@ public class SelectSegment extends TitleSegment<String>{
 	}
 	
 	@Override
-	public ArrayList<ContainerControl> createContainerControls(
-			SubContainer gui, int x, int y, int maxWidth) {
+	public ArrayList<ContainerControl> createContainerControls(int x, int y, int maxWidth) {
 		return new ArrayList<ContainerControl>();
 	}
 	

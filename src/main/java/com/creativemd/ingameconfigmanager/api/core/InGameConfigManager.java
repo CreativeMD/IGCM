@@ -6,25 +6,12 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
-
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.creativemd.creativecore.common.gui.GuiHandler;
 import com.creativemd.creativecore.common.packet.CreativeCorePacket;
 import com.creativemd.creativecore.common.packet.PacketHandler;
-import com.creativemd.creativecore.core.CreativeCore;
+import com.creativemd.creativecore.gui.opener.GuiHandler;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
 import com.creativemd.ingameconfigmanager.api.common.command.CommandGUI;
@@ -34,22 +21,27 @@ import com.creativemd.ingameconfigmanager.api.common.packets.BranchInformationPa
 import com.creativemd.ingameconfigmanager.api.common.packets.CraftResultPacket;
 import com.creativemd.ingameconfigmanager.api.common.packets.RequestInformationPacket;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
-import com.creativemd.ingameconfigmanager.api.nei.NEIAdvancedRecipeHandler;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
-import com.creativemd.ingameconfigmanager.api.tab.SubTab;
 import com.creativemd.ingameconfigmanager.mod.ConfigManagerModLoader;
 import com.creativemd.ingameconfigmanager.mod.block.BlockAdvancedWorkbench;
-import com.creativemd.ingameconfigmanager.mod.general.GeneralBranch;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = InGameConfigManager.modid, version = InGameConfigManager.version, name = "InGameConfigManager")
 public class InGameConfigManager { 
@@ -71,7 +63,7 @@ public class InGameConfigManager {
 	public static ArrayList<String> profiles;
 	
 	public static boolean overrideWorkbench = false;
-	public static Block advancedWorkbench = new BlockAdvancedWorkbench().setBlockName("advancedWorkbench").setCreativeTab(CreativeTabs.tabDecorations);
+	public static Block advancedWorkbench = new BlockAdvancedWorkbench().setRegistryName(InGameConfigManager.modid, "advancedWorkbench").setCreativeTab(CreativeTabs.DECORATIONS);
 	
 	
 	
@@ -164,7 +156,7 @@ public class InGameConfigManager {
 	public static void preInit(FMLPreInitializationEvent event)
 	{
 		MinecraftForge.EVENT_BUS.register(eventHandler);
-		FMLCommonHandler.instance().bus().register(eventHandler);
+		//FMLCommonHandler.instance().bus().register(eventHandler);
 		
 		CreativeCorePacket.registerPacket(BranchInformationPacket.class, "IGCMBranch");
 		CreativeCorePacket.registerPacket(RequestInformationPacket.class, "IGCMRequest");
@@ -192,12 +184,12 @@ public class InGameConfigManager {
 	{
 		ConfigManagerModLoader.loadMod();
 		
-		GameRegistry.registerBlock(advancedWorkbench, "advancedWorkbench");
+		GameRegistry.register(advancedWorkbench);
 		
 		GuiHandler.registerGuiHandler(guiID, new InGameGuiHandler());
 		
-		if(Loader.isModLoaded("NotEnoughItems") && FMLCommonHandler.instance().getEffectiveSide().isClient())
-			NEIAdvancedRecipeHandler.load();
+		//if(Loader.isModLoaded("NotEnoughItems") && FMLCommonHandler.instance().getEffectiveSide().isClient())
+			//NEIAdvancedRecipeHandler.load();
 	}
 	
 	@EventHandler
