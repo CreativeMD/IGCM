@@ -49,7 +49,7 @@ public class InGameConfigManager {
 	public static Logger logger = LogManager.getLogger(InGameConfigManager.modid);
 	
 	public static final String modid = "ingameconfigmanager";
-	public static final String version = "0.1";
+	public static final String version = "1.0";
 	
 	public static ConfigEventHandler eventHandler = new ConfigEventHandler();
 	
