@@ -6,6 +6,7 @@ import com.creativemd.creativecore.common.utils.stack.StackInfo;
 import com.creativemd.creativecore.common.utils.string.StringUtils;
 import com.creativemd.creativecore.gui.GuiControl;
 import com.creativemd.creativecore.gui.container.SubGui;
+import com.creativemd.creativecore.gui.controls.gui.GuiLabel;
 import com.creativemd.ingameconfigmanager.api.common.container.controls.GuiButtonRemoveRecipe;
 import com.creativemd.ingameconfigmanager.api.common.machine.RecipeMachine;
 
@@ -39,6 +40,7 @@ public class AddRecipeSegment extends RecipeSegment<Object>{
 	@SideOnly(Side.CLIENT)
 	public ArrayList<GuiControl> createGuiControls(SubGui gui, int x, int y, int maxWidth) {
 		ArrayList<GuiControl> controls = super.createGuiControls(gui, x, y, maxWidth);
+		controls.add(new GuiLabel(getID(), x+maxWidth-110, y+32));
 		controls.add(new GuiButtonRemoveRecipe("Remove", x+maxWidth-80, y+30, 70, 14, this));
 		return controls;
 	}

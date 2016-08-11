@@ -65,17 +65,21 @@ public class BranchInformationPacket extends CreativeCorePacket{
 				String input = segments.get(i).createPacketInformation(FMLCommonHandler.instance().getEffectiveSide().isServer());
 				if(input != null)
 				{
+					//System.out.println("Sending id=" + segments.get(i).getID() + ",input=" + input);
 					writeString(buf, segments.get(i).getID());
 					writeString(buf, input);
 				}
 			}
 		}
+		
+		//System.out.println("End of sending packet number:" + segStart/10);
 	}
 	
 	public ConfigSegmentCollection collection;
 	
 	@Override
 	public void readBytes(ByteBuf buf) {
+		//System.out.println("Receiving new packet");
 		branch = ConfigBranch.branches.get(buf.readInt());
 		finalPacket = buf.readBoolean();
 		boolean firstPacket = buf.readBoolean();
@@ -91,6 +95,7 @@ public class BranchInformationPacket extends CreativeCorePacket{
 			String id = readString(buf);
 			ConfigSegment segment = collectionOld.getSegmentByID(id);
 			String information = readString(buf);
+			//System.out.println("Receiving id=" + id + ",input=" + information);
 			if(segment != null)
 				segment.receivePacketInformation(information);
 			else{
@@ -103,6 +108,7 @@ public class BranchInformationPacket extends CreativeCorePacket{
 			}
 			
 		}
+		//System.out.println("End of receiving packet number:" + segStart/10);
 	}
 	
 	public boolean isFinalPacket()
