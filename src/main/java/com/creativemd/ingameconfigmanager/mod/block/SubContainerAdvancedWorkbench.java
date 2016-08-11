@@ -57,7 +57,7 @@ public class SubContainerAdvancedWorkbench extends SubContainer{
 						ItemStack stack = recipe.output[i].copy();
 						if(!InventoryUtils.addItemStackToInventory(output, stack))
 							if(!InventoryUtils.addItemStackToInventory(player.inventory, stack))
-								WorldUtils.dropItem(player.worldObj, stack, (int)player.posX, (int)player.posY, (int)player.posZ);
+								WorldUtils.dropItem(player, stack);
 					}
 				}
 				recipe.consumeRecipe(crafting, BlockAdvancedWorkbench.gridSize, BlockAdvancedWorkbench.gridSize);
@@ -70,12 +70,12 @@ public class SubContainerAdvancedWorkbench extends SubContainer{
 	{
 		for (int i = 0; i < crafting.getSizeInventory(); i++) {
 			if(crafting.getStackInSlot(i) != null)
-				WorldUtils.dropItem(player.worldObj, crafting.getStackInSlot(i), (int)player.posX, (int)player.posY, (int)player.posZ);
+				WorldUtils.dropItem(player, crafting.getStackInSlot(i));
 		}
 		
 		for (int i = 0; i < output.getSizeInventory(); i++) {
 			if(output.getStackInSlot(i) != null)
-				WorldUtils.dropItem(player.worldObj, output.getStackInSlot(i), (int)player.posX, (int)player.posY, (int)player.posZ);
+				WorldUtils.dropItem(player, output.getStackInSlot(i));
 		}
 	}
 
