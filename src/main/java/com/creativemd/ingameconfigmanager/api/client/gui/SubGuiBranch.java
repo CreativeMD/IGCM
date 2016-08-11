@@ -21,6 +21,7 @@ import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
 import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -113,7 +114,20 @@ public class SubGuiBranch extends SubGui{
 		}
 		
 	}
-
+	
+	@Override
+	public boolean closeGuiUsingEscape()
+	{
+		Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+			
+			@Override
+			public void run() {
+				PacketHandler.sendPacketToServer(new RequestInformationPacket(branch));
+			}
+		});
+		return true;
+	}
+	
 	@Override
 	public void createControls() {
 		GuiScrollBox box = new GuiScrollBox("scrollbox", 0, 0, 244, 220);
@@ -121,12 +135,20 @@ public class SubGuiBranch extends SubGui{
 		controls.add(new GuiButton("Cancel", 0, 228, 50) {
 			
 			@Override
-			public void onClicked(int x, int y, int button) {}
+			public void onClicked(int x, int y, int button) {
+				closeGuiUsingEscape();
+				if(branch.tab.branches.size() > 1)
+					InGameConfigManager.openModOverviewGui(container.player, branch.tab.getID());
+				else if(branch.tab.branches.size() == 1)
+					InGameConfigManager.openModsGui(container.player);
+			}
 		});
 		controls.add((GuiControl) new GuiButton("Save", 194, 228, 50) {
 			
 			@Override
-			public void onClicked(int x, int y, int button) {}
+			public void onClicked(int x, int y, int button) {
+				InGameConfigManager.sendUpdatePacket(branch);
+			}
 		}.setEnabled(false));
 		if(branch.isSearchable())
 			controls.add(new GuiTextfield("search", "", 60, 228, 124, 14));
@@ -138,20 +160,7 @@ public class SubGuiBranch extends SubGui{
 	@CustomEventSubscribe
 	public void onButtonClicked(GuiControlClickEvent event)
 	{
-		if(event.source instanceof GuiButton)
-		{
-			if(event.source.is("Cancel"))
-			{
-				PacketHandler.sendPacketToServer(new RequestInformationPacket(branch));
-				//InGameConfigManager.loadConfig(branch);
-				if(branch.tab.branches.size() > 1)
-					InGameConfigManager.openModOverviewGui(container.player, branch.tab.getID());
-				else if(branch.tab.branches.size() == 1)
-					InGameConfigManager.openModsGui(container.player);
-			}else if(event.source.is("Save")){
-				InGameConfigManager.sendUpdatePacket(branch);
-			}
-		}else if(event.source instanceof GuiSlotControl){
+		if(event.source instanceof GuiSlotControl){
 			if(((GuiSlotControl)event.source).slot instanceof InfoSlotControl)
 			{
 				openedSlot = (GuiSlotControl) event.source;
