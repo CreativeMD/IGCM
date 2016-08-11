@@ -118,13 +118,14 @@ public class SubGuiBranch extends SubGui{
 	@Override
 	public boolean closeGuiUsingEscape()
 	{
-		Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-			
-			@Override
-			public void run() {
-				PacketHandler.sendPacketToServer(new RequestInformationPacket(branch));
-			}
-		});
+		if(!Minecraft.getMinecraft().isSingleplayer())
+			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+				
+				@Override
+				public void run() {
+					PacketHandler.sendPacketToServer(new RequestInformationPacket(branch));
+				}
+			});
 		return true;
 	}
 	
