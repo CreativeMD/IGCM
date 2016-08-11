@@ -2,22 +2,15 @@ package com.creativemd.ingameconfigmanager.mod.block;
 
 import java.util.ArrayList;
 
-import javax.annotation.Nullable;
-
-import com.creativemd.creativecore.core.CreativeCore;
 import com.creativemd.creativecore.gui.container.SubContainer;
 import com.creativemd.creativecore.gui.container.SubGui;
 import com.creativemd.creativecore.gui.opener.GuiHandler;
 import com.creativemd.creativecore.gui.opener.IGuiCreator;
 
-import net.minecraft.block.Block;
+import jline.internal.Nullable;
 import net.minecraft.block.BlockWorkbench;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
