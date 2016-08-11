@@ -23,6 +23,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 	
@@ -132,13 +133,21 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 		}else if(object instanceof Block){
 			return new ItemStack[]{new ItemStack((Block) object)};
 		}else if(object instanceof ItemStack){
-			return new ItemStack[]{((ItemStack) object).copy()};
+			ItemStack stack = ((ItemStack) object).copy(); 
+			if(stack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
+				stack.setItemDamage(0);
+			return new ItemStack[]{stack};
 		}else if(object instanceof List<?>){
 			List stacks = (List) object;
 			ItemStack[] result = new ItemStack[stacks.size()];
 			for(int zahl = 0; zahl < stacks.size(); zahl++)
 				if(stacks.get(zahl) instanceof ItemStack)
-					result[zahl] = ((ItemStack) stacks.get(zahl)).copy();
+				{
+					ItemStack stack = ((ItemStack) stacks.get(zahl)).copy();
+					if(stack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
+						stack.setItemDamage(0);
+					result[zahl] = stack;
+				}
 					
 			return result;
 					
