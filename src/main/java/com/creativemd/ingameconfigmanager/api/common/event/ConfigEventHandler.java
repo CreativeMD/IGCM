@@ -45,7 +45,7 @@ public class ConfigEventHandler
 		if(FMLCommonHandler.instance().getEffectiveSide().isServer())
 		{
 			InGameConfigManager.sendAllUpdatePackets(event.player);
-			System.out.println("Send player update packet to " + event.player.getName() + "!");
+			InGameConfigManager.logger.info("Send player update packet to " + event.player.getName() + "!");
 		}
 	}
 	
