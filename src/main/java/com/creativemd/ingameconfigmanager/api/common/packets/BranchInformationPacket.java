@@ -10,9 +10,13 @@ import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
 import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.jei.JEIHandler;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -122,6 +126,8 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		branch.onRecieveFromPre(server, collection);
 		branch.onRecieveFrom(server, collection);
 		branch.onRecieveFromPost(server, collection);
+		
+		JEIHandler.forceReload();
 	}
 
 	@Override
