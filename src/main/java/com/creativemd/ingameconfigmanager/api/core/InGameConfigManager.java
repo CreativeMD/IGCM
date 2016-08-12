@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.creativemd.creativecore.common.packet.CreativeCorePacket;
 import com.creativemd.creativecore.common.packet.PacketHandler;
+import com.creativemd.creativecore.core.CreativeCoreClient;
 import com.creativemd.creativecore.gui.opener.GuiHandler;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
@@ -42,6 +43,8 @@ import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = InGameConfigManager.modid, version = InGameConfigManager.version, name = "InGameConfigManager")
 public class InGameConfigManager { 
@@ -49,7 +52,7 @@ public class InGameConfigManager {
 	public static Logger logger = LogManager.getLogger(InGameConfigManager.modid);
 	
 	public static final String modid = "ingameconfigmanager";
-	public static final String version = "1.0";
+	public static final String version = "1.1";
 	
 	public static ConfigEventHandler eventHandler = new ConfigEventHandler();
 	
@@ -63,7 +66,7 @@ public class InGameConfigManager {
 	public static ArrayList<String> profiles;
 	
 	public static boolean overrideWorkbench = false;
-	public static Block advancedWorkbench = new BlockAdvancedWorkbench().setRegistryName(InGameConfigManager.modid, "advancedWorkbench").setCreativeTab(CreativeTabs.DECORATIONS);
+	public static Block advancedWorkbench = new BlockAdvancedWorkbench().setUnlocalizedName("advancedWorkbench").setRegistryName(InGameConfigManager.modid, "advancedWorkbench").setCreativeTab(CreativeTabs.DECORATIONS);
 	
 	
 	
@@ -184,12 +187,21 @@ public class InGameConfigManager {
 	{
 		ConfigManagerModLoader.loadMod();
 		
-		GameRegistry.register(advancedWorkbench);
+		GameRegistry.registerBlock(advancedWorkbench);
 		
 		GuiHandler.registerGuiHandler(guiID, new InGameGuiHandler());
 		
 		//if(Loader.isModLoaded("NotEnoughItems") && FMLCommonHandler.instance().getEffectiveSide().isClient())
 			//NEIAdvancedRecipeHandler.load();
+		
+		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
+			initCLient();
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public static void initCLient()
+	{
+		CreativeCoreClient.registerBlockItem(advancedWorkbench);
 	}
 	
 	@EventHandler
