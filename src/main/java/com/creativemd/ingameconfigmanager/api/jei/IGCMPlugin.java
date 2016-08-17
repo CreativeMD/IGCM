@@ -2,7 +2,7 @@ package com.creativemd.ingameconfigmanager.api.jei;
 
 import javax.annotation.Nonnull;
 
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.IGCM;
 import com.creativemd.ingameconfigmanager.mod.ConfigManagerModLoader;
 import com.creativemd.ingameconfigmanager.mod.block.AdvancedWorkbench;
 
@@ -30,7 +30,7 @@ public class IGCMPlugin extends BlankModPlugin {
 		
 		registry.addRecipeHandlers(new BetterShapedRecipeHandler(), new BetterShapelessRecipeHandler(guiHelper), new AdvRecipeHandler());
 		
-		registry.addRecipeCategoryCraftingItem(new ItemStack(InGameConfigManager.advancedWorkbench), AdvCraftingRecipeCategory.CategoryUiD);
+		registry.addRecipeCategoryCraftingItem(new ItemStack(IGCM.advancedWorkbench), AdvCraftingRecipeCategory.CategoryUiD);
 		
 		registry.addRecipes(ConfigManagerModLoader.advancedWorkbench.getAllExitingRecipes());
 	}

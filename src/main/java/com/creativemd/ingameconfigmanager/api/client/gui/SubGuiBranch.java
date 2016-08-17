@@ -18,7 +18,7 @@ import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.container.controls.InfoSlotControl;
 import com.creativemd.ingameconfigmanager.api.common.packets.RequestInformationPacket;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.IGCM;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
 import net.minecraft.client.Minecraft;
@@ -139,16 +139,16 @@ public class SubGuiBranch extends SubGui{
 			public void onClicked(int x, int y, int button) {
 				closeGuiUsingEscape();
 				if(branch.tab.branches.size() > 1)
-					InGameConfigManager.openModOverviewGui(container.player, branch.tab.getID());
+					IGCM.openModOverviewGui(container.player, branch.tab.getID());
 				else if(branch.tab.branches.size() == 1)
-					InGameConfigManager.openModsGui(container.player);
+					IGCM.openModsGui(container.player);
 			}
 		});
 		controls.add((GuiControl) new GuiButton("Save", 194, 228, 50) {
 			
 			@Override
 			public void onClicked(int x, int y, int button) {
-				InGameConfigManager.sendUpdatePacket(branch);
+				IGCM.sendUpdatePacket(branch);
 			}
 		}.setEnabled(false));
 		if(branch.isSearchable())

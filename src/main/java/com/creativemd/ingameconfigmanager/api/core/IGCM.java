@@ -13,6 +13,7 @@ import com.creativemd.creativecore.common.packet.CreativeCorePacket;
 import com.creativemd.creativecore.common.packet.PacketHandler;
 import com.creativemd.creativecore.core.CreativeCoreClient;
 import com.creativemd.creativecore.gui.opener.GuiHandler;
+import com.creativemd.ingameconfigmanager.api.client.IGCMClient;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
 import com.creativemd.ingameconfigmanager.api.common.command.CommandGUI;
@@ -46,10 +47,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Mod(modid = InGameConfigManager.modid, version = InGameConfigManager.version, name = "InGameConfigManager")
-public class InGameConfigManager { 
+@Mod(modid = IGCM.modid, version = IGCM.version, name = "InGameConfigManager")
+public class IGCM { 
 	
-	public static Logger logger = LogManager.getLogger(InGameConfigManager.modid);
+	public static Logger logger = LogManager.getLogger(IGCM.modid);
 	
 	public static final String modid = "ingameconfigmanager";
 	public static final String version = "1.1";
@@ -66,7 +67,7 @@ public class InGameConfigManager {
 	public static ArrayList<String> profiles;
 	
 	public static boolean overrideWorkbench = false;
-	public static Block advancedWorkbench = new BlockAdvancedWorkbench().setUnlocalizedName("advancedWorkbench").setRegistryName(InGameConfigManager.modid, "advancedWorkbench").setCreativeTab(CreativeTabs.DECORATIONS);
+	public static Block advancedWorkbench = new BlockAdvancedWorkbench().setUnlocalizedName("advancedWorkbench").setRegistryName(IGCM.modid, "advancedWorkbench").setCreativeTab(CreativeTabs.DECORATIONS);
 	
 	
 	
@@ -201,7 +202,7 @@ public class InGameConfigManager {
 	@SideOnly(Side.CLIENT)
 	public static void initCLient()
 	{
-		CreativeCoreClient.registerBlockItem(advancedWorkbench);
+		IGCMClient.initClient();
 	}
 	
 	@EventHandler

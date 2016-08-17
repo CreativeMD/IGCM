@@ -4,7 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import com.creativemd.creativecore.client.avatar.AvatarItemStack;
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.IGCM;
 import com.creativemd.ingameconfigmanager.api.core.TabRegistry;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
 import com.creativemd.ingameconfigmanager.mod.block.AdvancedWorkbench;

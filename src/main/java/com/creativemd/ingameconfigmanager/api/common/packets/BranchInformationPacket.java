@@ -9,7 +9,7 @@ import com.creativemd.ingameconfigmanager.api.client.gui.SubGuiBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.IGCM;
 import com.creativemd.ingameconfigmanager.api.jei.JEIHandler;
 
 import io.netty.buffer.ByteBuf;
@@ -160,8 +160,8 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		{
 			receiveUpdate(true);
 			
-			InGameConfigManager.sendUpdatePacket(branch);
-			InGameConfigManager.saveConfig(branch);
+			IGCM.sendUpdatePacket(branch);
+			IGCM.saveConfig(branch);
 		}
 	}
 

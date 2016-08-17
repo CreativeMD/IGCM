@@ -6,7 +6,7 @@ import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigSegmentCollection;
 import com.creativemd.ingameconfigmanager.api.common.segment.BooleanSegment;
 import com.creativemd.ingameconfigmanager.api.common.segment.IntegerSegment;
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.IGCM;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -43,8 +43,8 @@ public class GeneralBranch extends ConfigBranch{
 
 	@Override
 	public void onRecieveFrom(boolean isServer, ConfigSegmentCollection collection) {
-		InGameConfigManager.overrideWorkbench = (Boolean)collection.getSegmentValue("overrideWorkbench");
-		InGameConfigManager.maxSegments = (Integer)collection.getSegmentValue("maxSegments");
+		IGCM.overrideWorkbench = (Boolean)collection.getSegmentValue("overrideWorkbench");
+		IGCM.maxSegments = (Integer)collection.getSegmentValue("maxSegments");
 	}
 
 }

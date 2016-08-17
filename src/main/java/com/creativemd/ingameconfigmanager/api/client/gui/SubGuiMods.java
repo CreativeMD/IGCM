@@ -10,7 +10,7 @@ import com.creativemd.creativecore.gui.controls.gui.GuiAvatarLabel;
 import com.creativemd.creativecore.gui.controls.gui.GuiButton;
 import com.creativemd.creativecore.gui.controls.gui.GuiScrollBox;
 import com.creativemd.creativecore.gui.event.gui.GuiControlClickEvent;
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.IGCM;
 import com.creativemd.ingameconfigmanager.api.core.TabRegistry;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
@@ -34,7 +34,7 @@ public class SubGuiMods extends SubGui{
 				@Override
 				public void onClicked(int x, int y, int button)
 				{
-					InGameConfigManager.openModOverviewGui(container.player, Integer.parseInt(this.name));
+					IGCM.openModOverviewGui(container.player, Integer.parseInt(this.name));
 				}
 			});
 		}
@@ -44,7 +44,7 @@ public class SubGuiMods extends SubGui{
 			@Override
 			public void onClicked(int x, int y, int button)
 			{
-				InGameConfigManager.openProfileGui(container.player);
+				IGCM.openProfileGui(container.player);
 			}
 		});
 	}

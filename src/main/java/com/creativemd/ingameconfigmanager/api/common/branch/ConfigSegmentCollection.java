@@ -6,12 +6,12 @@ import java.util.HashMap;
 import org.apache.logging.log4j.Logger;
 
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.IGCM;
 
 public class ConfigSegmentCollection
 {
 	private ArrayList<ConfigSegment> segments;
-	private Logger log = InGameConfigManager.logger;
+	private Logger log = IGCM.logger;
 	
 	public ConfigSegmentCollection(ArrayList<ConfigSegment> segment)
 	{

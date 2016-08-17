@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 import com.creativemd.creativecore.common.packet.PacketHandler;
 import com.creativemd.creativecore.gui.opener.GuiHandler;
 import com.creativemd.ingameconfigmanager.api.common.packets.CraftResultPacket;
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.IGCM;
 import com.creativemd.ingameconfigmanager.mod.workbench.WorkbenchSwitchHelper;
 
 import net.minecraft.block.Block;
@@ -44,15 +44,15 @@ public class ConfigEventHandler
 	{
 		if(FMLCommonHandler.instance().getEffectiveSide().isServer())
 		{
-			InGameConfigManager.sendAllUpdatePackets(event.player);
-			InGameConfigManager.logger.info("Send player update packet to " + event.player.getName() + "!");
+			IGCM.sendAllUpdatePackets(event.player);
+			IGCM.logger.info("Send player update packet to " + event.player.getName() + "!");
 		}
 	}
 	
 	@SubscribeEvent
 	public void onInteract(RightClickBlock event)
 	{
-		if(InGameConfigManager.overrideWorkbench)
+		if(IGCM.overrideWorkbench)
 		{
 			Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
 			if(block instanceof BlockWorkbench)
@@ -63,7 +63,7 @@ public class ConfigEventHandler
 					NBTTagCompound nbt = new NBTTagCompound();
 					nbt.setInteger("gui", 4);
 					nbt.setInteger("index", 0);
-					GuiHandler.openGui(InGameConfigManager.guiID, nbt, event.getEntityPlayer());
+					GuiHandler.openGui(IGCM.guiID, nbt, event.getEntityPlayer());
 					/*ConfigGuiPacket packet = new ConfigGuiPacket(4, 0);
 					packet.executeClient(event.entityPlayer);
 					PacketHandler.sendPacketToServer(packet);*/

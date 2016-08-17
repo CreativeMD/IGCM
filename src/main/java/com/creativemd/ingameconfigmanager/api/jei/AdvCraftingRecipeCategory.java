@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.IGCM;
 import com.creativemd.ingameconfigmanager.mod.block.BlockAdvancedWorkbench;
 
 public class AdvCraftingRecipeCategory extends BlankRecipeCategory<ICraftingRecipeWrapper> {

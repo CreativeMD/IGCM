@@ -1,6 +1,6 @@
 package com.creativemd.ingameconfigmanager.api.common.command;
 
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.IGCM;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -25,7 +25,7 @@ public class CommandGUI extends CommandBase {
 		if(sender instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) sender;
-			InGameConfigManager.openModsGui(player);
+			IGCM.openModsGui(player);
 		}
 	}
 }

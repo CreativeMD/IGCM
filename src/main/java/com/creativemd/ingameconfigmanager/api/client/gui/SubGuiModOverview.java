@@ -4,7 +4,7 @@ import com.creativemd.creativecore.gui.container.SubGui;
 import com.creativemd.creativecore.gui.controls.gui.GuiAvatarButton;
 import com.creativemd.creativecore.gui.controls.gui.GuiButton;
 import com.creativemd.creativecore.gui.controls.gui.GuiScrollBox;
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.IGCM;
 import com.creativemd.ingameconfigmanager.api.tab.ModTab;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
@@ -27,7 +27,7 @@ public class SubGuiModOverview extends SubGui{
 				@Override
 				public void onClicked(int x, int y, int button)
 				{
-					InGameConfigManager.openBranchGui(container.player, tab.branches.get(Integer.parseInt(this.name)));
+					IGCM.openBranchGui(container.player, tab.branches.get(Integer.parseInt(this.name)));
 				}
 			});
 		}
@@ -37,7 +37,7 @@ public class SubGuiModOverview extends SubGui{
 			@Override
 			public void onClicked(int x, int y, int button)
 			{
-				InGameConfigManager.openModsGui(container.player);
+				IGCM.openModsGui(container.player);
 			}
 		});
 	}

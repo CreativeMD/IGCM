@@ -7,7 +7,7 @@ import com.creativemd.creativecore.gui.controls.gui.GuiButton;
 import com.creativemd.creativecore.gui.controls.gui.GuiComboBox;
 import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
 import com.creativemd.creativecore.gui.event.gui.GuiControlClickEvent;
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.IGCM;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
 import net.minecraft.client.gui.FontRenderer;
@@ -21,11 +21,11 @@ public class SubGuiProfile extends SubGui{
 	@Override
 	public void createControls() {
 		ArrayList<String> lines = new ArrayList<String>();
-		for (int i = 0; i < InGameConfigManager.profiles.size(); i++) {
-			lines.add(InGameConfigManager.profiles.get(i));
+		for (int i = 0; i < IGCM.profiles.size(); i++) {
+			lines.add(IGCM.profiles.get(i));
 		}
 		GuiComboBox box = new GuiComboBox("profiles", 5, 5, 100, lines);
-		box.caption = InGameConfigManager.profileName;
+		box.caption = IGCM.profileName;
 		controls.add(box);
 		controls.add(new GuiButton("Remove", 120, 5, 40) {
 			@Override
@@ -55,18 +55,18 @@ public class SubGuiProfile extends SubGui{
 		controls.add(new GuiButton("Cancel", 5, 228, 40) {
 			@Override
 			public void onClicked(int x, int y, int button) {
-				InGameConfigManager.openModsGui(container.player);
+				IGCM.openModsGui(container.player);
 			}
 		});
 		controls.add(new GuiButton("Save", 200, 228, 40) {
 			@Override
 			public void onClicked(int x, int y, int button) {
 				GuiComboBox combobox = (GuiComboBox) get("profiles");
-				InGameConfigManager.profileName = combobox.caption;
-				InGameConfigManager.profiles = (ArrayList<String>) combobox.lines.clone();
-				InGameConfigManager.saveProfiles();
-				InGameConfigManager.loadConfig();
-				InGameConfigManager.openModsGui(container.player);
+				IGCM.profileName = combobox.caption;
+				IGCM.profiles = (ArrayList<String>) combobox.lines.clone();
+				IGCM.saveProfiles();
+				IGCM.loadConfig();
+				IGCM.openModsGui(container.player);
 			}
 		});
 	}

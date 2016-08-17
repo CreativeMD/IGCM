@@ -6,13 +6,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.creativemd.creativecore.client.avatar.Avatar;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.IGCM;
 
 import net.minecraft.item.ItemStack;
 
 public class ModTab extends Tab
 {
-	private Logger log = InGameConfigManager.logger;
+	private Logger log = IGCM.logger;
 	
 	public ModTab(String modname, ItemStack stack)
 	{

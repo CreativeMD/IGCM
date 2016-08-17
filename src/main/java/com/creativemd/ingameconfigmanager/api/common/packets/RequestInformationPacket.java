@@ -2,7 +2,7 @@ package com.creativemd.ingameconfigmanager.api.common.packets;
 
 import com.creativemd.creativecore.common.packet.CreativeCorePacket;
 import com.creativemd.ingameconfigmanager.api.common.branch.ConfigBranch;
-import com.creativemd.ingameconfigmanager.api.core.InGameConfigManager;
+import com.creativemd.ingameconfigmanager.api.core.IGCM;
 import com.typesafe.config.Config;
 
 import io.netty.buffer.ByteBuf;
@@ -42,9 +42,9 @@ public class RequestInformationPacket extends CreativeCorePacket{
 		ConfigBranch branch = ConfigBranch.getBranchByID(id);
 		if(branch != null)
 		{
-			InGameConfigManager.sendUpdatePacket(branch, player);
+			IGCM.sendUpdatePacket(branch, player);
 		}else{
-			InGameConfigManager.sendAllUpdatePackets(player);
+			IGCM.sendAllUpdatePackets(player);
 		}
 	}
 
