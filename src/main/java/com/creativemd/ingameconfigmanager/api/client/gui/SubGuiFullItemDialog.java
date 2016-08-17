@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 import javax.vecmath.Vector4d;
 
+import com.creativemd.creativecore.client.avatar.AvatarItemStack;
+import com.creativemd.creativecore.common.utils.ColorUtils;
 import com.creativemd.creativecore.common.utils.stack.StackInfo;
 import com.creativemd.creativecore.common.utils.stack.StackInfoBlock;
 import com.creativemd.creativecore.common.utils.stack.StackInfoFuel;
@@ -13,9 +15,11 @@ import com.creativemd.creativecore.common.utils.stack.StackInfoItemStack;
 import com.creativemd.creativecore.common.utils.stack.StackInfoMaterial;
 import com.creativemd.creativecore.common.utils.stack.StackInfoOre;
 import com.creativemd.creativecore.gui.container.SubGui;
+import com.creativemd.creativecore.gui.controls.gui.GuiAvatarLabelClickable;
 import com.creativemd.creativecore.gui.controls.gui.GuiButton;
 import com.creativemd.creativecore.gui.controls.gui.GuiComboBox;
 import com.creativemd.creativecore.gui.controls.gui.GuiLabel;
+import com.creativemd.creativecore.gui.controls.gui.GuiScrollBox;
 import com.creativemd.creativecore.gui.controls.gui.GuiStateButton;
 import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
 import com.creativemd.creativecore.gui.controls.gui.custom.GuiInvSelector;
@@ -42,7 +46,7 @@ public class SubGuiFullItemDialog extends SubGui{
 	
 	public SubGuiFullItemDialog(boolean supportStackSize)
 	{
-		super(150, 175);
+		super(150, 230);
 		this.supportStackSize = supportStackSize;
 	}
 
@@ -68,13 +72,31 @@ public class SubGuiFullItemDialog extends SubGui{
 		lines.add("Ore");
 		lines.add("Material");
 		lines.add("Fuel");
-		lines.add("Latest");
+		//lines.add("Latest");
 		
 		GuiComboBox box = new GuiComboBox("type", 0, 0, 144, lines);
 		int index = lines.indexOf(selected);
 		box.caption = selected;
 		box.index = index;
 		controls.add(box);
+		
+		GuiScrollBox scroll = new GuiScrollBox("latest", 0, 155, 144, 65);
+		int latestPerRow = 4;
+		for (int i = 0; i < latest.size(); i++) {
+			int row = i/latestPerRow;
+			int cell = i-(row*latestPerRow);
+			
+			GuiAvatarLabelClickable avatar = new GuiAvatarLabelClickable("" + i, cell*32, row*18, ColorUtils.WHITE, new AvatarItemStack(latest.get(i).getItemStack())) {
+				
+				@Override
+				public void onClicked(int x, int y, int button) {
+					info = latest.get(Integer.parseInt(name));
+					closeLayer(new NBTTagCompound());
+				}
+			};
+			scroll.addControl(avatar);
+		}
+		controls.add(scroll);
 		
 		
 		switch(index)
@@ -121,7 +143,7 @@ public class SubGuiFullItemDialog extends SubGui{
 		case 3:
 			controls.add(new GuiLabel("Nothing to select", 5, 30));
 			break;
-		case 4:
+		/*case 4:
 			selector = new GuiStackSelector("stack", 0, 30, 122, container.player, false);
 			selector.stacks.clear();
 			selector.lines.clear();
@@ -133,7 +155,7 @@ public class SubGuiFullItemDialog extends SubGui{
 			else
 				selector.caption = "";
 			controls.add(selector);
-			break;
+			break;*/
 		}
 		
 		if(supportStackSize)
@@ -145,17 +167,17 @@ public class SubGuiFullItemDialog extends SubGui{
 			controls.add(field);
 		}
 		
-		controls.add(new GuiButton("Cancel", 0, 150, 41) {
+		controls.add(new GuiButton("Cancel", 0, 130, 41) {
 			
 			@Override
 			public void onClicked(int x, int y, int button) {}
 		});
-		controls.add(new GuiButton("Remove", 50, 150, 41) {
+		controls.add(new GuiButton("Remove", 50, 130, 41) {
 			
 			@Override
 			public void onClicked(int x, int y, int button) {}
 		});
-		controls.add(new GuiButton("Save", 100, 150, 41) {
+		controls.add(new GuiButton("Save", 100, 130, 41) {
 			
 			@Override
 			public void onClicked(int x, int y, int button) {}
@@ -214,11 +236,11 @@ public class SubGuiFullItemDialog extends SubGui{
 			case 3:
 				info = new StackInfoFuel(stacksize);
 				break;
-			case 4:
+			/*case 4:
 				int stackIndex = ((GuiInvSelector)get("stack")).index;
 				if(stackIndex >= 0 && stackIndex < latest.size())
 					info = latest.get(stackIndex).copy();
-				break;
+				break;*/
 			}
 			if(info != null)
 			{
