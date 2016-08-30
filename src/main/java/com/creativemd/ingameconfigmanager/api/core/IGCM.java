@@ -47,7 +47,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Mod(modid = IGCM.modid, version = IGCM.version, name = "InGameConfigManager")
+@Mod(modid = IGCM.modid, version = IGCM.version, name = "InGameConfigManager",acceptedMinecraftVersions="")
 public class IGCM { 
 	
 	public static Logger logger = LogManager.getLogger(IGCM.modid);
