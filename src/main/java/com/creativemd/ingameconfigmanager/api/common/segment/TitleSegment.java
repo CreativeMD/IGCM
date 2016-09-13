@@ -1,6 +1,8 @@
 package com.creativemd.ingameconfigmanager.api.common.segment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 import com.creativemd.creativecore.gui.GuiControl;
 import com.creativemd.creativecore.gui.container.SubGui;
@@ -12,9 +14,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class TitleSegment<T> extends ConfigSegment<T>{
 	public String title;
 	
+	public String[] tooltip = null;
+	
 	public TitleSegment(String id, String title, T defaultValue) {
 		super(id, defaultValue);
 		this.title = title;
+	}
+	
+	public TitleSegment<T> setToolTip(String... tooltip)
+	{
+		this.tooltip = tooltip;
+		return this;
 	}
 
 	@Override
@@ -22,7 +32,9 @@ public abstract class TitleSegment<T> extends ConfigSegment<T>{
 	public ArrayList<GuiControl> createGuiControls(SubGui gui, int x, int y,
 			int maxWidth) {
 		ArrayList<GuiControl> controls = new ArrayList<GuiControl>();
-		controls.add(new GuiLabel(title, x+10, y+5));
+		GuiLabel label = new GuiLabel(title, x+10, y+5);
+		label.setCustomTooltip(tooltip);
+		controls.add(label);
 		return controls;
 	}
 	
