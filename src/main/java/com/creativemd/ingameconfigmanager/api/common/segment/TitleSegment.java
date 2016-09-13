@@ -33,7 +33,8 @@ public abstract class TitleSegment<T> extends ConfigSegment<T>{
 			int maxWidth) {
 		ArrayList<GuiControl> controls = new ArrayList<GuiControl>();
 		GuiLabel label = new GuiLabel(title, x+10, y+5);
-		label.setCustomTooltip(tooltip);
+		if(tooltip != null)
+			label.setCustomTooltip(tooltip);
 		controls.add(label);
 		return controls;
 	}
