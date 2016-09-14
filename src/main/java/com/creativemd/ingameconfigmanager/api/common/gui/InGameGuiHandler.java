@@ -25,7 +25,7 @@ public class InGameGuiHandler extends CustomGuiHandler{
 	@Override
 	public SubContainer getContainer(EntityPlayer player, NBTTagCompound nbt) {
 		int gui = nbt.getInteger("gui");
-		int index = nbt.getInteger("index");
+		String name = nbt.getString("name");
 		switch(gui)
 		{
 		/**mods**/
@@ -34,13 +34,13 @@ public class InGameGuiHandler extends CustomGuiHandler{
 			return new SubContainerMods(player);
 		/**mod overview**/
 		case 1:
-			ModTab tab = TabRegistry.getTabByIndex(index);
+			ModTab tab = TabRegistry.getTabByID(name);
 			if(tab != null)
 				return new SubContainerMods(player);
 			break;
 		/**branch**/
 		case 2:
-			ConfigBranch branch = ConfigBranch.getBranchByID(index);
+			ConfigBranch branch = ConfigBranch.getBranchByID(name);
 			if(branch != null)
 				return new SubContainerBranch(player, branch);
 			break;
@@ -54,7 +54,7 @@ public class InGameGuiHandler extends CustomGuiHandler{
 	@SideOnly(Side.CLIENT)
 	public SubGui getGui(EntityPlayer player, NBTTagCompound nbt) {
 		int gui = nbt.getInteger("gui");
-		int index = nbt.getInteger("index");
+		String name = nbt.getString("name");
 		switch(gui)
 		{
 		/**mods**/
@@ -62,13 +62,13 @@ public class InGameGuiHandler extends CustomGuiHandler{
 			return new SubGuiMods();
 		/**mod overview**/
 		case 1:
-			ModTab tab = TabRegistry.getTabByIndex(index);
+			ModTab tab = TabRegistry.getTabByID(name);
 			if(tab != null)
 				return new SubGuiModOverview(tab);
 			break;
 		/**branch**/
 		case 2:
-			ConfigBranch branch = ConfigBranch.getBranchByID(index);
+			ConfigBranch branch = ConfigBranch.getBranchByID(name);
 			if(branch != null)
 				return new SubGuiBranch(branch);
 			break;

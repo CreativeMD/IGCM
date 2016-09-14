@@ -12,24 +12,24 @@ public class RequestInformationPacket extends CreativeCorePacket{
 	
 	public RequestInformationPacket()
 	{
-		this.id = -1;
+		this.id = "";
 	}
 	
-	public int id;
+	public String id;
 	
 	public RequestInformationPacket(ConfigBranch branch)
 	{
-		this.id = branch.id;
+		this.id = branch.name;
 	}
 	
 	@Override
 	public void writeBytes(ByteBuf buf) {
-		buf.writeInt(id);
+		writeString(buf, id);
 	}
 
 	@Override
 	public void readBytes(ByteBuf buf) {
-		id = buf.readInt();
+		id = readString(buf);
 	}
 
 	@Override

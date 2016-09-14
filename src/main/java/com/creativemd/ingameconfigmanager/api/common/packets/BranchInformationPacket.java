@@ -33,9 +33,9 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		
 	}
 	
-	public BranchInformationPacket(int id, int segStart, int segEnd)
+	public BranchInformationPacket(String id, int segStart, int segEnd)
 	{
-		this(ConfigBranch.branches.get(id), segStart, segEnd);
+		this(ConfigBranch.getBranchByID(id), segStart, segEnd);
 	}
 	
 	public BranchInformationPacket(ConfigBranch branch, int segStart, int segEnd)
@@ -49,7 +49,7 @@ public class BranchInformationPacket extends CreativeCorePacket{
 	public void writeBytes(ByteBuf buf) {
 		branch.onPacketSend(FMLCommonHandler.instance().getEffectiveSide().isServer(), new ConfigSegmentCollection(branch.getConfigSegments()));
 		
-		buf.writeInt(branch.id);
+		writeString(buf, branch.name);;
 		//buf.writeInt(segStart);
 		//buf.writeInt(segEnd);
 		int count = 0;
@@ -84,7 +84,7 @@ public class BranchInformationPacket extends CreativeCorePacket{
 	@Override
 	public void readBytes(ByteBuf buf) {
 		//System.out.println("Receiving new packet");
-		branch = ConfigBranch.branches.get(buf.readInt());
+		branch = ConfigBranch.getBranchByID(readString(buf));
 		finalPacket = buf.readBoolean();
 		boolean firstPacket = buf.readBoolean();
 		int count = buf.readInt();
@@ -137,7 +137,7 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		{
 			receiveUpdate(false);
 			
-			if(player.openContainer instanceof ContainerSub && ((ContainerSub) player.openContainer).gui.getTopLayer() instanceof SubGuiBranch)
+			if(player!= null && player.openContainer instanceof ContainerSub && ((ContainerSub) player.openContainer).gui.getTopLayer() instanceof SubGuiBranch)
 			{
 				SubGuiBranch gui = (SubGuiBranch) ((ContainerSub) player.openContainer).gui.getTopLayer();
 				if(gui.branch == branch)
@@ -149,7 +149,7 @@ public class BranchInformationPacket extends CreativeCorePacket{
 					if(box.scrolled > box.maxScroll)
 						box.scrolled = box.maxScroll;
 				}
-					//InGameConfigManager.openBranchGui(player, branch);
+				//InGameConfigManager.openBranchGui(player, branch);
 			}
 		}
 	}

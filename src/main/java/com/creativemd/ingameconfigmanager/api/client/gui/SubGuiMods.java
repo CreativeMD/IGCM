@@ -28,15 +28,16 @@ public class SubGuiMods extends SubGui{
 	@Override
 	public void createControls() {
 		GuiScrollBox box = new GuiScrollBox("scrollbox", 0, 0, 245, 220);
-		ArrayList<ModTab> tabs = TabRegistry.getTabs();
-		for (int i = 0; i < tabs.size(); i++) {
-			box.addControl(new GuiAvatarButton("" + i, tabs.get(i).title, 5, 5+i*24, 155, 16, tabs.get(i).avatar) {
+		int i = 0;
+		for (ModTab tab : TabRegistry.tabs.values()) {
+			box.addControl(new GuiAvatarButton("" + tab.title, tab.title, 5, 5+i*24, 155, 16, tab.avatar) {
 				@Override
 				public void onClicked(int x, int y, int button)
 				{
-					IGCM.openModOverviewGui(container.player, Integer.parseInt(this.name));
+					IGCM.openModOverviewGui(container.player, this.name);
 				}
 			});
+			i++;
 		}
 		
 		controls.add(box);

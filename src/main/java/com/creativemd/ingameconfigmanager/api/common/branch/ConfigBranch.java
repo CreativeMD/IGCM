@@ -1,6 +1,7 @@
 package com.creativemd.ingameconfigmanager.api.common.branch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.creativemd.creativecore.client.avatar.Avatar;
 import com.creativemd.ingameconfigmanager.api.common.segment.ConfigSegment;
@@ -13,9 +14,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class ConfigBranch{
 	
 	/**List should only give information and maybe helpful for some custom custom functionalities**/
-	public static ArrayList<ConfigBranch> branches = new ArrayList<ConfigBranch>();
+	public static HashMap<String, ConfigBranch> branches = new HashMap<>();
 	
-	public static int indexOf(ConfigBranch branch)
+	/*public static int indexOf(ConfigBranch branch)
 	{
 		return branches.indexOf(branch);
 	}
@@ -25,22 +26,26 @@ public abstract class ConfigBranch{
 		if(id >= 0 && id < branches.size())
 			return branches.get(id);
 		return null;
+	}*/
+	
+	public static ConfigBranch getBranchByID(String id)
+	{
+		return branches.get(id);
 	}
 	
 	public ModTab tab;
 	
 	/**The Title of the branch**/
-	public String name;
+	public final String name;
 	
-	public final int id;
+	//public final int id;
 	
 	@SideOnly(Side.CLIENT)
 	public Avatar avatar;
 	
 	public ConfigBranch(String name)
 	{
-		this.id = branches.size();
-		branches.add(this);
+		branches.put(name, this);
 		this.name = name;
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
 			avatar = getAvatar();

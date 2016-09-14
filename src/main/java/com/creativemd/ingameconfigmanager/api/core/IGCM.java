@@ -76,8 +76,8 @@ public class IGCM {
 	{
 		currentProfile = new Configuration(new File(ModConfigurationDirectory, "InGameConfigManager" + File.separator + profileName + ".cfg"));
 		currentProfile.load();
-		for (int i = 0; i < ConfigBranch.branches.size(); i++) {
-			loadConfig(ConfigBranch.branches.get(i), false);
+		for (ConfigBranch branch : ConfigBranch.branches.values()) {
+			loadConfig(branch, false);
 		}
 		currentProfile.save();
 	}
@@ -208,8 +208,8 @@ public class IGCM {
 	@EventHandler
 	public static void postLoading(FMLLoadCompleteEvent event)
 	{
-		for (int i = 0; i < ConfigBranch.branches.size(); i++) {
-			ConfigBranch.branches.get(i).loadCore();
+		for (ConfigBranch branch : ConfigBranch.branches.values()) {
+			branch.loadCore();
 		}
 	}
 	
@@ -224,7 +224,7 @@ public class IGCM {
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setInteger("gui", 2);
-		nbt.setInteger("index", branch.id);
+		nbt.setString("name", branch.name);
 		GuiHandler.openGui(guiID, nbt, player);
 		/*
 		ConfigGuiPacket packet = new ConfigGuiPacket(2, branch.id);
@@ -248,16 +248,16 @@ public class IGCM {
 		}
 	}*/
 	
-	public static void openModOverviewGui(EntityPlayer player, int mod)
+	public static void openModOverviewGui(EntityPlayer player, String mod)
 	{
-		ModTab tab = TabRegistry.getTabByIndex(mod);
+		ModTab tab = TabRegistry.getTabByID(mod);
 		if(tab != null)
 		{
 			
 			if(tab.branches.size() > 1){
 				NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setInteger("gui", 1);
-				nbt.setInteger("index", mod);
+				nbt.setString("name", mod);
 				GuiHandler.openGui(guiID, nbt, player);
 				/*ConfigGuiPacket packet = new ConfigGuiPacket(1, mod);
 				if(FMLCommonHandler.instance().getEffectiveSide().isClient()){
@@ -309,9 +309,8 @@ public class IGCM {
 	
 	public static void sendAllUpdatePackets(EntityPlayer player)
 	{
-		ArrayList<ConfigBranch> branches = ConfigBranch.branches;
-		for (int i = 0; i < branches.size(); i++) {
-			sendUpdatePacket(branches.get(i), player);
+		for (ConfigBranch branch : ConfigBranch.branches.values()) {
+			sendUpdatePacket(branch, player);
 		}
 	}
 	
@@ -330,9 +329,8 @@ public class IGCM {
 	
 	public static void sendAllUpdatePackets()
 	{
-		ArrayList<ConfigBranch> branches = ConfigBranch.branches;
-		for (int i = 0; i < branches.size(); i++) {
-			sendUpdatePacket(branches.get(i));
+		for (ConfigBranch branch : ConfigBranch.branches.values()) {
+			sendUpdatePacket(branch);
 		}
 	}
 	

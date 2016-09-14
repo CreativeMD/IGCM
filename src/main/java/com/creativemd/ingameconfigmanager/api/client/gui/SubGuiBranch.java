@@ -139,7 +139,7 @@ public class SubGuiBranch extends SubGui{
 			public void onClicked(int x, int y, int button) {
 				closeGuiUsingEscape();
 				if(branch.tab.branches.size() > 1)
-					IGCM.openModOverviewGui(container.player, branch.tab.getID());
+					IGCM.openModOverviewGui(container.player, branch.tab.title);
 				else if(branch.tab.branches.size() == 1)
 					IGCM.openModsGui(container.player);
 			}
