@@ -61,6 +61,7 @@ public class AdvCraftingRecipeCategory extends BlankRecipeCategory<ICraftingReci
 	public IDrawable getBackground() {
 		return background;
 	}
+	
 	@Override
 	public void setRecipe(IRecipeLayout recipeLayout, ICraftingRecipeWrapper recipeWrapper, IIngredients ingredients) {
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
@@ -80,7 +81,7 @@ public class AdvCraftingRecipeCategory extends BlankRecipeCategory<ICraftingReci
 		if(recipeWrapper instanceof AdvRecipeWrapper)
 		{
 			AdvRecipeWrapper wrapper = (AdvRecipeWrapper) recipeWrapper;
-			craftingGridHelper.setInput(guiItemStacks, wrapper.getInputs(), wrapper.getWidth(), wrapper.getHeight());
+			craftingGridHelper.setInputStacks(guiItemStacks, wrapper.getInputs(), wrapper.getWidth(), wrapper.getHeight());
 			craftingGridHelper.setOutput(guiItemStacks, wrapper.getOutputs());
 		}
 	}
