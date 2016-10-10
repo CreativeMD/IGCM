@@ -128,29 +128,33 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 	
 	public ItemStack[] ObjectoItemStack(Object object)
 	{
-		if(object instanceof Item){
-			return new ItemStack[]{new ItemStack((Item) object)};
-		}else if(object instanceof Block){
-			return new ItemStack[]{new ItemStack((Block) object)};
-		}else if(object instanceof ItemStack){
-			ItemStack stack = ((ItemStack) object).copy(); 
-			if(stack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
-				stack.setItemDamage(0);
-			return new ItemStack[]{stack};
-		}else if(object instanceof List<?>){
-			List stacks = (List) object;
-			ItemStack[] result = new ItemStack[stacks.size()];
-			for(int zahl = 0; zahl < stacks.size(); zahl++)
-				if(stacks.get(zahl) instanceof ItemStack)
-				{
-					ItemStack stack = ((ItemStack) stacks.get(zahl)).copy();
-					if(stack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
-						stack.setItemDamage(0);
-					result[zahl] = stack;
-				}
-					
-			return result;
-					
+		try{
+			if(object instanceof Item){
+				return new ItemStack[]{new ItemStack((Item) object)};
+			}else if(object instanceof Block){
+				return new ItemStack[]{new ItemStack((Block) object)};
+			}else if(object instanceof ItemStack){
+				ItemStack stack = ((ItemStack) object).copy(); 
+				if(stack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
+					stack.setItemDamage(0);
+				return new ItemStack[]{stack};
+			}else if(object instanceof List<?>){
+				List stacks = (List) object;
+				ItemStack[] result = new ItemStack[stacks.size()];
+				for(int zahl = 0; zahl < stacks.size(); zahl++)
+					if(stacks.get(zahl) instanceof ItemStack)
+					{
+						ItemStack stack = ((ItemStack) stacks.get(zahl)).copy();
+						if(stack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
+							stack.setItemDamage(0);
+						result[zahl] = stack;
+					}
+						
+				return result;
+						
+			}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 		return new ItemStack[0];
 	}

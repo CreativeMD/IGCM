@@ -1,20 +1,18 @@
 package com.creativemd.igcm.api.jei;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.creativemd.creativecore.common.recipe.BetterShapedRecipe;
 import com.creativemd.igcm.mod.block.AdvancedGridRecipe;
 
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
-import mezz.jei.plugins.vanilla.VanillaRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
-public class AdvRecipeWrapper extends VanillaRecipeWrapper implements IShapedCraftingRecipeWrapper {
+public class AdvRecipeWrapper extends BlankRecipeWrapper implements IShapedCraftingRecipeWrapper {
 	
 	@Nonnull
 	private final AdvancedGridRecipe recipe;
@@ -43,6 +41,11 @@ public class AdvRecipeWrapper extends VanillaRecipeWrapper implements IShapedCra
 	@Override
 	public int getHeight() {
 		return recipe.height;
+	}
+
+	@Override
+	public void getIngredients(IIngredients ingredients) {
+		
 	}
 
 	

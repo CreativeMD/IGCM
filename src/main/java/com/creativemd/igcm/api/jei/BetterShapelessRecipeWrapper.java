@@ -6,12 +6,10 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.creativemd.creativecore.common.recipe.BetterShapedRecipe;
 import com.creativemd.creativecore.common.recipe.BetterShapelessRecipe;
 
 import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
-import mezz.jei.plugins.vanilla.VanillaRecipeWrapper;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.plugins.vanilla.crafting.AbstractShapelessRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
@@ -35,6 +33,11 @@ public class BetterShapelessRecipeWrapper extends AbstractShapelessRecipeWrapper
 	@Override
 	public List<ItemStack> getOutputs() {
 		return Collections.singletonList(recipe.getRecipeOutput());
+	}
+
+	@Override
+	public void getIngredients(IIngredients ingredients) {
+		
 	}
 
 	

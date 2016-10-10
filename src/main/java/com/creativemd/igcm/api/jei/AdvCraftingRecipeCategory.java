@@ -5,6 +5,7 @@ import mezz.jei.api.gui.ICraftingGridHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
@@ -60,9 +61,8 @@ public class AdvCraftingRecipeCategory extends BlankRecipeCategory<ICraftingReci
 	public IDrawable getBackground() {
 		return background;
 	}
-
 	@Override
-	public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull ICraftingRecipeWrapper recipeWrapper) {
+	public void setRecipe(IRecipeLayout recipeLayout, ICraftingRecipeWrapper recipeWrapper, IIngredients ingredients) {
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		
 		for (int i = 0; i < BlockAdvancedWorkbench.outputs; i++) {
@@ -83,15 +83,6 @@ public class AdvCraftingRecipeCategory extends BlankRecipeCategory<ICraftingReci
 			craftingGridHelper.setInput(guiItemStacks, wrapper.getInputs(), wrapper.getWidth(), wrapper.getHeight());
 			craftingGridHelper.setOutput(guiItemStacks, wrapper.getOutputs());
 		}
-
-		/*if (recipeWrapper instanceof IShapedCraftingRecipeWrapper) {
-			IShapedCraftingRecipeWrapper wrapper = (IShapedCraftingRecipeWrapper) recipeWrapper;
-			craftingGridHelper.setInput(guiItemStacks, wrapper.getInputs(), wrapper.getWidth(), wrapper.getHeight());
-			craftingGridHelper.setOutput(guiItemStacks, wrapper.getOutputs());
-		} else {
-			craftingGridHelper.setInput(guiItemStacks, recipeWrapper.getInputs());
-			craftingGridHelper.setOutput(guiItemStacks, recipeWrapper.getOutputs());
-		}*/
 	}
 
 }
