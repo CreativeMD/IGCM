@@ -10,7 +10,9 @@ import com.creativemd.creativecore.common.recipe.BetterShapedRecipe;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IStackHelper;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
+import mezz.jei.plugins.vanilla.VanillaPlugin;
 import mezz.jei.plugins.vanilla.crafting.ShapedRecipesWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -49,7 +51,15 @@ public class BetterShapedRecipeWrapper extends BlankRecipeWrapper implements ISh
 
 	@Override
 	public void getIngredients(IIngredients ingredients) {
-		
+		IStackHelper stackHelper = VanillaPlugin.jeiHelpers.getStackHelper();
+
+		List<List<ItemStack>> inputs = stackHelper.expandRecipeItemStackInputs(getInputs());
+		ingredients.setInputLists(ItemStack.class, inputs);
+
+		ItemStack recipeOutput = recipe.getRecipeOutput();
+		if (recipeOutput != null) {
+			ingredients.setOutput(ItemStack.class, recipeOutput);
+		}
 	}
 	
 }

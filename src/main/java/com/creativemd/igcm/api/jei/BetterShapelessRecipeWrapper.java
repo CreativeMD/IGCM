@@ -10,6 +10,8 @@ import com.creativemd.creativecore.common.recipe.BetterShapelessRecipe;
 
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IStackHelper;
+import mezz.jei.plugins.vanilla.VanillaPlugin;
 import mezz.jei.plugins.vanilla.crafting.AbstractShapelessRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
@@ -37,7 +39,15 @@ public class BetterShapelessRecipeWrapper extends AbstractShapelessRecipeWrapper
 
 	@Override
 	public void getIngredients(IIngredients ingredients) {
-		
+		IStackHelper stackHelper = VanillaPlugin.jeiHelpers.getStackHelper();
+
+		List<List<ItemStack>> inputs = stackHelper.expandRecipeItemStackInputs(getInputs());
+		ingredients.setInputLists(ItemStack.class, inputs);
+
+		ItemStack recipeOutput = recipe.getRecipeOutput();
+		if (recipeOutput != null) {
+			ingredients.setOutput(ItemStack.class, recipeOutput);
+		}
 	}
 
 	

@@ -24,9 +24,10 @@ public class IGCMPlugin extends BlankModPlugin {
 		JEIHandler.isActive = true;
 		JEIHandler.registry = registry;
 		
-		IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
-		registry.addRecipeCategories(new AdvCraftingRecipeCategory(guiHelper));
 		
+		IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+		
+		registry.addRecipeCategories(new AdvCraftingRecipeCategory(guiHelper));
 		
 		registry.addRecipeHandlers(new BetterShapedRecipeHandler(), new BetterShapelessRecipeHandler(guiHelper), new AdvRecipeHandler());
 		
