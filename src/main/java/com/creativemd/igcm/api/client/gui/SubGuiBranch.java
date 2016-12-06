@@ -15,10 +15,12 @@ import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
 import com.creativemd.creativecore.gui.event.gui.GuiControlChangedEvent;
 import com.creativemd.creativecore.gui.event.gui.GuiControlClickEvent;
 import com.creativemd.igcm.api.common.branch.ConfigBranch;
+import com.creativemd.igcm.api.common.branch.ConfigSegmentCollection;
 import com.creativemd.igcm.api.common.container.controls.InfoSlotControl;
 import com.creativemd.igcm.api.common.packets.RequestInformationPacket;
 import com.creativemd.igcm.api.common.segment.ConfigSegment;
 import com.creativemd.igcm.api.core.IGCM;
+import com.creativemd.igcm.api.jei.JEIHandler;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
 import net.minecraft.client.Minecraft;
@@ -26,6 +28,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class SubGuiBranch extends SubGui{
 	

@@ -27,7 +27,7 @@ public class ConfigMachineDisableBranch extends ConfigBranch{
 	public ConfigMachineDisableBranch(RecipeMachine machine, String name) {
 		super(name);
 		this.machine = machine;
-		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
+		if(FMLCommonHandler.instance().getSide().isClient())
 			avatar = getAvatar();
 	}
 

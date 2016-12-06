@@ -28,6 +28,7 @@ import com.creativemd.igcm.mod.ConfigManagerModLoader;
 import com.creativemd.igcm.mod.block.BlockAdvancedWorkbench;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -67,9 +68,7 @@ public class IGCM {
 	public static ArrayList<String> profiles;
 	
 	public static boolean overrideWorkbench = false;
-	public static Block advancedWorkbench = new BlockAdvancedWorkbench().setUnlocalizedName("advancedWorkbench").setRegistryName(IGCM.modid, "advancedWorkbench").setCreativeTab(CreativeTabs.DECORATIONS);
-	
-	
+	public static Block advancedWorkbench = new BlockAdvancedWorkbench().setUnlocalizedName("advancedWorkbench").setRegistryName(IGCM.modid, "advancedWorkbench").setCreativeTab(CreativeTabs.DECORATIONS);	
 	
 	/**Used for loading configs on startup and changing profile**/
 	public static void loadConfig()
@@ -195,12 +194,12 @@ public class IGCM {
 		//if(Loader.isModLoaded("NotEnoughItems") && FMLCommonHandler.instance().getEffectiveSide().isClient())
 			//NEIAdvancedRecipeHandler.load();
 		
-		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
-			initCLient();
+		if(FMLCommonHandler.instance().getSide().isClient())
+			initClient();
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public static void initCLient()
+	public static void initClient()
 	{
 		IGCMClient.initClient();
 	}
@@ -218,6 +217,12 @@ public class IGCM {
 	{
 		event.registerServerCommand(new CommandGUI());
 		loadConfig();
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public static boolean needsSynchronization()
+	{
+		return !Minecraft.getMinecraft().isSingleplayer();
 	}
 	
 	public static void openBranchGui(EntityPlayer player, ConfigBranch branch)
@@ -337,6 +342,11 @@ public class IGCM {
 	public static void sendUpdatePacket(ConfigBranch branch)
 	{
 		ArrayList<ConfigSegment> segments = branch.getConfigSegments();
+		int maxSegments = IGCM.maxSegments;
+		if(FMLCommonHandler.instance().getSide().isClient() && !needsSynchronization())
+			maxSegments = segments.size();
+		
+		
 		int amount = (int) Math.ceil((double)segments.size()/(double)maxSegments);
 		ArrayList<CreativeCorePacket> packets = new ArrayList<>();
 		for (int i = 0; i < amount; i++) {

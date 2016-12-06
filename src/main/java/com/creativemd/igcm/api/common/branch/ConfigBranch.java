@@ -47,7 +47,7 @@ public abstract class ConfigBranch{
 	{
 		branches.put(name, this);
 		this.name = name;
-		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
+		if(FMLCommonHandler.instance().getSide().isClient())
 			avatar = getAvatar();
 	}
 	

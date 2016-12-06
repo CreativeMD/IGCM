@@ -42,7 +42,7 @@ public class ConfigEventHandler
 	@SubscribeEvent
 	public void onPlayerJoin(PlayerLoggedInEvent event)
 	{
-		if(FMLCommonHandler.instance().getEffectiveSide().isServer())
+		if(!event.player.getEntityWorld().isRemote)
 		{
 			IGCM.sendAllUpdatePackets(event.player);
 			IGCM.logger.info("Send player update packet to " + event.player.getName() + "!");

@@ -18,7 +18,7 @@ public abstract class Tab {
 	public Tab(String title, ItemStack stack)
 	{
 		this.title = title;
-		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
+		if(FMLCommonHandler.instance().getSide().isClient())
 			initClient(stack);
 	}
 	
