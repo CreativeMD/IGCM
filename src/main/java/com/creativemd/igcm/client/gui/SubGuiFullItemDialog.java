@@ -24,6 +24,7 @@ import com.creativemd.creativecore.gui.controls.gui.custom.GuiInvSelector;
 import com.creativemd.creativecore.gui.event.gui.GuiControlChangedEvent;
 import com.creativemd.creativecore.gui.event.gui.GuiControlClickEvent;
 import com.creativemd.creativecore.gui.event.gui.GuiToolTipEvent;
+import com.creativemd.creativecore.gui.opener.GuiHandler;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
 import net.minecraft.block.Block;
@@ -45,95 +46,28 @@ public class SubGuiFullItemDialog extends SubGui{
 		super(150, 230);
 		this.supportStackSize = supportStackSize;
 	}
-
+	
+	public GuiInfoHandler handler;
+	
 	@Override
 	public void createControls() {
-		String selected = "Default";
-		if(controls.size() > 0)
-		{
-			selected = ((GuiComboBox)controls.get(0)).caption;
-		}else if(info != null){
-			if(info instanceof InfoBlock || info instanceof InfoItem || info instanceof InfoItemStack)
-				selected = "Default";
-			if(info instanceof InfoOre)
-				selected = "Ore";
-			if(info instanceof InfoMaterial)
-				selected = "Material";
-			if(info instanceof InfoFuel)
-				selected = "Fuel";
-		}
+		
+		handler = GuiInfoHandler.getHandler(info);
+		
+		GuiComboBox box = (GuiComboBox) get("type");
+		if(box != null)
+			handler = GuiInfoHandler.getHandler(box.caption);
+		
 		controls.clear();
-		ArrayList<String> lines = new ArrayList<String>();
-		lines.add("Default");
-		lines.add("Ore");
-		lines.add("Material");
-		lines.add("Fuel");
+		ArrayList<String> lines = new ArrayList<String>(GuiInfoHandler.getNames());
 		//lines.add("Latest");
 		
-		GuiComboBox box = new GuiComboBox("type", 0, 0, 144, lines);
-		int index = lines.indexOf(selected);
-		box.caption = selected;
-		box.index = index;
+		box = new GuiComboBox("type", 0, 0, 144, lines);
+		box.caption = handler.getName();
+		box.index = lines.indexOf(handler.getName());
 		controls.add(box);		
 		
-		switch(index)
-		{
-		case 0:
-			GuiInvSelector selector = new GuiInvSelector("inv", 0, 30, 122, container.player, false);
-			controls.add(selector);
-			controls.add(new GuiTextfield("search", "", 0, 57, 144, 14));
-			
-			controls.add(new GuiLabel("guilabel1", 0, 80));
-			controls.add(new GuiLabel("guilabel2", 0, 90));
-			
-			GuiStateButton damage = new GuiStateButton("damage", 0, 0, 106, 70, 14, "Damage: Off", "Damage: On");
-			controls.add(damage);
-			GuiStateButton nbt = new GuiStateButton("nbt", 0, 80, 106, 60, 14, "NBT: Off", "NBT: On");
-			controls.add(nbt);
-			
-			if(info instanceof InfoBlock || info instanceof InfoItem || info instanceof InfoItemStack)
-			{
-				selector.addAndSelectStack(info.getItemStack().copy());
-				if(info instanceof InfoItemStack)
-				{
-					damage.nextState();
-					if(((InfoItemStack) info).needNBT)
-						nbt.nextState();
-				}
-			}
-			break;
-		case 1:
-			ArrayList<String> ores = new ArrayList<String>(Arrays.asList(OreDictionary.getOreNames()));
-			GuiComboBox ore = new GuiComboBox("ore", 0, 30, 144, ores);
-			controls.add(ore);
-			controls.add(new GuiTextfield("search", "", 0, 57, 144, 14));
-			
-			if(info instanceof InfoOre)
-				ore.caption = ((InfoOre) info).ore;
-			break;
-		case 2:
-			selector = new GuiInvSelector("inv", 0, 30, 122, container.player, true);
-			controls.add(selector);
-			if(info instanceof InfoMaterial)
-				selector.addAndSelectStack(info.getItemStack());
-			break;
-		case 3:
-			controls.add(new GuiLabel("Nothing to select", 5, 30));
-			break;
-		/*case 4:
-			selector = new GuiStackSelector("stack", 0, 30, 122, container.player, false);
-			selector.stacks.clear();
-			selector.lines.clear();
-			for (int i = 0; i < latest.size(); i++) {
-				selector.addAndSelectStack(latest.get(i).getItemStack());
-			}
-			if(selector.lines.size() > 0)
-				selector.caption = selector.lines.get(0);
-			else
-				selector.caption = "";
-			controls.add(selector);
-			break;*/
-		}
+		handler.createControls(this, info);
 		
 		if(supportStackSize)
 		{
@@ -184,59 +118,17 @@ public class SubGuiFullItemDialog extends SubGui{
 	{
 		if(event.source.is("Save"))
 		{
-			int index = ((GuiComboBox)controls.get(0)).index;
-			int stacksize = 0;
+			int stackSize = 0;
 			try{
 				if(supportStackSize)
-					stacksize = Integer.parseInt(((GuiTextfield)get("stacksize")).text);
+					stackSize = Integer.parseInt(((GuiTextfield)get("stacksize")).text);
 				else
-					stacksize = 1;
+					stackSize = 1;
 			}catch (Exception e){
-				stacksize = 1;
+				stackSize = 1;
 			}
-			InfoStack info = null;
-			switch(index)
-			{
-			case 0:
-				ItemStack stack = ((GuiInvSelector)get("inv")).getStack();
-				if(stack != null)
-				{
-					boolean damage = ((GuiStateButton)get("damage")).getState() == 1;
-					boolean nbt = ((GuiStateButton)get("nbt")).getState() == 1;
-					if(damage)
-					{
-						info = new InfoItemStack(stack, nbt, stacksize);
-					}else{
-						if(Block.getBlockFromItem(stack.getItem()) != null)
-							info = new InfoBlock(Block.getBlockFromItem(stack.getItem()), stacksize);
-						else
-							info = new InfoItem(stack.getItem(), stacksize);
-					}
-				}
-				break;
-			case 1:
-				String ore = ((GuiComboBox) get("ore")).caption;
-				if(!ore.equals(""))
-					info = new InfoOre(ore, stacksize);
-				break;
-			case 2:
-				ItemStack blockStack = ((GuiInvSelector)get("inv")).getStack();
-				if(blockStack != null)
-				{
-					Block block = Block.getBlockFromItem(blockStack.getItem());
-					if(!(block instanceof BlockAir))
-						info = new InfoMaterial(block.getMaterial(null), stacksize);
-				}
-				break;
-			case 3:
-				info = new InfoFuel(stacksize);
-				break;
-			/*case 4:
-				int stackIndex = ((GuiInvSelector)get("stack")).index;
-				if(stackIndex >= 0 && stackIndex < latest.size())
-					info = latest.get(stackIndex).copy();
-				break;*/
-			}
+			
+			InfoStack info = handler.parseInfo(this, stackSize);
 			if(info != null)
 			{
 				this.info = info;
@@ -275,64 +167,8 @@ public class SubGuiFullItemDialog extends SubGui{
 		{
 			createControls();
 			refreshControls();
-		}
-		if(event.source.is("search"))
-		{
-			int index = ((GuiComboBox)controls.get(0)).index;
-			if(index == 1)
-			{
-				String search = ((GuiTextfield)event.source).text;
-				String[] oreNames = OreDictionary.getOreNames();
-				ArrayList<String> ores = new ArrayList<String>();
-				for (int i = 0; i < oreNames.length; i++) {
-					if(oreNames[i].toLowerCase().contains(search.toLowerCase()))
-						ores.add(oreNames[i]);
-				}
-				GuiComboBox comboBox = (GuiComboBox) get("ore");
-				if(comboBox != null)
-				{
-					comboBox.lines = ores;
-					if(!ores.contains(comboBox.caption))
-					{
-						if(ores.size() > 0)
-							comboBox.caption = ores.get(0);
-						else
-							comboBox.caption = "";
-					}
-				}
-			}else if(index == 0){
-				GuiInvSelector inv = (GuiInvSelector) get("inv");
-				inv.search = ((GuiTextfield)event.source).text.toLowerCase();
-				inv.updateItems(container.player);
-				inv.closeBox();
-			}
-		}
-	}
-
-	@Override
-	public void onTick() {
-		int index = ((GuiComboBox)controls.get(0)).lines.indexOf(((GuiComboBox)controls.get(0)).caption);
-		
-		switch(index)
-		{
-		case 0:
-			GuiInvSelector selector = (GuiInvSelector) get("inv");
-			if(selector != null)
-			{
-				int indexStack = selector.index;
-				if(indexStack != -1)
-				{
-					ItemStack stack = selector.stacks.get(indexStack);
-					((GuiLabel)get("guilabel1")).caption = "damage:" + stack.getItemDamage();
-					((GuiLabel)get("guilabel2")).caption = "nbt:" + (stack.hasTagCompound() ? stack.getTagCompound().toString() : "null");
-				}else{
-					((GuiLabel)get("guilabel1")).caption = "";
-					((GuiLabel)get("guilabel2")).caption = "";
-				}
-			}
-			break;
-		}
-			
+		}else
+			handler.onChanged(this, event);
 	}
 
 }

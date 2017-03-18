@@ -69,48 +69,17 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 		ItemStack output = recipe.output[0];
 		if(info != null && output != null)
 		{
+			
 			if(info instanceof InfoBlock)
 				FurnaceRecipes.instance().addSmeltingRecipeForBlock(((InfoBlock) info).block, output, recipe.experience);
-			if(info instanceof InfoItem)
+			else if(info instanceof InfoItem)
 				FurnaceRecipes.instance().addSmelting(((InfoItem) info).item, output, recipe.experience);
-			if(info instanceof InfoItemStack)
+			else if(info instanceof InfoItemStack)
 				FurnaceRecipes.instance().addSmeltingRecipe(((InfoItemStack) info).stack.copy(), output, recipe.experience);
-			if(info instanceof InfoOre)
-			{
-				List<ItemStack> stacks = OreDictionary.getOres(((InfoOre) info).ore);
+			else{
+				ArrayList<ItemStack> stacks = info.getAllPossibleItemStacks();
 				for (int i = 0; i < stacks.size(); i++) {
-					FurnaceRecipes.instance().addSmeltingRecipe(stacks.get(i), output, 0.1F);
-				}
-			}
-			if(info instanceof InfoMaterial)
-			{
-				ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
-				for (Object name : Block.REGISTRY.getKeys()) {
-					Block block = Block.getBlockFromName((String) name);
-					if(block != null && block.getMaterial(null) == ((InfoMaterial) info).material)
-					{
-						FurnaceRecipes.instance().addSmeltingRecipeForBlock(block, output, recipe.experience);
-					}
-				}
-			}
-			if(info instanceof InfoFuel)
-			{
-				NonNullList<ItemStack> stacks = NonNullList.create();
-				Iterator iterator = Item.REGISTRY.iterator();
-
-		        while (iterator.hasNext())
-		        {
-		            Item item = (Item)iterator.next();
-
-		            if (item != null && item.getCreativeTab() != null)
-		            {
-		                item.getSubItems(item, (CreativeTabs)null, stacks);
-		            }
-		        }
-		        
-				for (int i = 0; i < stacks.size(); i++) {
-					if(TileEntityFurnace.isItemFuel(stacks.get(i)))
-						FurnaceRecipes.instance().addSmeltingRecipe(stacks.get(i), output, 0.1F);
+					FurnaceRecipes.instance().addSmeltingRecipe(stacks.get(i).copy(), output, recipe.experience);
 				}
 			}
 		}

@@ -6,6 +6,7 @@ import com.creativemd.creativecore.slots.SlotPreview;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.ItemStack;
 
 public class InfoSlotControl extends SlotControlNoSync{
 	
@@ -18,6 +19,15 @@ public class InfoSlotControl extends SlotControlNoSync{
 		inventory = (InventoryBasic) slot.inventory;
 		if(info != null)
 			slot.putStack(info.getItemStack());
+	}
+	
+	public void putInfo(InfoStack info)
+	{
+		this.info = info;
+		if(info != null)
+			slot.putStack(info.getItemStack());
+		else
+			slot.putStack(ItemStack.EMPTY);
 	}
 
 }

@@ -38,6 +38,7 @@ public class SubGuiConfigSegement extends SubGui {
 		this.element = element;
 	}
 	
+	public int aimedScrollPos = -1;
 	public int index;
 	public int height;
 	public ConfigSegment element;
@@ -82,6 +83,7 @@ public class SubGuiConfigSegement extends SubGui {
 		forceRecreation = force;
 		GuiScrollBox box = (GuiScrollBox) get("scrollbox");
 		Collection<ConfigSegment> segments = element.getChilds();
+		aimedScrollPos = box.scrolled;
 		box.controls.clear();
 		box.maxScroll = 0;
 		box.scrolled = 0;
@@ -156,6 +158,13 @@ public class SubGuiConfigSegement extends SubGui {
 				}
 				
 				count++;
+			}
+			
+			if(aimedScrollPos != -1)
+			{
+				box.scrolled = Math.min(height, aimedScrollPos);
+				if(height >= aimedScrollPos)
+					aimedScrollPos = -1;
 			}
 			
 			index += count;
@@ -266,11 +275,7 @@ public class SubGuiConfigSegement extends SubGui {
     {
 		if(gui instanceof SubGuiFullItemDialog && !nbt.getBoolean("canceled") && openedSlot != null)
 		{
-			((InfoSlotControl)openedSlot.slot).info = ((SubGuiFullItemDialog) gui).info;
-			if(((SubGuiFullItemDialog) gui).info != null)
-				openedSlot.slot.slot.putStack(((SubGuiFullItemDialog) gui).info.getItemStack());
-			else
-				openedSlot.slot.slot.putStack(ItemStack.EMPTY);
+			((InfoSlotControl)openedSlot.slot).putInfo(((SubGuiFullItemDialog) gui).info);
 		}
 		if(gui instanceof SubGuiItemDialog && !nbt.getBoolean("canceled") && openedSlot != null)
 		{

@@ -43,7 +43,7 @@ public class ConfigMachineBranch<T> extends ConfigBranch {
 			registerElement(getKey() + "_add", machine.addBranch);
 		}
 		
-		registerElement("state", new SelectSegment("Disable all recipes", state, states));
+		registerElement("state", new SelectSegment("General", state, states));
 		
 		machine.createExtraSegments();
 	}

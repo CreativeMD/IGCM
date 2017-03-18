@@ -62,7 +62,7 @@ public class InfoGridSegment extends ValueSegment<InfoStack[]>{
 	public void saveExtra(NBTTagCompound nbt) {
 		for (int i = 0; i < value.length; i++) {
 			if(value[i] != null)
-				nbt.setTag(getKey() + i, value[i].writeToNBT());
+				nbt.setTag(getKey() + i, value[i].writeToNBT(new NBTTagCompound()));
 		}
 	}
 	

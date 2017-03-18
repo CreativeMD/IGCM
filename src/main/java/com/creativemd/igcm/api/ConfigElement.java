@@ -3,6 +3,7 @@ package com.creativemd.igcm.api;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -21,7 +22,7 @@ public class ConfigElement<T extends ConfigElement> {
 	public ConfigElement parent;
 	String key;
 	
-	protected HashMap<String, T> childs = new HashMap<>();
+	protected LinkedHashMap<String, T> childs = new LinkedHashMap<>();
 	
 	public T registerElement(String key, T element)
 	{

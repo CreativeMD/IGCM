@@ -28,7 +28,7 @@ public abstract class TitleSegment<T> extends ValueSegment<T>{
 	public ArrayList<GuiControl> createGuiControls(SubGui gui, int x, int y,
 			int maxWidth) {
 		ArrayList<GuiControl> controls = super.createGuiControls(gui, x, y, maxWidth);
-		GuiLabel label = new GuiLabel(title, x+10, y+5);
+		GuiLabel label = new GuiLabel("title", title, x+10, y+5);
 		if(tooltip != null)
 			label.setCustomTooltip(tooltip);
 		controls.add(label);
