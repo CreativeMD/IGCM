@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.creativemd.creativecore.gui.GuiControl;
 import com.creativemd.creativecore.gui.container.SubGui;
 import com.creativemd.creativecore.gui.controls.gui.GuiButton;
+import com.creativemd.creativecore.gui.controls.gui.GuiLabel;
 import com.creativemd.creativecore.gui.controls.gui.GuiStateButton;
 import com.creativemd.igcm.api.machine.RecipeMachine;
 
@@ -17,9 +18,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class DisableRecipeSegment extends RecipeSegment<Boolean>{
-
-	public DisableRecipeSegment(String title, Boolean defaultValue, RecipeMachine machine, Object recipe) {
+	
+	public boolean showName = false;
+	
+	public DisableRecipeSegment(String title, Boolean defaultValue, RecipeMachine machine, Object recipe, boolean showName) {
 		super(title, defaultValue, machine, recipe);
+		this.showName = showName;
 	}
 
 	@Override
@@ -35,6 +39,8 @@ public class DisableRecipeSegment extends RecipeSegment<Boolean>{
 	public ArrayList<GuiControl> createGuiControls(SubGui gui, int x, int y, int maxWidth) {
 		ArrayList<GuiControl> controls = super.createGuiControls(gui, x, y, maxWidth);
 		controls.add(new GuiStateButton(getKey(), value ? 1 : 0, x+150, y+20, 50, 14, "Enabled", "Disabled"));
+		if(showName)
+			controls.add(new GuiLabel(getKey(), x, y));
 		return controls;		
 	}
 	
@@ -63,6 +69,11 @@ public class DisableRecipeSegment extends RecipeSegment<Boolean>{
 	@Override
 	public void saveFromControls() {
 		value = !((GuiButton) getGuiControl(getKey())).caption.equals("Enabled");
+	}
+	
+	@Override
+	public void set(Boolean newValue) {
+		value = newValue;
 	}
 
 }

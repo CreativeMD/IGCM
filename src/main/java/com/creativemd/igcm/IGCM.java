@@ -16,8 +16,10 @@ import com.creativemd.igcm.api.ConfigTab;
 import com.creativemd.igcm.block.BlockAdvancedWorkbench;
 import com.creativemd.igcm.client.IGCMClient;
 import com.creativemd.igcm.command.CommandGUI;
+import com.creativemd.igcm.command.CommandSET;
 import com.creativemd.igcm.event.ConfigEventHandler;
 import com.creativemd.igcm.machines.AdvancedWorkbench;
+import com.creativemd.igcm.machines.BrewingStandMachine;
 import com.creativemd.igcm.machines.FurnaceMachine;
 import com.creativemd.igcm.machines.WorkbenchMachine;
 import com.creativemd.igcm.packets.BranchInformationPacket;
@@ -30,6 +32,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -74,6 +77,7 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 	public static WorkbenchMachine workbench;
 	public static FurnaceMachine furnace;
 	public static AdvancedWorkbench advancedWorkbench;
+	public static BrewingStandMachine brewingStand;
 	
 	@EventHandler
 	public static void Init(FMLInitializationEvent event)
@@ -88,6 +92,7 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 		workbench = new WorkbenchMachine("workbench", "Crafting Table", new ItemStack(Blocks.CRAFTING_TABLE));
 		furnace = new FurnaceMachine("furnace", "Furnace", new ItemStack(Blocks.FURNACE));
 		advancedWorkbench = new AdvancedWorkbench("advWorkbench", "Advanced Workbench", new ItemStack(advancedWorkbenchBlock));
+		brewingStand = new BrewingStandMachine("brewing", "Brewing Stand", new ItemStack(Items.BREWING_STAND));
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -106,6 +111,7 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 	public static void serverStarting(FMLServerStartingEvent event)
 	{
 		event.registerServerCommand(new CommandGUI());
+		event.registerServerCommand(new CommandSET());
 		IGCMConfig.loadConfig();
 	}
 	

@@ -141,4 +141,9 @@ public class InfoSegment extends ValueSegment<InfoStack> {
 		super.saveFromControls();
 		value = ((InfoSlotControl) getContainerControl(getKey() + 0)).info;
 	}
+
+	@Override
+	public void set(InfoStack newValue) {
+		value = newValue;
+	}
 }

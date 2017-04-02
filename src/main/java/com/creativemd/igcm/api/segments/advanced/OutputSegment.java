@@ -97,4 +97,9 @@ public class OutputSegment extends ValueSegment<ItemStack[]>{
 		}
 	}
 
+	@Override
+	public void set(ItemStack[] newValue) {
+		value = newValue;
+	}
+
 }

@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class ConfigMachineBranch<T> extends ConfigBranch {
 	
-	public static String[] states = new String[]{"all", "added only", "no added", "none"};
+	public static String[] states = new String[]{"all", "addedonly", "noadded", "none"};
 	
 	public RecipeMachine<T> machine;
 	

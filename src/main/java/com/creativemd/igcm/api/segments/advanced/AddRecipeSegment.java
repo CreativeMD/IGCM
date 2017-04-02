@@ -144,4 +144,9 @@ public class AddRecipeSegment extends RecipeSegment<Object>{
 		parseRecipe(nbt);
 	}
 
+	@Override
+	public void set(Object newValue) {
+		value = newValue;
+	}
+
 }

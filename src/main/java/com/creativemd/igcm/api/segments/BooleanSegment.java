@@ -43,7 +43,17 @@ public class BooleanSegment extends TitleSegment<Boolean>{
 
 	@Override
 	public void saveFromControls() {
-		value = Boolean.parseBoolean(((GuiButton) getGuiControl(getKey())).caption);
+		set(Boolean.parseBoolean(((GuiButton) getGuiControl(getKey())).caption));
+	}
+
+	@Override
+	public void set(Boolean newValue) {
+		value = newValue;
+	}
+	
+	@Override
+	public String[] getPossibleValues() {
+		return new String[]{"true", "false"};
 	}
 
 }

@@ -54,10 +54,15 @@ public class IntegerSegment extends TitleSegment<Integer>{
 	public void saveFromControls() {
 		int valueBefore = value;
 		try{
-			value = MathHelper.clamp(Integer.parseInt(((GuiTextfield) getGuiControl(getKey())).text), min, max);;
+			set(Integer.parseInt(((GuiTextfield) getGuiControl(getKey())).text));
 		}catch(Exception e){
 			value = valueBefore;
 		}
+	}
+
+	@Override
+	public void set(Integer newValue) {
+		value = MathHelper.clamp(newValue, min, max);
 	}
 
 }

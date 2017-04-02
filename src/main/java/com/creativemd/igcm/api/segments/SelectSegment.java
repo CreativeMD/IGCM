@@ -60,7 +60,18 @@ public class SelectSegment extends TitleSegment<String>{
 
 	@Override
 	public void saveFromControls() {
-		value = ((GuiComboBox) getGuiControl(getKey())).caption;
+		set(((GuiComboBox) getGuiControl(getKey())).caption);
+	}
+
+	@Override
+	public void set(String newValue) {
+		if(ArrayUtils.contains(options, newValue))
+			value = newValue;
+	}
+
+	@Override
+	public String[] getPossibleValues() {
+		return options;
 	}
 	
 }

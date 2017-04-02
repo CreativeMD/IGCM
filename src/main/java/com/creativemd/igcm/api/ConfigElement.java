@@ -26,11 +26,16 @@ public class ConfigElement<T extends ConfigElement> {
 	
 	public T registerElement(String key, T element)
 	{
-		if(childs.containsKey(key))
-			return null;//throw new IllegalArgumentException("Key '" + key + "' is already taken!");
-		childs.put(key, element);
+		int index = 1;
+		String tempKey = key;
+		while(childs.containsKey(tempKey))
+		{
+			index++;
+			tempKey = key + index;
+		}
+		childs.put(tempKey, element);
 		element.parent = this;
-		element.key = key;
+		element.key = tempKey;
 		return element;
 	}
 	

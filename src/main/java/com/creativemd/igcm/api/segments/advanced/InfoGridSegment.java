@@ -88,4 +88,9 @@ public class InfoGridSegment extends ValueSegment<InfoStack[]>{
 		}
 	}
 
+	@Override
+	public void set(InfoStack[] newValue) {
+		value = newValue;
+	}
+
 }

@@ -54,10 +54,15 @@ public class FloatSegment extends TitleSegment<Float>{
 	public void saveFromControls() {
 		float valueBefore = value;
 		try{
-			value = MathHelper.clamp(Float.parseFloat(((GuiTextfield) getGuiControl(getKey())).text), min, max);
+			set(Float.parseFloat(((GuiTextfield) getGuiControl(getKey())).text));
 		}catch(Exception e){
 			value = valueBefore;
 		}
+	}
+
+	@Override
+	public void set(Float newValue) {
+		value = MathHelper.clamp(newValue, min, max);
 	}
 	
 }

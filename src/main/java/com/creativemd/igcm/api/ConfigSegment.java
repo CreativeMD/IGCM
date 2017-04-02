@@ -199,5 +199,14 @@ public abstract class ConfigSegment extends ConfigElement<ConfigSegment> {
 			type.saveFromControls();
 		}
 	}
+
+	public ConfigBranch getParentBranch()
+	{
+		if(this instanceof ConfigBranch)
+			return (ConfigBranch) this;
+		else if(parent instanceof ConfigSegment)
+			return ((ConfigSegment) parent).getParentBranch();
+		return null;
+	}
 	
 }

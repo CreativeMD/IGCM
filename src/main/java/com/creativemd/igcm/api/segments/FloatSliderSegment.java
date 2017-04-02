@@ -31,7 +31,7 @@ public class FloatSliderSegment extends FloatSegment{
 	public void saveFromControls() {
 		float valueBefore = value;
 		try{
-			value = MathHelper.clamp(((GuiAnalogeSlider) getGuiControl(getKey())).value, min, max);
+			set(((GuiAnalogeSlider) getGuiControl(getKey())).value);
 		}catch(Exception e){
 			value = valueBefore;
 		}

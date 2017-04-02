@@ -116,7 +116,7 @@ public abstract class GuiInfoHandler {
 					boolean nbt = ((GuiStateButton) gui.get("nbt")).getState() == 1;
 					if(damage)
 					{
-						return new InfoItemStack(stack, nbt, stackSize);
+						return new InfoItemStack(stack.copy(), nbt, stackSize);
 					}else{
 						if(!(Block.getBlockFromItem(stack.getItem()) instanceof BlockAir))
 							return new InfoBlock(Block.getBlockFromItem(stack.getItem()), stackSize);

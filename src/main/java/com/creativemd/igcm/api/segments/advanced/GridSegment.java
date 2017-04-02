@@ -71,4 +71,9 @@ public class GridSegment extends ValueSegment<ItemStack[]>{
 		
 	}
 
+	@Override
+	public void set(ItemStack[] newValue) {
+		value = newValue;
+	}
+
 }
