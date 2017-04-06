@@ -135,6 +135,8 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe>{
 				return new ItemStack[]{new ItemStack((Block) object)};
 			}else if(object instanceof ItemStack){
 				ItemStack stack = ((ItemStack) object).copy(); 
+				if(stack.getItem() == null)
+					return new ItemStack[0];
 				if(stack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
 					stack.setItemDamage(0);
 				return new ItemStack[]{stack};
