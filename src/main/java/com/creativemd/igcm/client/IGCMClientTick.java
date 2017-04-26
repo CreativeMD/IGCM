@@ -20,7 +20,7 @@ public class IGCMClientTick {
 	{
 		if(mc.player != null && mc.world != null)
 		{
-			if(mc.gameSettings.isKeyDown(IGCMClient.openConfig) && !(mc.player.openContainer instanceof ContainerSub) && mc.inGameHasFocus)
+			if(mc.gameSettings.isKeyDown(IGCMClient.openConfig) && !(mc.player.openContainer instanceof ContainerSub) && mc.inGameHasFocus && IGCM.gui.checkPermission(mc.player.getServer(), mc.player))
 				IGCMGuiManager.openConfigGui(mc.player);
 		}
 	}

@@ -4,12 +4,11 @@
   "name": "InGameConfigManager",
   "description": "A simple way to modify recipes or special mod configurations ingame.",
   "mcversion": "${mcversion}",
-  "url": "http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2518796",
+  "url": "https://minecraft.curseforge.com/projects/ingameconfigmanager",
   "updateUrl": "",
-  "version": "1.0",
   "authorList": ["CreativeMD","N247S"],
   "logoFile": "",
   "screenshots": [],
-  "dependencies": []
+  "dependencies": ["creativecore"]
 }
 ]

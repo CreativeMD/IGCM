@@ -88,10 +88,15 @@ public class BranchInformationPacket extends CreativeCorePacket{
 
 	@Override
 	public void executeServer(EntityPlayer player) {
-		receiveUpdate(Side.SERVER);
 		
-		IGCM.sendUpdatePacket(branch);
-		IGCMConfig.saveConfig();
+		if(IGCM.gui.checkPermission(player.getServer(), player))
+		{
+			receiveUpdate(Side.SERVER);
+			
+			IGCM.sendUpdatePacket(branch);
+			IGCMConfig.saveConfig();
+		}else
+			IGCM.sendUpdatePacket(branch, player);
 	}
 
 }

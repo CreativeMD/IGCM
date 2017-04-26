@@ -28,6 +28,7 @@ import com.creativemd.igcm.packets.RequestInformationPacket;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.command.CommandBase;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -52,7 +53,7 @@ public class IGCM {
 public static Logger logger = LogManager.getLogger(IGCM.modid);
 	
 	public static final String modid = "igcm";
-	public static final String version = "2.0";
+	public static final String version = "1.0.0";
 	
 	public static ConfigEventHandler eventHandler = new ConfigEventHandler();
 	
@@ -64,6 +65,7 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent event)
 	{
+		event.getModMetadata().version = version;
 		MinecraftForge.EVENT_BUS.register(eventHandler);
 		//FMLCommonHandler.instance().bus().register(eventHandler);
 		
@@ -107,11 +109,16 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 		ConfigTab.root.initCore();
 	}
 	
+	public static CommandBase gui;
+	public static CommandBase set;
+	
 	@EventHandler
 	public static void serverStarting(FMLServerStartingEvent event)
 	{
-		event.registerServerCommand(new CommandGUI());
-		event.registerServerCommand(new CommandSET());
+		gui = new CommandGUI();
+		set = new CommandSET();
+		event.registerServerCommand(gui);
+		event.registerServerCommand(set);
 		IGCMConfig.loadConfig();
 	}
 	
