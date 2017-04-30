@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.creativemd.creativecore.common.packet.CreativeCorePacket;
 import com.creativemd.creativecore.common.packet.PacketHandler;
+import com.creativemd.creativecore.common.packet.gui.OpenGuiPacket;
 import com.creativemd.creativecore.gui.opener.GuiHandler;
 import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.ConfigElement;
@@ -24,6 +25,7 @@ import com.creativemd.igcm.machines.FurnaceMachine;
 import com.creativemd.igcm.machines.WorkbenchMachine;
 import com.creativemd.igcm.packets.BranchInformationPacket;
 import com.creativemd.igcm.packets.CraftResultPacket;
+import com.creativemd.igcm.packets.OpenGUIPacket;
 import com.creativemd.igcm.packets.RequestInformationPacket;
 
 import net.minecraft.block.Block;
@@ -72,6 +74,7 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 		CreativeCorePacket.registerPacket(BranchInformationPacket.class, "IGCMBranch");
 		CreativeCorePacket.registerPacket(RequestInformationPacket.class, "IGCMRequest");
 		CreativeCorePacket.registerPacket(CraftResultPacket.class, "IGCMCraftResult");
+		CreativeCorePacket.registerPacket(OpenGUIPacket.class, "IGCMGUI");
 		
 		IGCMConfig.initConfig(event);
 	}

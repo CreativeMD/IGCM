@@ -1,8 +1,11 @@
 package com.creativemd.igcm.client;
 
+import com.creativemd.creativecore.common.packet.PacketHandler;
+import com.creativemd.creativecore.common.packet.gui.OpenGuiPacket;
 import com.creativemd.creativecore.gui.mc.ContainerSub;
 import com.creativemd.igcm.IGCM;
 import com.creativemd.igcm.IGCMGuiManager;
+import com.creativemd.igcm.packets.OpenGUIPacket;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -20,8 +23,8 @@ public class IGCMClientTick {
 	{
 		if(mc.player != null && mc.world != null)
 		{
-			if(mc.gameSettings.isKeyDown(IGCMClient.openConfig) && !(mc.player.openContainer instanceof ContainerSub) && mc.inGameHasFocus && IGCM.gui.checkPermission(mc.player.getServer(), mc.player))
-				IGCMGuiManager.openConfigGui(mc.player);
+			if(mc.gameSettings.isKeyDown(IGCMClient.openConfig) && mc.player != null && mc.inGameHasFocus && !(mc.player.openContainer instanceof ContainerSub))
+				PacketHandler.sendPacketToServer(new OpenGUIPacket());
 		}
 	}
 	
