@@ -123,6 +123,8 @@ public abstract class ConfigSegment extends ConfigElement<ConfigSegment> {
 	public GuiControl getGuiControl(String id)
 	{
 		ArrayList<GuiControl> controls = getGuiControls();
+		if(controls == null)
+			return null;
 		for (int i = 0; i < controls.size(); i++) {
 			if(controls.get(i).is(id))
 				return controls.get(i);

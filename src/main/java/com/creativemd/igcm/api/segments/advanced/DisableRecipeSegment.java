@@ -68,7 +68,9 @@ public class DisableRecipeSegment extends RecipeSegment<Boolean>{
 
 	@Override
 	public void saveFromControls() {
-		value = !((GuiButton) getGuiControl(getKey())).caption.equals("Enabled");
+		GuiControl button = getGuiControl(getKey());
+		if(button instanceof GuiButton)
+			value = !((GuiButton) button).caption.equals("Enabled");
 	}
 	
 	@Override
