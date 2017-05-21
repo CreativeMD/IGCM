@@ -101,7 +101,7 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 		
 		for (Iterator<Entry<ItemStack, ItemStack>> iterator = FurnaceRecipes.instance().getSmeltingList().entrySet().iterator(); iterator.hasNext();) {
 			Entry<ItemStack, ItemStack> recipe = iterator.next();
-			recipes.add(new FurnaceRecipe(recipe.getValue(), recipe.getKey(), FurnaceRecipes.instance().getSmeltingExperience(recipe.getKey())));
+			recipes.add(new FurnaceRecipe(recipe.getValue(), recipe.getKey(), FurnaceRecipes.instance().getSmeltingExperience(recipe.getValue())));
 		}
 		return recipes;
 	}
