@@ -1,17 +1,14 @@
 package com.creativemd.igcm.api.machine;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.segments.advanced.DisableRecipeSegment;
-import com.creativemd.igcm.jei.JEIHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.RecipesArmorDyes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 

@@ -57,11 +57,9 @@ public class WorkbenchSwitchHelper {
         }
         else
         {
-            List recipes = CraftingManager.getInstance().getRecipeList();
-			for (j = 0; j < recipes.size(); ++j)
+            //List recipes = CraftingManager.getInstance().getRecipeList();
+        	for (IRecipe irecipe : CraftingManager.REGISTRY)
             {
-                IRecipe irecipe = (IRecipe)recipes.get(j);
-
                 if (irecipe.matches(par1InventoryCrafting, par2World))
                 {
                 	ItemStack output = irecipe.getCraftingResult(par1InventoryCrafting);

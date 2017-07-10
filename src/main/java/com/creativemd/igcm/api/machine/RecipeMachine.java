@@ -10,7 +10,6 @@ import com.creativemd.igcm.api.ConfigElement;
 import com.creativemd.igcm.api.ConfigSegment;
 import com.creativemd.igcm.api.ConfigTab;
 import com.creativemd.igcm.api.segments.advanced.AddRecipeSegment;
-import com.creativemd.igcm.jei.JEIHandler;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -113,7 +112,7 @@ public abstract class RecipeMachine<T>{
 	public ArrayList lastAdded;
 	
 	public void updateJEI() {
-		if(hasJEISupport())
+		/*if(hasJEISupport())
 		{
 			if(hasDisableBranch())
 				JEIHandler.removeRecipes(disableBranch.allRecipes);
@@ -127,7 +126,7 @@ public abstract class RecipeMachine<T>{
 					lastAdded.add(addBranch.recipes.get(i).value);
 			}
 			JEIHandler.addRecipes(getAllExitingRecipes());
-		}
+		}*/
 	}
 	
 }

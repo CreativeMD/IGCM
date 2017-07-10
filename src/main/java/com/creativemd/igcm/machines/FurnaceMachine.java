@@ -2,15 +2,11 @@ package com.creativemd.igcm.machines;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map.Entry;
 
 import com.creativemd.creativecore.common.utils.stack.InfoBlock;
-import com.creativemd.creativecore.common.utils.stack.InfoFuel;
 import com.creativemd.creativecore.common.utils.stack.InfoItem;
 import com.creativemd.creativecore.common.utils.stack.InfoItemStack;
-import com.creativemd.creativecore.common.utils.stack.InfoMaterial;
-import com.creativemd.creativecore.common.utils.stack.InfoOre;
 import com.creativemd.creativecore.common.utils.stack.InfoStack;
 import com.creativemd.creativecore.gui.ContainerControl;
 import com.creativemd.creativecore.gui.GuiControl;
@@ -18,29 +14,12 @@ import com.creativemd.creativecore.gui.controls.gui.GuiLabel;
 import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
 import com.creativemd.igcm.api.machine.RecipeMachine;
 import com.creativemd.igcm.api.segments.advanced.AddRecipeSegment;
-import com.creativemd.igcm.jei.JEIHandler;
 
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.IRecipeRegistry;
-import mezz.jei.api.recipe.IRecipeCategory;
-import mezz.jei.api.recipe.IRecipeWrapper;
-import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
-import mezz.jei.plugins.vanilla.furnace.SmeltingRecipe;
-import mezz.jei.plugins.vanilla.furnace.SmeltingRecipeMaker;
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 
@@ -164,8 +143,13 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 	public boolean doesSupportStackSize() {
 		return false;
 	}
-	
+
 	@Override
+	public boolean hasJEISupport() {
+		return false;
+	}
+	
+	/*@Override
 	public void updateJEI() {
 		if(JEIHandler.isActive && hasJEISupport())
 			updateJEIFurnaceRecipes();
@@ -194,6 +178,6 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 	@Override
 	public boolean hasJEISupport() {
 		return true;
-	}
+	}*/
 
 }

@@ -106,7 +106,7 @@ public class ConfigEventHandler
 					ScaledResolution scaledresolution = new ScaledResolution(mc);
 			        int i = scaledresolution.getScaledWidth();
 			        int j = scaledresolution.getScaledHeight();
-					mc.fontRendererObj.drawString((index+1) + " of " + recipes.size(), i/2+30, j/2-65, 0);
+					mc.fontRenderer.drawString((index+1) + " of " + recipes.size(), i/2+30, j/2-65, 0);
 					GL11.glPopMatrix();
 					if(!ItemStack.areItemStacksEqual(container.craftResult.getStackInSlot(0), recipes.get(index)))
 					{
@@ -143,12 +143,12 @@ public class ConfigEventHandler
 		Minecraft mc = Minecraft.getMinecraft();
 		int k = 0;//(screen.width - 176) / 2;
 		int l = 0;//(screen.height - 166) / 2;
-		button.xPosition += xOffzet;
-		button.yPosition += yOffzet;
-		int oldX = button.xPosition;
-		int oldY = button.yPosition;
-		button.xPosition = oldX-k;
-		button.yPosition = oldY-l;
+		button.x += xOffzet;
+		button.y += yOffzet;
+		int oldX = button.x;
+		int oldY = button.y;
+		button.x = oldX-k;
+		button.y = oldY-l;
 		ScaledResolution scaledresolution = new ScaledResolution(mc);
         int i = scaledresolution.getScaledWidth();
         int j = scaledresolution.getScaledHeight();
@@ -156,13 +156,13 @@ public class ConfigEventHandler
         int l2 = j - Mouse.getY() * j / mc.displayHeight - 1;
         if(front)
         	GL11.glTranslated(0, 0, 500);
-        button.drawButton(mc, k2-k, l2-l);
+        button.drawButton(mc, k2-k, l2-l, 1.0F);
         if(front)
         	GL11.glTranslated(0, 0, -500);
 		
-		button.xPosition = oldX;
-		button.yPosition = oldY;
-		button.xPosition -= xOffzet;
-		button.yPosition -= yOffzet;
+		button.x = oldX;
+		button.y = oldY;
+		button.x -= xOffzet;
+		button.y -= yOffzet;
 	}
 }

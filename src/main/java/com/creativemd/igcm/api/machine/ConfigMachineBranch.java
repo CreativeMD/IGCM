@@ -1,6 +1,5 @@
 package com.creativemd.igcm.api.machine;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -9,7 +8,6 @@ import com.creativemd.igcm.api.ConfigSegment;
 import com.creativemd.igcm.api.segments.SelectSegment;
 import com.creativemd.igcm.api.segments.advanced.AddRecipeSegment;
 import com.creativemd.igcm.api.segments.advanced.DisableRecipeSegment;
-import com.creativemd.igcm.jei.JEIHandler;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

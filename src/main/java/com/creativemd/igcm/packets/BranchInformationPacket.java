@@ -1,17 +1,13 @@
 package com.creativemd.igcm.packets;
 
-import java.util.ArrayList;
-
 import com.creativemd.creativecore.common.packet.CreativeCorePacket;
 import com.creativemd.creativecore.gui.controls.gui.GuiScrollBox;
 import com.creativemd.creativecore.gui.mc.ContainerSub;
 import com.creativemd.igcm.IGCM;
 import com.creativemd.igcm.IGCMConfig;
 import com.creativemd.igcm.api.ConfigBranch;
-import com.creativemd.igcm.api.ConfigSegment;
 import com.creativemd.igcm.api.ConfigTab;
 import com.creativemd.igcm.client.gui.SubGuiConfigSegement;
-import com.creativemd.igcm.jei.JEIHandler;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
