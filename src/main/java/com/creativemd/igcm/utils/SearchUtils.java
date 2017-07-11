@@ -28,7 +28,7 @@ public class SearchUtils {
 	
 	public static boolean canInfoBeFound(InfoStack info, String search)
 	{
-		return canStackBeFound(info.getItemStack(), search);
+		return info == null ? false : canStackBeFound(info.getItemStack(), search);
 	}
 	
 }
