@@ -19,6 +19,7 @@ import com.creativemd.igcm.event.ConfigEventHandler;
 import com.creativemd.igcm.machines.AdvancedWorkbench;
 import com.creativemd.igcm.machines.BrewingStandMachine;
 import com.creativemd.igcm.machines.FurnaceMachine;
+import com.creativemd.igcm.machines.WorkbenchMachine;
 import com.creativemd.igcm.packets.BranchInformationPacket;
 import com.creativemd.igcm.packets.CraftResultPacket;
 import com.creativemd.igcm.packets.OpenGUIPacket;
@@ -35,6 +36,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -48,6 +51,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.registries.GameData;
 
 @Mod(modid = IGCM.modid, version = IGCM.version, name = "InGameConfigManager",acceptedMinecraftVersions="")
 public class IGCM {
@@ -82,7 +87,7 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 		MinecraftForge.EVENT_BUS.register(IGCM.class);
 	}
 	
-	//public static WorkbenchMachine workbench;
+	public static WorkbenchMachine workbench;
 	public static FurnaceMachine furnace;
 	public static AdvancedWorkbench advancedWorkbench;
 	public static BrewingStandMachine brewingStand;
@@ -97,6 +102,9 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		advancedWorkbenchItem = new ItemBlock(advancedWorkbenchBlock).setRegistryName(advancedWorkbenchBlock.getRegistryName()).setCreativeTab(CreativeTabs.DECORATIONS);
 	    event.getRegistry().registerAll(advancedWorkbenchItem);
+	    
+	    if(FMLCommonHandler.instance().getSide().isClient())
+			initClientPre();
 	}
 	
 	@EventHandler
@@ -107,10 +115,16 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 		if(FMLCommonHandler.instance().getSide().isClient())
 			initClient();
 		
-		//workbench = new WorkbenchMachine("workbench", "Crafting Table", new ItemStack(Blocks.CRAFTING_TABLE));
+		workbench = new WorkbenchMachine("workbench", "Crafting Table", new ItemStack(Blocks.CRAFTING_TABLE));
 		furnace = new FurnaceMachine("furnace", "Furnace", new ItemStack(Blocks.FURNACE));
 		advancedWorkbench = new AdvancedWorkbench("advWorkbench", "Advanced Workbench", new ItemStack(advancedWorkbenchBlock));
 		brewingStand = new BrewingStandMachine("brewing", "Brewing Stand", new ItemStack(Items.BREWING_STAND));
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public static void initClientPre()
+	{
+		IGCMClient.initClientPre();
 	}
 	
 	@SideOnly(Side.CLIENT)

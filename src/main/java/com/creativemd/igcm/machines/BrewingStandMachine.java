@@ -17,6 +17,7 @@ import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.brewing.IBrewingRecipe;
 import net.minecraftforge.common.brewing.VanillaBrewingRecipe;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class BrewingStandMachine extends RecipeMachine<IBrewingRecipe> {
 	
@@ -71,12 +72,12 @@ public class BrewingStandMachine extends RecipeMachine<IBrewingRecipe> {
 	private static List<IBrewingRecipe> brewingRecipes = ReflectionHelper.getPrivateValue(BrewingRecipeRegistry.class, null, "recipes");
 	
 	@Override
-	public void addRecipeToList(IBrewingRecipe recipe) {
+	public void addRecipeToList(Side side, IBrewingRecipe recipe) {
 		brewingRecipes.add(recipe);
 	}
 
 	@Override
-	public void clearRecipeList() {
+	public void clearRecipeList(Side side) {
 		brewingRecipes.clear();
 	}
 

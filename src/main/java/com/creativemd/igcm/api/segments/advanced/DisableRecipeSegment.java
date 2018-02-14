@@ -40,7 +40,7 @@ public class DisableRecipeSegment extends RecipeSegment<Boolean>{
 		ArrayList<GuiControl> controls = super.createGuiControls(gui, x, y, maxWidth);
 		controls.add(new GuiStateButton(getKey(), value ? 1 : 0, x+150, y+20, 50, 14, "Enabled", "Disabled"));
 		if(showName)
-			controls.add(new GuiLabel(getKey(), x, y));
+			controls.add(new GuiLabel(getKey(), x+100, y));
 		return controls;		
 	}
 	
@@ -48,7 +48,7 @@ public class DisableRecipeSegment extends RecipeSegment<Boolean>{
 	public boolean contains(String search) {
 		if(super.contains(search))
 			return true;
-		if(value)
+		if(!value)
 			return "enabled".contains(search);
 		return "disabled".contains(search);
 	}

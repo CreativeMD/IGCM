@@ -53,7 +53,7 @@ public class ConfigMachineBranch<T> extends ConfigBranch {
 
 	@Override
 	public void onRecieveFrom(Side side) {
-		machine.clearRecipeList();
+		machine.clearRecipeList(side);
 		//disabledRecipes.clear();
 		
 		SelectSegment select = (SelectSegment) getChildByKey("state");
@@ -71,7 +71,7 @@ public class ConfigMachineBranch<T> extends ConfigBranch {
 						//if(!(Boolean)collection.asList().get(i).value)
 							//disabledRecipes.add(((DisableRecipeSegment)collection.asList().get(i)).recipe);
 						if(!((DisableRecipeSegment) segment).value)
-							machine.addRecipeToList((T) ((DisableRecipeSegment)segment).recipe);
+							machine.addRecipeToList(side, (T) ((DisableRecipeSegment)segment).recipe);
 					}
 				}
 			}
@@ -85,7 +85,7 @@ public class ConfigMachineBranch<T> extends ConfigBranch {
 					ConfigSegment segment = (ConfigSegment) iterator.next();
 					if(segment instanceof AddRecipeSegment && ((AddRecipeSegment) segment).value != null)
 					{
-						machine.addRecipeToList((T) ((AddRecipeSegment) segment).value);
+						machine.addRecipeToList(side, (T) ((AddRecipeSegment) segment).value);
 					}
 				}
 			}

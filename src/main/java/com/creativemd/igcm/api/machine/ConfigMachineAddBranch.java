@@ -89,6 +89,8 @@ public class ConfigMachineAddBranch extends ConfigBranch {
 			if(segment instanceof AddRecipeSegment && ((AddRecipeSegment) segment).value != null)
 				recipes.add((AddRecipeSegment) segment);
 		}
+		
+		machine.onRecipeParsed(recipes);
 	}
 	
 	@Override
