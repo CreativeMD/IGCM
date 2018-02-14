@@ -45,12 +45,12 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 	}
 
 	@Override
-	public void addRecipeToList(IRecipe recipe) {
+	public void addRecipeToList(Side side, IRecipe recipe) {
 		CraftingManager.getInstance().getRecipeList().add(recipe);
 	}
 
 	@Override
-	public void clearRecipeList() {
+	public void clearRecipeList(Side side) {
 		CraftingManager.getInstance().getRecipeList().clear();
 	}
 
