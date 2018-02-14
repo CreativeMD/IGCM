@@ -106,18 +106,14 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 		IGCMClient.initClient();
 	}
 	
-	@EventHandler
-	public static void postLoading(FMLLoadCompleteEvent event)
-	{
-		ConfigTab.root.initCore();
-	}
-	
 	public static CommandBase gui;
 	public static CommandBase set;
 	
 	@EventHandler
 	public static void serverStarting(FMLServerStartingEvent event)
 	{
+		ConfigTab.root.initCore();
+		
 		gui = new CommandGUI();
 		set = new CommandSET();
 		event.registerServerCommand(gui);
