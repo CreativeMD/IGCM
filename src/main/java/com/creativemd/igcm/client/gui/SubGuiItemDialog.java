@@ -1,17 +1,15 @@
 package com.creativemd.igcm.client.gui;
 
-import javax.vecmath.Vector4d;
-
 import com.creativemd.creativecore.gui.container.SubGui;
 import com.creativemd.creativecore.gui.controls.gui.GuiButton;
 import com.creativemd.creativecore.gui.controls.gui.GuiLabel;
 import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
-import com.creativemd.creativecore.gui.controls.gui.custom.GuiInvSelector;
+import com.creativemd.creativecore.gui.controls.gui.custom.GuiStackSelectorAll;
+import com.creativemd.creativecore.gui.controls.gui.custom.GuiStackSelectorAll.SearchSelector;
 import com.creativemd.creativecore.gui.event.gui.GuiControlChangedEvent;
 import com.creativemd.creativecore.gui.event.gui.GuiControlClickEvent;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -26,10 +24,10 @@ public class SubGuiItemDialog extends SubGui{
 	
 	@Override
 	public void createControls() {
-		GuiInvSelector selector = new GuiInvSelector("inv", 0, 0, 122, container.player, false);
+		GuiStackSelectorAll selector = new GuiStackSelectorAll("inv", 0, 0, 122, container.player, new GuiStackSelectorAll.CreativeCollector(new GuiStackSelectorAll.SearchSelector()));
 		controls.add(selector);
 		if(!stack.isEmpty())
-			selector.addAndSelectStack(stack);
+			selector.setSelectedForce(stack);
 		
 		controls.add(new GuiTextfield("search", "",0, 30, 144, 14));
 		
@@ -58,9 +56,9 @@ public class SubGuiItemDialog extends SubGui{
 	{
 		if(event.source.is("search"))
 		{
-			GuiInvSelector inv = (GuiInvSelector) get("inv");
-			inv.search = ((GuiTextfield)event.source).text.toLowerCase();
-			inv.updateItems(container.player);
+			GuiStackSelectorAll inv = (GuiStackSelectorAll) get("inv");
+			((SearchSelector) inv.collector.selector).search = ((GuiTextfield)event.source).text.toLowerCase();
+			inv.updateCollectedStacks();
 			inv.closeBox();
 		}
 	}
@@ -70,7 +68,7 @@ public class SubGuiItemDialog extends SubGui{
 	{
 		if(event.source.is("Save"))
 		{
-			stack = ((GuiInvSelector)get("inv")).getStack();
+			stack = ((GuiStackSelectorAll)get("inv")).getSelected();
 			int stacksize = 1;
 			try{
 				stacksize = Integer.parseInt(((GuiTextfield)get("stacksize")).text);

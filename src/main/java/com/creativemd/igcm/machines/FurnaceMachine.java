@@ -64,7 +64,7 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 	}
 
 	@Override
-	public void addRecipeToList(FurnaceRecipe recipe) {
+	public void addRecipeToList(Side side, FurnaceRecipe recipe) {
 		InfoStack info = recipe.input[0];
 		ItemStack output = recipe.output[0];
 		if(info != null && output != null)
@@ -86,7 +86,7 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 	}
 
 	@Override
-	public void clearRecipeList() {
+	public void clearRecipeList(Side side) {
 		FurnaceRecipes.instance().getSmeltingList().clear();
 	}
 

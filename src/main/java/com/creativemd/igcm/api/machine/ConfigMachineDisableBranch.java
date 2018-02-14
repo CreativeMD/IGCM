@@ -48,52 +48,7 @@ public class ConfigMachineDisableBranch extends ConfigBranch {
 	
 	public String recipeToString(Object recipe)
 	{
-		ItemStack[] input = new ItemStack[machine.getHeight()*machine.getWidth()];
-		machine.fillGrid(input, recipe);
-		
-		boolean emptyRecipe = true;
-		StringBuilder builder = new StringBuilder("{");
-		for (int i = 0; i < input.length; i++) {
-			if(i > 0)
-				builder.append(",");
-			if(input[i] != null && !input[i].isEmpty())
-			{
-				try{
-					if(input[i].getItem() instanceof ItemBlock)
-						builder.append(Block.REGISTRY.getNameForObject(Block.getBlockFromItem(input[i].getItem())).toString());
-					else
-						builder.append(Item.REGISTRY.getNameForObject(input[i].getItem()).toString());
-					builder.append(":" + input[i].getItemDamage());
-					emptyRecipe = false;
-				}catch(Exception e){
-					
-				}
-			}
-		}
-		builder.append("}{");
-		
-		ItemStack[] output = machine.getOutput(recipe);
-		for (int i = 0; i < output.length; i++) {
-			if(i > 0)
-				builder.append(",");
-			if(output[i] != null && !output[i].isEmpty())
-			{
-				try{
-					if(output[i].getItem() instanceof ItemBlock)
-						builder.append(Block.REGISTRY.getNameForObject(Block.getBlockFromItem(output[i].getItem())).toString());
-					else
-						builder.append(Item.REGISTRY.getNameForObject(output[i].getItem()).toString());
-					builder.append(":" + output[i].getItemDamage());
-					emptyRecipe = false;
-				}catch(Exception e){
-					
-				}
-			}
-		}
-		builder.append("}");
-		if(emptyRecipe)
-			return recipe.getClass().getName();
-		return builder.toString();
+		return machine.recipeToString(recipe);
 	}
 	
 	@Override

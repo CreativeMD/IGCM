@@ -37,6 +37,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -48,6 +50,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.registries.GameData;
 
 @Mod(modid = IGCM.modid, version = IGCM.version, name = "InGameConfigManager",acceptedMinecraftVersions="")
 public class IGCM {
@@ -98,6 +102,12 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 		furnace = new FurnaceMachine("furnace", "Furnace", new ItemStack(Blocks.FURNACE));
 		advancedWorkbench = new AdvancedWorkbench("advWorkbench", "Advanced Workbench", new ItemStack(advancedWorkbenchBlock));
 		brewingStand = new BrewingStandMachine("brewing", "Brewing Stand", new ItemStack(Items.BREWING_STAND));
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public static void initClientPre()
+	{
+		IGCMClient.initClientPre();
 	}
 	
 	@SideOnly(Side.CLIENT)

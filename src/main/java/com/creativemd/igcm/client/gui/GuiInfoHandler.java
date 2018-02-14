@@ -14,14 +14,13 @@ import com.creativemd.creativecore.common.utils.stack.InfoMaterial;
 import com.creativemd.creativecore.common.utils.stack.InfoName;
 import com.creativemd.creativecore.common.utils.stack.InfoOre;
 import com.creativemd.creativecore.common.utils.stack.InfoStack;
-import com.creativemd.creativecore.gui.container.SubGui;
 import com.creativemd.creativecore.gui.controls.gui.GuiComboBox;
 import com.creativemd.creativecore.gui.controls.gui.GuiLabel;
 import com.creativemd.creativecore.gui.controls.gui.GuiStateButton;
 import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
-import com.creativemd.creativecore.gui.controls.gui.custom.GuiInvSelector;
+import com.creativemd.creativecore.gui.controls.gui.custom.GuiStackSelectorAll;
+import com.creativemd.creativecore.gui.controls.gui.custom.GuiStackSelectorAll.SearchSelector;
 import com.creativemd.creativecore.gui.event.gui.GuiControlChangedEvent;
-import com.creativemd.creativecore.gui.opener.GuiHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -75,7 +74,7 @@ public abstract class GuiInfoHandler {
 			
 			@Override
 			public void createControls(SubGuiFullItemDialog gui, InfoStack info) {
-				GuiInvSelector selector = new GuiInvSelector("inv", 0, 30, 122, gui.container.player, false);
+				GuiStackSelectorAll selector = new GuiStackSelectorAll("inv", 0, 30, 122, gui.container.player, new GuiStackSelectorAll.CreativeCollector(new GuiStackSelectorAll.SearchSelector()));
 				gui.controls.add(selector);
 				gui.controls.add(new GuiTextfield("search", "", 0, 57, 144, 14));
 				
@@ -89,7 +88,7 @@ public abstract class GuiInfoHandler {
 				
 				if(info instanceof InfoBlock || info instanceof InfoItem || info instanceof InfoItemStack)
 				{
-					selector.addAndSelectStack(info.getItemStack().copy());
+					selector.setSelectedForce(info.getItemStack().copy());
 					if(info instanceof InfoItemStack)
 					{
 						damage.nextState();
@@ -109,7 +108,7 @@ public abstract class GuiInfoHandler {
 			@Override
 			public InfoStack parseInfo(SubGuiFullItemDialog gui, int stackSize)
 			{
-				ItemStack stack = ((GuiInvSelector) gui.get("inv")).getStack();
+				ItemStack stack = ((GuiStackSelectorAll) gui.get("inv")).getSelected();
 				if(stack != null)
 				{
 					boolean damage = ((GuiStateButton) gui.get("damage")).getState() == 1;
@@ -132,20 +131,20 @@ public abstract class GuiInfoHandler {
 			{
 				if(event.source.is("search"))
 				{
-					GuiInvSelector inv = (GuiInvSelector) gui.get("inv");
-					inv.search = ((GuiTextfield)event.source).text.toLowerCase();
-					inv.updateItems(gui.container.player);
+					GuiStackSelectorAll inv = (GuiStackSelectorAll) gui.get("inv");
+					((SearchSelector) inv.collector.selector).search = ((GuiTextfield)event.source).text.toLowerCase();
+					inv.updateCollectedStacks();
 					inv.closeBox();
 				}else if(event.source.is("inv")){
-					GuiInvSelector selector = (GuiInvSelector) gui.get("inv");
+					GuiStackSelectorAll selector = (GuiStackSelectorAll) gui.get("inv");
 					if(selector != null)
 					{
-						int indexStack = selector.index;
-						if(indexStack != -1)
+						ItemStack stack = selector.getSelected();
+						if(!stack.isEmpty())
 						{
-							ItemStack stack = selector.stacks.get(indexStack);
-							((GuiLabel) gui.get("guilabel1")).caption = "damage:" + stack.getItemDamage();
-							((GuiLabel) gui.get("guilabel2")).caption = "nbt:" + (stack.hasTagCompound() ? stack.getTagCompound().toString() : "null");
+							
+							((GuiLabel) gui.get("guilabel1")).caption = "damage: " + stack.getItemDamage();
+							((GuiLabel) gui.get("guilabel2")).caption = "nbt: " + (stack.hasTagCompound() ? stack.getTagCompound().toString() : "null");
 						}else{
 							((GuiLabel) gui.get("guilabel1")).caption = "";
 							((GuiLabel) gui.get("guilabel2")).caption = "";
@@ -214,7 +213,7 @@ public abstract class GuiInfoHandler {
 			
 			@Override
 			public InfoStack parseInfo(SubGuiFullItemDialog gui, int stackSize) {
-				ItemStack blockStack = ((GuiInvSelector) gui.get("inv")).getStack();
+				ItemStack blockStack = ((GuiStackSelectorAll) gui.get("inv")).getSelected();
 				if(blockStack != null)
 				{
 					Block block = Block.getBlockFromItem(blockStack.getItem());
@@ -226,10 +225,10 @@ public abstract class GuiInfoHandler {
 			
 			@Override
 			public void createControls(SubGuiFullItemDialog gui, InfoStack info) {
-				GuiInvSelector selector = new GuiInvSelector("inv", 0, 30, 122, gui.container.player, true);
+				GuiStackSelectorAll selector = new GuiStackSelectorAll("inv", 0, 30, 122, gui.container.player, new GuiStackSelectorAll.CreativeCollector(new GuiStackSelectorAll.BlockSelector()));
 				gui.controls.add(selector);
 				if(info instanceof InfoMaterial)
-					selector.addAndSelectStack(info.getItemStack());
+					selector.setSelectedForce(info.getItemStack());
 			}
 			
 			@Override

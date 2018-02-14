@@ -1,16 +1,9 @@
 package com.creativemd.igcm.client.gui;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import com.creativemd.creativecore.client.avatar.AvatarItemStack;
 import com.creativemd.creativecore.common.utils.ColorUtils;
-import com.creativemd.creativecore.common.utils.stack.InfoBlock;
-import com.creativemd.creativecore.common.utils.stack.InfoFuel;
-import com.creativemd.creativecore.common.utils.stack.InfoItem;
-import com.creativemd.creativecore.common.utils.stack.InfoItemStack;
-import com.creativemd.creativecore.common.utils.stack.InfoMaterial;
-import com.creativemd.creativecore.common.utils.stack.InfoOre;
 import com.creativemd.creativecore.common.utils.stack.InfoStack;
 import com.creativemd.creativecore.gui.container.SubGui;
 import com.creativemd.creativecore.gui.controls.gui.GuiAvatarLabelClickable;
@@ -18,20 +11,13 @@ import com.creativemd.creativecore.gui.controls.gui.GuiButton;
 import com.creativemd.creativecore.gui.controls.gui.GuiComboBox;
 import com.creativemd.creativecore.gui.controls.gui.GuiLabel;
 import com.creativemd.creativecore.gui.controls.gui.GuiScrollBox;
-import com.creativemd.creativecore.gui.controls.gui.GuiStateButton;
 import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
-import com.creativemd.creativecore.gui.controls.gui.custom.GuiInvSelector;
 import com.creativemd.creativecore.gui.event.gui.GuiControlChangedEvent;
 import com.creativemd.creativecore.gui.event.gui.GuiControlClickEvent;
 import com.creativemd.creativecore.gui.event.gui.GuiToolTipEvent;
-import com.creativemd.creativecore.gui.opener.GuiHandler;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class SubGuiFullItemDialog extends SubGui{
 	
@@ -65,7 +51,7 @@ public class SubGuiFullItemDialog extends SubGui{
 		box = new GuiComboBox("type", 0, 0, 144, lines);
 		box.caption = handler.getName();
 		box.index = lines.indexOf(handler.getName());
-		controls.add(box);		
+		controls.add(box);
 		
 		handler.createControls(this, info);
 		

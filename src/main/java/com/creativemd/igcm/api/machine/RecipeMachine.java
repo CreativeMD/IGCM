@@ -12,6 +12,9 @@ import com.creativemd.igcm.api.ConfigTab;
 import com.creativemd.igcm.api.segments.advanced.AddRecipeSegment;
 import com.creativemd.igcm.jei.JEIHandler;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -42,6 +45,56 @@ public abstract class RecipeMachine<T>{
 		
 	}
 	
+	public String recipeToString(T recipe)
+	{
+		ItemStack[] input = new ItemStack[getHeight()*getWidth()];
+		fillGrid(input, recipe);
+		
+		boolean emptyRecipe = true;
+		StringBuilder builder = new StringBuilder("{");
+		for (int i = 0; i < input.length; i++) {
+			if(i > 0)
+				builder.append(",");
+			if(input[i] != null && !input[i].isEmpty())
+			{
+				try{
+					if(input[i].getItem() instanceof ItemBlock)
+						builder.append(Block.REGISTRY.getNameForObject(Block.getBlockFromItem(input[i].getItem())).toString());
+					else
+						builder.append(Item.REGISTRY.getNameForObject(input[i].getItem()).toString());
+					builder.append(":" + input[i].getItemDamage());
+					emptyRecipe = false;
+				}catch(Exception e){
+					
+				}
+			}
+		}
+		builder.append("}{");
+		
+		ItemStack[] output = getOutput(recipe);
+		for (int i = 0; i < output.length; i++) {
+			if(i > 0)
+				builder.append(",");
+			if(output[i] != null && !output[i].isEmpty())
+			{
+				try{
+					if(output[i].getItem() instanceof ItemBlock)
+						builder.append(Block.REGISTRY.getNameForObject(Block.getBlockFromItem(output[i].getItem())).toString());
+					else
+						builder.append(Item.REGISTRY.getNameForObject(output[i].getItem()).toString());
+					builder.append(":" + output[i].getItemDamage());
+					emptyRecipe = false;
+				}catch(Exception e){
+					
+				}
+			}
+		}
+		builder.append("}");
+		if(emptyRecipe)
+			return recipe.getClass().getName();
+		return builder.toString();
+	}
+	
 	public boolean hasDisableBranch()
 	{
 		return true;
@@ -60,12 +113,12 @@ public abstract class RecipeMachine<T>{
 	/**Add the recipe to the "main" list of the "real" machine/block/whatever.
 	 * Workbench: Add it to the crafting list
 	 */
-	public abstract void addRecipeToList(T recipe);
+	public abstract void addRecipeToList(Side side, T recipe);
 	
 	/**Clear the "main" list of the "real" machine/block/whatever.
 	 * Workbench: Remove all existing crafting recipes
 	 */
-	public abstract void clearRecipeList();
+	public abstract void clearRecipeList(Side side);
 	
 	public abstract ItemStack[] getOutput(T recipe);
 	
@@ -90,6 +143,8 @@ public abstract class RecipeMachine<T>{
 	public abstract void fillGrid(ItemStack[] grid, T recipe);
 	
 	//==================Added Recipes only==================
+	
+	public void onRecipeParsed(List<AddRecipeSegment> segments) {}
 	
 	public abstract boolean doesSupportStackSize();
 	

@@ -47,12 +47,12 @@ public class AdvancedWorkbench extends RecipeMachine<AdvancedGridRecipe>{
 	}
 	
 	@Override
-	public void addRecipeToList(AdvancedGridRecipe recipe) {
+	public void addRecipeToList(Side side, AdvancedGridRecipe recipe) {
 		BlockAdvancedWorkbench.recipes.add(recipe);
 	}
 
 	@Override
-	public void clearRecipeList() {
+	public void clearRecipeList(Side side) {
 		BlockAdvancedWorkbench.recipes.clear();
 	}
 
