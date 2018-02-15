@@ -111,10 +111,13 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 	public static CommandBase gui;
 	public static CommandBase set;
 	
+	public static boolean initCore = false;
+	
 	@EventHandler
 	public static void serverStarting(FMLServerStartingEvent event)
 	{
 		ConfigTab.root.initCore();
+		initCore = true;
 		
 		gui = new CommandGUI();
 		set = new CommandSET();
