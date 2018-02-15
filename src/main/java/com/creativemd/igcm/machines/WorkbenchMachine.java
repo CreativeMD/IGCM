@@ -73,8 +73,10 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 	
 	private static Field owners = ReflectionHelper.findField(ForgeRegistry.class, "owners");
 	private List<RecipeBookCache> cachesServer;
+	@SideOnly(Side.CLIENT)
 	private RecipeBookCache cacheClient;
 	
+	@SideOnly(Side.CLIENT)
 	private static void addEmpty()
     {
 		for (CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
@@ -87,6 +89,15 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 		}
     }
 	
+	@SideOnly(Side.CLIENT)
+	public void receiveClient()
+	{
+		cacheClient.updateBook();
+		cacheClient = null;
+		FMLCommonHandler.instance().resetClientRecipeBook();
+		addEmpty();
+	}
+	
 	@Override
 	public void onReceiveFrom(Side side) {
 		super.onReceiveFrom(side);
@@ -94,10 +105,7 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 		//Save new recipe to books
 		if(side.isClient())
 		{
-			cacheClient.updateBook();
-			cacheClient = null;
-			FMLCommonHandler.instance().resetClientRecipeBook();
-			addEmpty();
+			receiveClient();
 		}
 		else
 		{
@@ -116,12 +124,18 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 		registry.register(recipe);
 		
 	}
+	
+	@SideOnly(Side.CLIENT)
+	public void setupCacheClient()
+	{
+		cacheClient = new RecipeBookCache(Minecraft.getMinecraft().player);
+	}
 
 	@Override
 	public void clearRecipeList(Side side) {
 		//Save all recipe books (client and server)
 		if(side.isClient())
-			cacheClient = new RecipeBookCache(Minecraft.getMinecraft().player);
+			setupCacheClient();
 		else
 		{
 			cachesServer = new ArrayList<>();
