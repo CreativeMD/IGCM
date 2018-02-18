@@ -1,10 +1,12 @@
 package com.creativemd.igcm.client.gui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.creativemd.creativecore.gui.container.SubGui;
 import com.creativemd.creativecore.gui.controls.gui.GuiButton;
 import com.creativemd.creativecore.gui.controls.gui.GuiComboBox;
+import com.creativemd.creativecore.gui.controls.gui.GuiLabel;
 import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
 import com.creativemd.igcm.IGCM;
 import com.creativemd.igcm.IGCMConfig;
@@ -16,18 +18,27 @@ import net.minecraft.nbt.NBTTagString;
 
 public class SubGuiProfile extends SubGui{
 	
+	public List<String> profiles;
+	public String current;
+	
 	public SubGuiProfile() {
 		super(250, 250);
 	}
-
+	
 	@Override
-	public void createControls() {
-		ArrayList<String> lines = new ArrayList<String>();
-		for (int i = 0; i < IGCMConfig.profiles.size(); i++) {
-			lines.add(IGCMConfig.profiles.get(i));
+	public void receiveContainerPacket(NBTTagCompound nbt) {
+		super.receiveContainerPacket(nbt);
+		NBTTagList list = nbt.getTagList("profiles", 8);
+		profiles = new ArrayList<>();
+		for (int i = 0; i < list.tagCount(); i++) {
+			profiles.add(list.getStringTagAt(i));
 		}
-		GuiComboBox box = new GuiComboBox("profiles", 5, 5, 100, lines);
-		box.caption = IGCMConfig.profileName;
+		this.current = nbt.getString("profile");
+		
+		controls.clear();
+		
+		GuiComboBox box = new GuiComboBox("profiles", 5, 5, 100, profiles);
+		box.caption = current;
 		controls.add(box);
 		controls.add(new GuiButton("Remove", 120, 5, 40) {
 			@Override
@@ -74,6 +85,13 @@ public class SubGuiProfile extends SubGui{
 				sendPacketToServer(nbt);
 			}
 		});
+		
+		refreshControls();
+	}
+
+	@Override
+	public void createControls() {
+		controls.add(new GuiLabel("Loading ...", 0, 0));
 	}
 
 }
