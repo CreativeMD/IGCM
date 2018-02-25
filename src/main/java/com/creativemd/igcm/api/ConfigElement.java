@@ -49,7 +49,7 @@ public class ConfigElement<T extends ConfigElement> {
 	public void initCore()
 	{
 		for (Iterator<T> iterator = childs.values().iterator(); iterator.hasNext();) {
-			iterator.next().initCore();;
+			iterator.next().initCore();
 		}
 	}
 	

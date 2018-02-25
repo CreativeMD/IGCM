@@ -35,6 +35,12 @@ public class ConfigMachineAddBranch extends ConfigBranch {
 		return true;
 	}
 	
+	@Override
+	public void initDefault() {
+		recipes.clear();
+		super.initDefault();
+	}
+	
 	public ArrayList<AddRecipeSegment> recipes = new ArrayList<>();
 	
 	@Override

@@ -37,7 +37,7 @@ public class SubGuiProfile extends SubGui{
 		
 		controls.clear();
 		
-		GuiComboBox box = new GuiComboBox("profiles", 5, 5, 100, profiles);
+		GuiComboBox box = new GuiComboBox("profiles", 5, 5, 100, (ArrayList<String>) profiles);
 		box.caption = current;
 		controls.add(box);
 		controls.add(new GuiButton("Remove", 120, 5, 40) {

@@ -67,12 +67,6 @@ public class BranchInformationPacket extends CreativeCorePacket{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void executeClient(EntityPlayer player) {
-		if(!IGCM.initCore)
-		{
-			ConfigTab.root.initCore();
-			IGCM.initCore = true;
-		}
-		
 		receiveUpdate(Side.CLIENT);
 		
 		if(player!= null && player.openContainer instanceof ContainerSub && ((ContainerSub) player.openContainer).gui.getTopLayer() instanceof SubGuiConfigSegement)

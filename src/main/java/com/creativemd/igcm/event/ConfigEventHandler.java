@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL11;
 import com.creativemd.creativecore.common.packet.PacketHandler;
 import com.creativemd.creativecore.gui.opener.GuiHandler;
 import com.creativemd.igcm.IGCM;
+import com.creativemd.igcm.api.ConfigTab;
 import com.creativemd.igcm.packets.CraftResultPacket;
 import com.creativemd.igcm.utils.WorkbenchSwitchHelper;
 
@@ -73,6 +74,12 @@ public class ConfigEventHandler
 	@SubscribeEvent
 	public void tick(RenderTickEvent event)
 	{
+		if(!IGCM.initCore)
+		{
+			ConfigTab.root.initCore();
+			IGCM.initCore = true;
+		}
+		
 		Minecraft mc = Minecraft.getMinecraft();
 		if(event.phase == Phase.END && mc.player != null && mc.player.openContainer instanceof ContainerWorkbench)
 		{

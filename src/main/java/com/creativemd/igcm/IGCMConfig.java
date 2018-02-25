@@ -48,6 +48,7 @@ public class IGCMConfig {
 	/**Used for loading configs on startup and changing profile**/
 	public static void loadConfig()
 	{
+		System.out.println("Loading configuration '" + profileName + "' ...");
 		currentFile = new File(ModConfigurationDirectory, "IGCM" + File.separator + profileName + ".nbt");
 		try {
 			NBTTagCompound nbt = CompressedStreamTools.read(currentFile);
@@ -93,5 +94,7 @@ public class IGCMConfig {
 		coreConfig.get("General", "profileName", "new1").set(profileName);
 		coreConfig.get("General", "profiles", new String[0]).set(profiles.toArray(new String[0]));
 		coreConfig.save();
+		
+		System.out.printf("Saved profile to '" + profileName + "'");
 	}
 }
