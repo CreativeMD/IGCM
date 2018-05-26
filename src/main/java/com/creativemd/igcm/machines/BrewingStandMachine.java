@@ -137,5 +137,17 @@ public class BrewingStandMachine extends RecipeMachine<IBrewingRecipe> {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	public String getJEICategory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public List getJEIRecipes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

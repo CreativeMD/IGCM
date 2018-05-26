@@ -16,8 +16,13 @@ import com.creativemd.igcm.IGCM;
 import com.creativemd.igcm.api.ConfigSegment;
 import com.creativemd.igcm.api.machine.RecipeMachine;
 import com.creativemd.igcm.api.segments.advanced.AddRecipeSegment;
+import com.creativemd.igcm.jei.JEIHandler;
 import com.google.common.collect.BiMap;
 
+import mezz.jei.api.IModRegistry;
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import mezz.jei.plugins.vanilla.crafting.CraftingRecipeChecker;
+import mezz.jei.plugins.vanilla.crafting.TippedArrowRecipeMaker;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
@@ -39,6 +44,7 @@ import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.stats.RecipeBook;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -350,6 +356,20 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 	@Override
 	public boolean hasJEISupport() {
 		return true;
+	}
+	
+	@Override
+	public String getJEICategory() {
+		return VanillaRecipeCategoryUid.CRAFTING;
+	}
+	
+	@Override
+	@Method(modid = "jei")
+	public List getJEIRecipes() {
+		List list = new ArrayList<>();
+		list.addAll(CraftingRecipeChecker.getValidRecipes(((IModRegistry) JEIHandler.modRegistry).getJeiHelpers()));
+		list.addAll(TippedArrowRecipeMaker.getTippedArrowRecipes());
+		return list;
 	}
 	
 	public static final Field recipePlayer = ReflectionHelper.findField(RecipeBook.class, "recipes", "field_194077_a");

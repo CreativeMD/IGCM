@@ -58,7 +58,8 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		branch.onRecieveFrom(side);
 		branch.onRecieveFromPost(side);
 		
-		branch.updateJEI();
+		if(side == Side.CLIENT)
+			branch.updateJEI();
 	}
 
 	@Override

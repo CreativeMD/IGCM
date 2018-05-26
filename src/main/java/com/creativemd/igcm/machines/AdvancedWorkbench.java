@@ -1,6 +1,7 @@
 package com.creativemd.igcm.machines;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.creativemd.creativecore.common.utils.stack.InfoStack;
 import com.creativemd.creativecore.gui.ContainerControl;
@@ -12,6 +13,7 @@ import com.creativemd.igcm.api.segments.BooleanSegment;
 import com.creativemd.igcm.api.segments.advanced.AddRecipeSegment;
 import com.creativemd.igcm.block.AdvancedGridRecipe;
 import com.creativemd.igcm.block.BlockAdvancedWorkbench;
+import com.creativemd.igcm.jei.AdvCraftingRecipeCategory;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -130,6 +132,16 @@ public class AdvancedWorkbench extends RecipeMachine<AdvancedGridRecipe>{
 	@Override
 	public boolean hasJEISupport() {
 		return true;
+	}
+	
+	@Override
+	public String getJEICategory() {
+		return AdvCraftingRecipeCategory.CategoryUiD;
+	}
+	
+	@Override
+	public List getJEIRecipes() {
+		return BlockAdvancedWorkbench.recipes;
 	}
 	
 	@Override

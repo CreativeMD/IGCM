@@ -2,6 +2,7 @@ package com.creativemd.igcm.machines;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
 import com.creativemd.creativecore.common.utils.stack.InfoBlock;
@@ -14,10 +15,20 @@ import com.creativemd.creativecore.gui.controls.gui.GuiLabel;
 import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
 import com.creativemd.igcm.api.machine.RecipeMachine;
 import com.creativemd.igcm.api.segments.advanced.AddRecipeSegment;
+import com.creativemd.igcm.jei.JEIHandler;
 
+import mezz.jei.api.IModRegistry;
+import mezz.jei.api.IRecipeRegistry;
+import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import mezz.jei.plugins.vanilla.crafting.CraftingRecipeChecker;
+import mezz.jei.plugins.vanilla.furnace.SmeltingRecipeMaker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -146,38 +157,18 @@ public class FurnaceMachine extends RecipeMachine<FurnaceRecipe>{
 
 	@Override
 	public boolean hasJEISupport() {
-		return false;
-	}
-	
-	/*@Override
-	public void updateJEI() {
-		if(JEIHandler.isActive && hasJEISupport())
-			updateJEIFurnaceRecipes();
-	}
-	
-	private static Object category;
-	
-	@Method(modid = "jei")
-	public void updateJEIFurnaceRecipes()
-	{
-		if(!(category instanceof IRecipeCategory))
-		{
-			List<IRecipeCategory> categories = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeCategories();
-			for (int i = 0; i < categories.size(); i++) {
-				if(categories.get(i).getUid().equals(VanillaRecipeCategoryUid.SMELTING))
-					category = categories.get(i);
-			}
-			
-		}
-		List<IRecipeWrapper> recipes = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeWrappers((IRecipeCategory) category);
-		JEIHandler.removeRecipes(recipes);
-		
-		JEIHandler.addRecipes(SmeltingRecipeMaker.getFurnaceRecipes(((IModRegistry) JEIHandler.modRegistry).getJeiHelpers()));		
-	}
-
-	@Override
-	public boolean hasJEISupport() {
 		return true;
-	}*/
+	}
+	
+	@Override
+	public String getJEICategory() {
+		return VanillaRecipeCategoryUid.SMELTING;
+	}
+	
+	@Override
+	@Method(modid = "jei")
+	public List getJEIRecipes() {
+		return SmeltingRecipeMaker.getFurnaceRecipes(((IModRegistry) JEIHandler.modRegistry).getJeiHelpers());
+	}
 
 }

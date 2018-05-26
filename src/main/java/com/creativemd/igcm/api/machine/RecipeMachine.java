@@ -10,12 +10,21 @@ import com.creativemd.igcm.api.ConfigElement;
 import com.creativemd.igcm.api.ConfigSegment;
 import com.creativemd.igcm.api.ConfigTab;
 import com.creativemd.igcm.api.segments.advanced.AddRecipeSegment;
+import com.creativemd.igcm.jei.JEIHandler;
 
+import mezz.jei.api.IModRegistry;
+import mezz.jei.api.IRecipeRegistry;
+import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import mezz.jei.plugins.vanilla.furnace.SmeltingRecipeMaker;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -164,24 +173,35 @@ public abstract class RecipeMachine<T>{
 	
 	public abstract boolean hasJEISupport();
 	
-	public ArrayList lastAdded;
+	public abstract String getJEICategory();
 	
+	@Method(modid = "jei")
+	public abstract List getJEIRecipes();
+	
+	@Method(modid = "jei")
 	public void updateJEI() {
-		/*if(hasJEISupport())
+		if(hasJEISupport() && JEIHandler.isActive && JEIHandler.recipeRegistry != null)
 		{
-			if(hasDisableBranch())
-				JEIHandler.removeRecipes(disableBranch.allRecipes);
-			
-			if(lastAdded != null)
-				JEIHandler.removeRecipes(lastAdded);
-			
-			lastAdded = new ArrayList<>();
-			for (int i = 0; i < addBranch.recipes.size(); i++) {
-				if(addBranch.recipes.get(i).value != null)
-					lastAdded.add(addBranch.recipes.get(i).value);
-			}
-			JEIHandler.addRecipes(getAllExitingRecipes());
-		}*/
+			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+				
+				@Override
+				public void run() {
+					IRecipeCategory category = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeCategory(getJEICategory());
+					
+					List<IRecipeWrapper> oldRecipes = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeWrappers(category);
+					for (IRecipeWrapper recipe : oldRecipes) {
+						((IRecipeRegistry) JEIHandler.recipeRegistry).removeRecipe(recipe, category.getUid());
+					}
+					
+					List recipes = getJEIRecipes();
+					for (Object recipe : recipes) {
+						IRecipeWrapper wrapper = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeWrapper(recipe, category.getUid());
+						if(wrapper != null)
+							((IRecipeRegistry) JEIHandler.recipeRegistry).addRecipe(wrapper, category.getUid());
+					}
+				}
+			});
+		}
 	}
 	
 }

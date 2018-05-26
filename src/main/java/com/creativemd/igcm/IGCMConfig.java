@@ -10,6 +10,7 @@ import java.util.List;
 import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.ConfigSegment;
 import com.creativemd.igcm.api.ConfigTab;
+import com.creativemd.igcm.jei.JEIHandler;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -66,7 +67,6 @@ public class IGCMConfig {
 					branch.onRecieveFrom(Side.SERVER);
 					branch.onRecieveFromPost(Side.SERVER);
 					
-					branch.updateJEI();
 				}
 			}
 		} catch (IOException e){
