@@ -366,10 +366,7 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 	@Override
 	@Method(modid = "jei")
 	public List getJEIRecipes() {
-		List list = new ArrayList<>();
-		list.addAll(CraftingRecipeChecker.getValidRecipes(((IModRegistry) JEIHandler.modRegistry).getJeiHelpers()));
-		list.addAll(TippedArrowRecipeMaker.getTippedArrowRecipes());
-		return list;
+		return registry.getValues();
 	}
 	
 	public static final Field recipePlayer = ReflectionHelper.findField(RecipeBook.class, "recipes", "field_194077_a");
@@ -387,10 +384,10 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 	    	this.player = player;
 	    	try {
 	    		RecipeBook book;
-	    		if(player instanceof EntityPlayerSP)
-	    			book = ((EntityPlayerSP) player).getRecipeBook();
-	    		else
+	    		if(player instanceof EntityPlayerMP)
 	    			book = ((EntityPlayerMP) player).getRecipeBook();
+	    		else
+	    			book = ((EntityPlayerSP) player).getRecipeBook();
 	    		
 	    		List<IRecipe> toDelete = new ArrayList<>();
 	    		BitSet recipesBook = (BitSet) recipePlayer.get(book);
@@ -417,10 +414,10 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 	    public void updateBook()
 	    {
 	    	RecipeBook book;
-    		if(player instanceof EntityPlayerSP)
-    			book = ((EntityPlayerSP) player).getRecipeBook();
-    		else
+    		if(player instanceof EntityPlayerMP)
     			book = ((EntityPlayerMP) player).getRecipeBook();
+    		else
+    			book = ((EntityPlayerSP) player).getRecipeBook();
     		
     		try {
 	    		((BitSet) recipePlayer.get(book)).clear();
