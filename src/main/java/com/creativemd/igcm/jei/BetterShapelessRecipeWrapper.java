@@ -10,17 +10,17 @@ import com.creativemd.creativecore.common.recipe.BetterShapelessRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IStackHelper;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
-public class BetterShapelessRecipeWrapper extends BlankRecipeWrapper implements IShapedCraftingRecipeWrapper {
+public class BetterShapelessRecipeWrapper implements IRecipeWrapper, IShapedCraftingRecipeWrapper {
 	
 	@Nonnull
 	private final BetterShapelessRecipe recipe;
 
-	public BetterShapelessRecipeWrapper(@Nonnull IGuiHelper guiHelper, @Nonnull BetterShapelessRecipe recipe) {
+	public BetterShapelessRecipeWrapper(@Nonnull BetterShapelessRecipe recipe) {
 		super();
 		this.recipe = recipe;
 	}

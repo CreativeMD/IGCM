@@ -2,17 +2,29 @@ package com.creativemd.igcm.jei;
 
 import javax.annotation.Nonnull;
 
+import com.creativemd.creativecore.common.recipe.BetterShapedRecipe;
+import com.creativemd.creativecore.common.recipe.BetterShapelessRecipe;
 import com.creativemd.igcm.IGCM;
+import com.creativemd.igcm.block.AdvancedGridRecipe;
 
-import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiRuntime;
+import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import mezz.jei.gui.GuiHelper;
 import net.minecraft.item.ItemStack;
 
 @JEIPlugin
-public class IGCMPlugin extends BlankModPlugin {
+public class IGCMPlugin implements IModPlugin {
+	
+	@Override
+	public void registerCategories(IRecipeCategoryRegistration registry)
+	{
+		registry.addRecipeCategories(new AdvCraftingRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+	}
 	
 	@Override
 	public void onRuntimeAvailable(IJeiRuntime jeiRuntime)
@@ -26,13 +38,12 @@ public class IGCMPlugin extends BlankModPlugin {
 		
 		JEIHandler.modRegistry = registry;
 		
-		IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+		registry.handleRecipes(BetterShapedRecipe.class, new BetterShapedRecipeFactory(), VanillaRecipeCategoryUid.CRAFTING);
+		registry.handleRecipes(BetterShapelessRecipe.class, new BetterShapelessRecipeFactory(), VanillaRecipeCategoryUid.CRAFTING);
 		
-		registry.addRecipeCategories(new AdvCraftingRecipeCategory(guiHelper));
+		registry.handleRecipes(AdvancedGridRecipe.class, new AdvRecipeFactory(), AdvCraftingRecipeCategory.CategoryUiD);
 		
-		registry.addRecipeHandlers(new BetterShapedRecipeHandler(), new BetterShapelessRecipeHandler(guiHelper), new AdvRecipeHandler());
-		
-		registry.addRecipeCategoryCraftingItem(new ItemStack(IGCM.advancedWorkbenchBlock), AdvCraftingRecipeCategory.CategoryUiD);
+		registry.addRecipeCatalyst(new ItemStack(IGCM.advancedWorkbenchBlock), AdvCraftingRecipeCategory.CategoryUiD);
 	}
 	
 }

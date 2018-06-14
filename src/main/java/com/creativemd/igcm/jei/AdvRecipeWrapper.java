@@ -10,11 +10,12 @@ import com.creativemd.igcm.block.AdvancedGridRecipe;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IStackHelper;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
-public class AdvRecipeWrapper extends BlankRecipeWrapper implements IShapedCraftingRecipeWrapper {
+public class AdvRecipeWrapper  implements IRecipeWrapper, IShapedCraftingRecipeWrapper {
 	
 	@Nonnull
 	private final AdvancedGridRecipe recipe;

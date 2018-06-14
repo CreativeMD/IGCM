@@ -11,6 +11,7 @@ import com.creativemd.creativecore.common.recipe.BetterShapedRecipe;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IStackHelper;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import mezz.jei.plugins.vanilla.VanillaPlugin;
@@ -19,7 +20,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class BetterShapedRecipeWrapper extends BlankRecipeWrapper implements IShapedCraftingRecipeWrapper {
+public class BetterShapedRecipeWrapper implements IRecipeWrapper, IShapedCraftingRecipeWrapper {
 	
 	@Nonnull
 	private final BetterShapedRecipe recipe;
