@@ -20,7 +20,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class BetterShapedRecipeWrapper implements IRecipeWrapper, IShapedCraftingRecipeWrapper {
+public class BetterShapedRecipeWrapper implements IShapedCraftingRecipeWrapper {
 	
 	@Nonnull
 	private final BetterShapedRecipe recipe;

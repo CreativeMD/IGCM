@@ -188,10 +188,12 @@ public abstract class RecipeMachine<T>{
 				public void run() {
 					IRecipeCategory category = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeCategory(getJEICategory());
 					
-					List<IRecipeWrapper> oldRecipes = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeWrappers(category);
+					/*List<IRecipeWrapper> oldRecipes = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeWrappers(category);
 					for (IRecipeWrapper recipe : oldRecipes) {
 						((IRecipeRegistry) JEIHandler.recipeRegistry).removeRecipe(recipe, category.getUid());
-					}
+					}*/
+					
+					JEIHandler.clearCategory(category.getUid());
 					
 					List recipes = getJEIRecipes();
 					for (Object recipe : recipes) {

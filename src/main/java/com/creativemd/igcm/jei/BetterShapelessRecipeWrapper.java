@@ -15,7 +15,7 @@ import mezz.jei.api.recipe.IStackHelper;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
-public class BetterShapelessRecipeWrapper implements IRecipeWrapper, IShapedCraftingRecipeWrapper {
+public class BetterShapelessRecipeWrapper implements IShapedCraftingRecipeWrapper {
 	
 	@Nonnull
 	private final BetterShapelessRecipe recipe;
