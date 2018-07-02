@@ -6,6 +6,7 @@ import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.segments.advanced.DisableRecipeSegment;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -67,6 +68,11 @@ public class ConfigMachineDisableBranch extends ConfigBranch {
 	@Override
 	public void saveExtra(NBTTagCompound nbt) {
 		
+	}
+	
+	@Override
+	public void onUpdateSendToClient(EntityPlayer player) {
+		machine.mainBranch.onUpdateSendToClient(player);
 	}
 
 }

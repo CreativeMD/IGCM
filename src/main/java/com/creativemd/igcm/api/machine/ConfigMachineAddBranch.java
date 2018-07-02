@@ -10,6 +10,7 @@ import com.creativemd.igcm.api.ConfigSegment;
 import com.creativemd.igcm.api.segments.advanced.AddRecipeSegment;
 import com.creativemd.igcm.client.gui.SubGuiConfigSegement;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -131,6 +132,11 @@ public class ConfigMachineAddBranch extends ConfigBranch {
 			list.appendTag(recipeNBT);
 		}
 		nbt.setTag("added", list);
+	}
+	
+	@Override
+	public void onUpdateSendToClient(EntityPlayer player) {
+		machine.mainBranch.onUpdateSendToClient(player);
 	}
 
 }

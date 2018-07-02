@@ -92,6 +92,8 @@ public class BranchInformationPacket extends CreativeCorePacket{
 			
 			IGCM.sendUpdatePacket(branch);
 			IGCMConfig.saveConfig();
+			
+			branch.onUpdateSendToClient(player);
 		}else
 			IGCM.sendUpdatePacket(branch, player);
 	}

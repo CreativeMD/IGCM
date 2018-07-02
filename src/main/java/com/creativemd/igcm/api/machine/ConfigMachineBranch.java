@@ -9,6 +9,7 @@ import com.creativemd.igcm.api.segments.SelectSegment;
 import com.creativemd.igcm.api.segments.advanced.AddRecipeSegment;
 import com.creativemd.igcm.api.segments.advanced.DisableRecipeSegment;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -113,5 +114,9 @@ public class ConfigMachineBranch<T> extends ConfigBranch {
 	public void saveExtra(NBTTagCompound nbt) {
 		nbt.setInteger("state", state);
 	}
-
+	
+	@Override
+	public void onUpdateSendToClient(EntityPlayer player) {
+		machine.onUpdateSendToClient(player);
+	}
 }

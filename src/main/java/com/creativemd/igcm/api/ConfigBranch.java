@@ -10,6 +10,7 @@ import com.creativemd.creativecore.gui.controls.gui.GuiScrollBox;
 import com.creativemd.igcm.api.segments.ValueSegment;
 import com.creativemd.igcm.client.gui.SubGuiConfigSegement;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -70,6 +71,8 @@ public abstract class ConfigBranch extends ConfigGroupElement {
 	public void onBeforeReceived(Side side) {}
 	
 	public void onChildUpdated(Side side, ConfigBranch child) {}
+	
+	public void onUpdateSendToClient(EntityPlayer player) {}
 	
 	public boolean doesInputSupportStackSize()
 	{

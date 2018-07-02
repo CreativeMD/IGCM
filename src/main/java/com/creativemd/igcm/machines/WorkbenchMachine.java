@@ -369,6 +369,12 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 		return registry.getValues();
 	}
 	
+	@Override
+	public void onUpdateSendToClient(EntityPlayer player) {
+		//if(player instanceof EntityPlayerMP)
+			//((EntityPlayerMP) player).getRecipeBook().init((EntityPlayerMP) player);
+	}
+	
 	public static final Field recipePlayer = ReflectionHelper.findField(RecipeBook.class, "recipes", "field_194077_a");
 	public static final Field newRecipePlayer = ReflectionHelper.findField(RecipeBook.class, "newRecipes", "field_194078_b");
 	
@@ -404,12 +410,26 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 	    			if(newRecipesBook.get(i))
 	    				newRecipes.add(registry.getValue(i));
 	    		
-	    		player.resetRecipes(toDelete);
+	    		/*if(!(player instanceof EntityPlayerMP))
+	    			player.resetRecipes(toDelete);
+	    		else
+	    		{
+	    			for (IRecipe irecipe : toDelete)
+	    	        {
+	    	            if (this.recipes.get(getRecipeId(irecipe)))
+	    	            {
+	    	                this.lock(irecipe);
+	    	                list.add(irecipe);
+	    	            }
+	    	        }
+	    		}*/
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
 	    	
 	    }
+	    
+	    
 	    
 	    public void updateBook()
 	    {

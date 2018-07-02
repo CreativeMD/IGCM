@@ -20,6 +20,7 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.plugins.vanilla.furnace.SmeltingRecipeMaker;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -143,6 +144,8 @@ public abstract class RecipeMachine<T>{
 	public void createExtraSegments() {}
 	
 	public void onReceiveFrom(Side side) {}
+	
+	public void onUpdateSendToClient(EntityPlayer player) {}
 	
 	//==================Disabled Recipes only==================
 	
