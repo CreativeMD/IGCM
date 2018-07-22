@@ -3,7 +3,7 @@ package com.creativemd.igcm.client.gui;
 import java.util.ArrayList;
 
 import com.creativemd.creativecore.client.avatar.AvatarItemStack;
-import com.creativemd.creativecore.common.utils.ColorUtils;
+import com.creativemd.creativecore.common.utils.mc.ColorUtils;
 import com.creativemd.creativecore.common.utils.stack.InfoStack;
 import com.creativemd.creativecore.gui.container.SubGui;
 import com.creativemd.creativecore.gui.controls.gui.GuiAvatarLabelClickable;
