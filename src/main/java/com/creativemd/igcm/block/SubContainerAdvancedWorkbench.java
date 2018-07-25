@@ -1,7 +1,7 @@
 package com.creativemd.igcm.block;
 
-import com.creativemd.creativecore.common.utils.InventoryUtils;
-import com.creativemd.creativecore.common.utils.WorldUtils;
+import com.creativemd.creativecore.common.utils.mc.InventoryUtils;
+import com.creativemd.creativecore.common.utils.mc.WorldUtils;
 import com.creativemd.creativecore.gui.container.SubContainer;
 import com.creativemd.creativecore.slots.SlotOutput;
 
