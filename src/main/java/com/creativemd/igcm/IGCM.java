@@ -39,6 +39,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -60,7 +61,7 @@ public class IGCM {
 public static Logger logger = LogManager.getLogger(IGCM.modid);
 	
 	public static final String modid = "igcm";
-	public static final String version = "1.0.0";
+	public static final String version = "1.2.2";
 	
 	public static ConfigEventHandler eventHandler = new ConfigEventHandler();
 	
@@ -68,11 +69,22 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 	public static Block advancedWorkbenchBlock = null;
 	public static Item advancedWorkbenchItem = null;
 	
+	public static boolean enableWorkbench;
+	public static boolean enableFurnace;
+	public static boolean enableBrewing;
+	
 	public static final String guiID = "IGCM";
 	
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent event)
 	{
+		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		config.load();
+		enableWorkbench = config.getBoolean("enableWorkbench", "Module", true, "If false you will not be able to modify crafting recipes");
+		enableFurnace = config.getBoolean("enableFurnace", "Module", true, "If false you will not be able to modify furnace recipes");
+		enableBrewing = config.getBoolean("enableBrewing", "Module", true, "If false you will not be able to modify brewing recipes");
+		config.save();
+		
 		event.getModMetadata().version = version;
 		MinecraftForge.EVENT_BUS.register(eventHandler);
 		//FMLCommonHandler.instance().bus().register(eventHandler);
@@ -115,10 +127,13 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 		if(FMLCommonHandler.instance().getSide().isClient())
 			initClient();
 		
-		workbench = new WorkbenchMachine("workbench", "Crafting Table", new ItemStack(Blocks.CRAFTING_TABLE));
-		furnace = new FurnaceMachine("furnace", "Furnace", new ItemStack(Blocks.FURNACE));
+		if(enableWorkbench)
+			workbench = new WorkbenchMachine("workbench", "Crafting Table", new ItemStack(Blocks.CRAFTING_TABLE));
+		if(enableFurnace)
+			furnace = new FurnaceMachine("furnace", "Furnace", new ItemStack(Blocks.FURNACE));
 		advancedWorkbench = new AdvancedWorkbench("advWorkbench", "Advanced Workbench", new ItemStack(advancedWorkbenchBlock));
-		brewingStand = new BrewingStandMachine("brewing", "Brewing Stand", new ItemStack(Items.BREWING_STAND));
+		if(enableBrewing)
+			brewingStand = new BrewingStandMachine("brewing", "Brewing Stand", new ItemStack(Items.BREWING_STAND));
 	}
 	
 	@SideOnly(Side.CLIENT)
