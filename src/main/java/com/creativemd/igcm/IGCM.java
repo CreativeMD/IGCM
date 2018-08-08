@@ -80,9 +80,9 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 	{
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
-		enableWorkbench = config.getBoolean("enableWorkbench", "Module", true, "If false you will not be able to modify crafting recipes");
-		enableFurnace = config.getBoolean("enableFurnace", "Module", true, "If false you will not be able to modify furnace recipes");
-		enableBrewing = config.getBoolean("enableBrewing", "Module", true, "If false you will not be able to modify brewing recipes");
+		enableWorkbench = config.getBoolean("enableWorkbench", "Module", true, "If false you will not be able to modify crafting recipes. Needs to be equal on client & server (otherwise it will crash)");
+		enableFurnace = config.getBoolean("enableFurnace", "Module", true, "If false you will not be able to modify furnace recipes. Needs to be equal on client & server (otherwise it will crash)");
+		enableBrewing = config.getBoolean("enableBrewing", "Module", true, "If false you will not be able to modify brewing recipes. Needs to be equal on client & server (otherwise it will crash)");
 		config.save();
 		
 		event.getModMetadata().version = version;
