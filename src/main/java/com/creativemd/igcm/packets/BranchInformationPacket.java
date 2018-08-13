@@ -8,6 +8,7 @@ import com.creativemd.igcm.IGCMConfig;
 import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.ConfigTab;
 import com.creativemd.igcm.client.gui.SubGuiConfigSegement;
+import com.creativemd.igcm.jei.JEIHandler;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,7 +59,7 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		branch.onRecieveFrom(side);
 		branch.onRecieveFromPost(side);
 		
-		if(side == Side.CLIENT)
+		if(side == Side.CLIENT && JEIHandler.isActive)
 			branch.updateJEI();
 	}
 

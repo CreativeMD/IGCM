@@ -12,6 +12,7 @@ import com.creativemd.igcm.api.segments.advanced.DisableRecipeSegment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class ConfigMachineBranch<T> extends ConfigBranch {
@@ -96,6 +97,7 @@ public class ConfigMachineBranch<T> extends ConfigBranch {
 	}
 	
 	@Override
+	@Method(modid = "jei")
 	public void updateJEI() {
 		machine.updateJEI();
 	}
