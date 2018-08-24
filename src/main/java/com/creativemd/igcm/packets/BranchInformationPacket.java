@@ -74,7 +74,7 @@ public class BranchInformationPacket extends CreativeCorePacket{
 			SubGuiConfigSegement gui = (SubGuiConfigSegement) ((ContainerSub) player.openContainer).gui.getTopLayer();
 			if(gui.element == branch)
 			{
-				int scrolled = ((GuiScrollBox) gui.get("scrollbox")).scrolled;
+				double scrolled = ((GuiScrollBox) gui.get("scrollbox")).scrolled;
 				gui.createSegmentControls(true);
 				GuiScrollBox box = (GuiScrollBox) gui.get("scrollbox");
 				box.scrolled = scrolled;
