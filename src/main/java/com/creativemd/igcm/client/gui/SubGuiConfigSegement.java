@@ -83,7 +83,7 @@ public class SubGuiConfigSegement extends SubGui {
 		forceRecreation = force;
 		GuiScrollBox box = (GuiScrollBox) get("scrollbox");
 		Collection<ConfigSegment> segments = element.getChilds();
-		aimedScrollPos = box.scrolled;
+		aimedScrollPos = box.aimedScrolled;
 		box.controls.clear();
 		box.maxScroll = 0;
 		box.scrolled = 0;
