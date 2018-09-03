@@ -9,6 +9,7 @@ import com.creativemd.igcm.api.segments.SelectSegment;
 import com.creativemd.igcm.api.segments.advanced.AddRecipeSegment;
 import com.creativemd.igcm.api.segments.advanced.DisableRecipeSegment;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -99,7 +100,13 @@ public class ConfigMachineBranch<T> extends ConfigBranch {
 	@Override
 	@Method(modid = "jei")
 	public void updateJEI() {
-		machine.updateJEI();
+		Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+			
+			@Override
+			public void run() {
+				machine.updateJEI();
+			}
+		});
 	}
 
 	@Override

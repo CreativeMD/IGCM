@@ -185,27 +185,21 @@ public abstract class RecipeMachine<T>{
 	public void updateJEI() {
 		if(hasJEISupport() && JEIHandler.isActive && JEIHandler.recipeRegistry != null)
 		{
-			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-				
-				@Override
-				public void run() {
-					IRecipeCategory category = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeCategory(getJEICategory());
-					
-					/*List<IRecipeWrapper> oldRecipes = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeWrappers(category);
-					for (IRecipeWrapper recipe : oldRecipes) {
-						((IRecipeRegistry) JEIHandler.recipeRegistry).removeRecipe(recipe, category.getUid());
-					}*/
-					
-					JEIHandler.clearCategory(category.getUid());
-					
-					List recipes = getJEIRecipes();
-					for (Object recipe : recipes) {
-						IRecipeWrapper wrapper = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeWrapper(recipe, category.getUid());
-						if(wrapper != null)
-							((IRecipeRegistry) JEIHandler.recipeRegistry).addRecipe(wrapper, category.getUid());
-					}
-				}
-			});
+			IRecipeCategory category = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeCategory(getJEICategory());
+			
+			/*List<IRecipeWrapper> oldRecipes = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeWrappers(category);
+			for (IRecipeWrapper recipe : oldRecipes) {
+				((IRecipeRegistry) JEIHandler.recipeRegistry).removeRecipe(recipe, category.getUid());
+			}*/
+			
+			JEIHandler.clearCategory(category.getUid());
+			
+			List recipes = getJEIRecipes();
+			for (Object recipe : recipes) {
+				IRecipeWrapper wrapper = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeWrapper(recipe, category.getUid());
+				if(wrapper != null)
+					((IRecipeRegistry) JEIHandler.recipeRegistry).addRecipe(wrapper, category.getUid());
+			}
 		}
 	}
 	

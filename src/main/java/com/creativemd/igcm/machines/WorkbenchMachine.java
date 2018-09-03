@@ -369,6 +369,21 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 		return registry.getValues();
 	}
 	
+	@Method(modid = "jei")
+	public void updateJEI() {
+		super.updateJEI();
+		if(JEIHandler.isSilentGemInstalled())
+		{
+			for (IRecipe recipe : registry) {
+				if(recipe.getRegistryName().getResourceDomain().equals("silentgems"))
+				{
+					JEIHandler.addSilentGemRecipes();
+					break;
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void onUpdateSendToClient(EntityPlayer player) {
 		//if(player instanceof EntityPlayerMP)
