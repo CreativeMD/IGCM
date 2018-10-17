@@ -14,11 +14,11 @@ import com.creativemd.creativecore.transformer.CreativeTransformer;
 import com.creativemd.creativecore.transformer.Transformer;
 
 public class IGCMTransformer extends CreativeTransformer {
-
+	
 	public IGCMTransformer() {
 		super("igcm");
 	}
-
+	
 	@Override
 	protected void initTransformers() {
 		addTransformer(new Transformer("net.minecraft.stats.RecipeBookServer") {
@@ -28,8 +28,7 @@ public class IGCMTransformer extends CreativeTransformer {
 				MethodNode m = findMethod(node, "add", "(Ljava/util/List;Lnet/minecraft/entity/player/EntityPlayerMP;)V");
 				for (Iterator iterator = m.instructions.iterator(); iterator.hasNext();) {
 					AbstractInsnNode insn = (AbstractInsnNode) iterator.next();
-					if(insn instanceof LabelNode)
-					{
+					if (insn instanceof LabelNode) {
 						insn = insn.getNext();
 						m.instructions.insertBefore(insn, new VarInsnNode(Opcodes.ALOAD, 1));
 						m.instructions.insertBefore(insn, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/creativemd/igcm/core/TransformInteractor", "modifyList", "(Ljava/util/List;)Ljava/util/List;", false));
@@ -40,8 +39,7 @@ public class IGCMTransformer extends CreativeTransformer {
 				m = findMethod(node, "remove", "(Ljava/util/List;Lnet/minecraft/entity/player/EntityPlayerMP;)V");
 				for (Iterator iterator = m.instructions.iterator(); iterator.hasNext();) {
 					AbstractInsnNode insn = (AbstractInsnNode) iterator.next();
-					if(insn instanceof LabelNode)
-					{
+					if (insn instanceof LabelNode) {
 						insn = insn.getNext();
 						m.instructions.insertBefore(insn, new VarInsnNode(Opcodes.ALOAD, 1));
 						m.instructions.insertBefore(insn, new MethodInsnNode(Opcodes.INVOKESTATIC, "com/creativemd/igcm/core/TransformInteractor", "modifyList", "(Ljava/util/List;)Ljava/util/List;", false));
@@ -52,5 +50,5 @@ public class IGCMTransformer extends CreativeTransformer {
 			}
 		});
 	}
-
+	
 }

@@ -1,38 +1,22 @@
 package com.creativemd.igcm.jei;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import mezz.jei.JustEnoughItems;
-import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.IRecipeRegistry;
 import mezz.jei.api.recipe.IRecipeCategory;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.collect.ListMultiMap;
 import mezz.jei.collect.MultiMap;
-import mezz.jei.collect.SetMultiMap;
 import mezz.jei.collect.Table;
-import mezz.jei.ingredients.Ingredients;
 import mezz.jei.recipes.RecipeMap;
 import mezz.jei.recipes.RecipeRegistry;
-import mezz.jei.startup.JeiStarter;
-import mezz.jei.startup.ProxyCommonClient;
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.model.ItemLayerModel.Loader;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.fml.server.FMLServerHandler;
 
 public class JEIHandler {
 	
@@ -60,10 +44,8 @@ public class JEIHandler {
 	
 	private static Field tableField;
 	
-	private static void loadReflections()
-	{
-		if(hiddenRecipesField == null)
-		{
+	private static void loadReflections() {
+		if (hiddenRecipesField == null) {
 			hiddenRecipesField = ReflectionHelper.findField(RecipeRegistry.class, "hiddenRecipes");
 			wrapperMapsField = ReflectionHelper.findField(RecipeRegistry.class, "wrapperMaps");
 			recipeInputMapField = ReflectionHelper.findField(RecipeRegistry.class, "recipeInputMap");
@@ -80,8 +62,7 @@ public class JEIHandler {
 		}
 	}
 	
-	private static void clearMultiMap(Object multimap, Object key)
-	{
+	private static void clearMultiMap(Object multimap, Object key) {
 		try {
 			((Map) mapMultiMapField.get(multimap)).remove(key);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
@@ -89,8 +70,7 @@ public class JEIHandler {
 		}
 	}
 	
-	private static void clearTable(Object table, Object key)
-	{
+	private static void clearTable(Object table, Object key) {
 		try {
 			((Map) tableField.get(table)).remove(key);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
@@ -98,15 +78,14 @@ public class JEIHandler {
 		}
 	}
 	
-	public static void clearCategory(String categoryId)
-	{
+	public static void clearCategory(String categoryId) {
 		loadReflections();
 		
 		try {
 			IRecipeCategory category = ((IRecipeRegistry) JEIHandler.recipeRegistry).getRecipeCategory(categoryId);
 			
-			if(category == null)
-				return ;
+			if (category == null)
+				return;
 			
 			clearMultiMap(hiddenRecipesField.get(recipeRegistry), categoryId);
 			
@@ -117,7 +96,7 @@ public class JEIHandler {
 			for (Iterator<Entry<String, List<String>>> iterator = ((ListMultiMap<String, String>) categoryUidMapField.get(recipeInputMap)).entrySet().iterator(); iterator.hasNext();) {
 				Entry<String, List<String>> entry = iterator.next();
 				entry.getValue().remove(categoryId);
-				if(entry.getValue().isEmpty())
+				if (entry.getValue().isEmpty())
 					iterator.remove();
 			}
 			
@@ -126,14 +105,13 @@ public class JEIHandler {
 			for (Iterator<Entry<String, List<String>>> iterator = ((ListMultiMap<String, String>) categoryUidMapField.get(recipeOutputMap)).entrySet().iterator(); iterator.hasNext();) {
 				Entry<String, List<String>> entry = iterator.next();
 				entry.getValue().remove(categoryId);
-				if(entry.getValue().isEmpty())
+				if (entry.getValue().isEmpty())
 					iterator.remove();
 			}
 			
 			clearMultiMap(recipeWrappersForCategoriesField.get(recipeRegistry), category);
-		
-			((List) recipeCategoriesVisibleCacheField.get(recipeRegistry)).clear();
 			
+			((List) recipeCategoriesVisibleCacheField.get(recipeRegistry)).clear();
 			
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
@@ -143,13 +121,11 @@ public class JEIHandler {
 	private static boolean silentGemRecipes = false;
 	private static Field exampleRecipes = null;
 	
-	public static boolean isSilentGemInstalled()
-	{
-		if(!silentGemRecipes)
-		{
+	public static boolean isSilentGemInstalled() {
+		if (!silentGemRecipes) {
 			try {
 				Class toolHelperClass = Class.forName("net.silentchaos512.gems.util.ToolHelper");
-				if(toolHelperClass != null)
+				if (toolHelperClass != null)
 					exampleRecipes = ReflectionHelper.findField(toolHelperClass, "EXAMPLE_RECIPES");
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -159,8 +135,7 @@ public class JEIHandler {
 		return exampleRecipes != null;
 	}
 	
-	public static void addSilentGemRecipes()
-	{
+	public static void addSilentGemRecipes() {
 		try {
 			((IModRegistry) modRegistry).addRecipes((Collection<?>) exampleRecipes.get(null), VanillaRecipeCategoryUid.CRAFTING);
 		} catch (IllegalArgumentException | IllegalAccessException e) {

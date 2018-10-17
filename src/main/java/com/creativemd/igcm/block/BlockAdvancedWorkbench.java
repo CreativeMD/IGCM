@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockAdvancedWorkbench extends BlockWorkbench implements IGuiCreator{
+public class BlockAdvancedWorkbench extends BlockWorkbench implements IGuiCreator {
 	
 	public static final int gridSize = 6;
 	public static final int outputs = 4;
@@ -30,22 +30,20 @@ public class BlockAdvancedWorkbench extends BlockWorkbench implements IGuiCreato
 	}
 	
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
-		if(!world.isRemote)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (!world.isRemote)
 			GuiHandler.openGui(player, world, pos);
 		return true;
-    }
-
+	}
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public SubGui getGui(EntityPlayer player, ItemStack stack, World world, BlockPos pos, IBlockState state) {
 		return new SubGuiAdvancedWorkbench();
 	}
-
+	
 	@Override
-	public SubContainer getContainer(EntityPlayer player, ItemStack stack, World world, BlockPos pos,
-			IBlockState state) {
+	public SubContainer getContainer(EntityPlayer player, ItemStack stack, World world, BlockPos pos, IBlockState state) {
 		return new SubContainerAdvancedWorkbench(player);
 	}
 	

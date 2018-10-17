@@ -8,15 +8,13 @@ import com.creativemd.creativecore.gui.controls.gui.GuiButton;
 import com.creativemd.creativecore.gui.controls.gui.GuiComboBox;
 import com.creativemd.creativecore.gui.controls.gui.GuiLabel;
 import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
-import com.creativemd.igcm.IGCM;
-import com.creativemd.igcm.IGCMConfig;
 import com.creativemd.igcm.IGCMGuiManager;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
-public class SubGuiProfile extends SubGui{
+public class SubGuiProfile extends SubGui {
 	
 	public List<String> profiles;
 	public String current;
@@ -44,8 +42,7 @@ public class SubGuiProfile extends SubGui{
 			@Override
 			public void onClicked(int x, int y, int button) {
 				GuiComboBox combobox = (GuiComboBox) get("profiles");
-				if(combobox.lines.size() > 1)
-				{
+				if (combobox.lines.size() > 1) {
 					
 					combobox.lines.remove(combobox.caption);
 					combobox.caption = combobox.lines.get(0);
@@ -57,10 +54,9 @@ public class SubGuiProfile extends SubGui{
 			@Override
 			public void onClicked(int x, int y, int button) {
 				GuiTextfield field = (GuiTextfield) get("name");
-				if(!field.text.equals(""))
-				{
+				if (!field.text.equals("")) {
 					GuiComboBox combobox = (GuiComboBox) get("profiles");
-					if(!combobox.lines.contains(field.text))
+					if (!combobox.lines.contains(field.text))
 						combobox.lines.add(field.text);
 				}
 			}
@@ -88,10 +84,10 @@ public class SubGuiProfile extends SubGui{
 		
 		refreshControls();
 	}
-
+	
 	@Override
 	public void createControls() {
 		controls.add(new GuiLabel("Loading ...", 0, 0));
 	}
-
+	
 }

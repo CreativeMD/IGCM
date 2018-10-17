@@ -8,7 +8,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 
-public class InfoSlotControl extends SlotControlNoSync{
+public class InfoSlotControl extends SlotControlNoSync {
 	
 	public InfoStack info;
 	public InventoryBasic inventory;
@@ -17,17 +17,16 @@ public class InfoSlotControl extends SlotControlNoSync{
 		super(new SlotPreview(inventory, index, x, y));
 		this.info = info;
 		inventory = (InventoryBasic) slot.inventory;
-		if(info != null)
+		if (info != null)
 			slot.putStack(info.getItemStack());
 	}
 	
-	public void putInfo(InfoStack info)
-	{
+	public void putInfo(InfoStack info) {
 		this.info = info;
-		if(info != null)
+		if (info != null)
 			slot.putStack(info.getItemStack());
 		else
 			slot.putStack(ItemStack.EMPTY);
 	}
-
+	
 }

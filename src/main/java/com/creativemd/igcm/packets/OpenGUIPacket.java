@@ -17,21 +17,21 @@ public class OpenGUIPacket extends CreativeCorePacket {
 	public void writeBytes(ByteBuf buf) {
 		
 	}
-
+	
 	@Override
 	public void readBytes(ByteBuf buf) {
 		
 	}
-
+	
 	@Override
 	public void executeClient(EntityPlayer player) {
 		
 	}
-
+	
 	@Override
 	public void executeServer(EntityPlayer player) {
-		if(IGCM.gui.checkPermission(player.getServer(), player))
+		if (IGCM.gui.checkPermission(player.getServer(), player))
 			IGCMGuiManager.openConfigGui(player);
 	}
-
+	
 }

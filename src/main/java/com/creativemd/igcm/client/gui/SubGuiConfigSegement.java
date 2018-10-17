@@ -25,7 +25,6 @@ import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
@@ -51,13 +50,10 @@ public class SubGuiConfigSegement extends SubGui {
 	
 	public String search = "";
 	
-	public void removeSegment(ConfigSegment segment)
-	{
-		if(!isCreatingControls)
-		{
+	public void removeSegment(ConfigSegment segment) {
+		if (!isCreatingControls) {
 			int indexOf = childs.indexOf(segment);
-			if(indexOf != -1)
-			{
+			if (indexOf != -1) {
 				childs.remove(indexOf);
 				
 				GuiScrollBox box = (GuiScrollBox) get("scrollbox");
@@ -65,7 +61,7 @@ public class SubGuiConfigSegement extends SubGui {
 				box.maxScroll = 0;
 				box.scrolled = 0;
 				
-				if(get("Save") != null)
+				if (get("Save") != null)
 					get("Save").setEnabled(false);
 				
 				height = 5;
@@ -78,8 +74,7 @@ public class SubGuiConfigSegement extends SubGui {
 		}
 	}
 	
-	public void createSegmentControls(boolean force)
-	{
+	public void createSegmentControls(boolean force) {
 		forceRecreation = force;
 		GuiScrollBox box = (GuiScrollBox) get("scrollbox");
 		Collection<ConfigSegment> segments = element.getChilds();
@@ -88,14 +83,14 @@ public class SubGuiConfigSegement extends SubGui {
 		box.maxScroll = 0;
 		box.scrolled = 0;
 		
-		if(get("Save") != null)
+		if (get("Save") != null)
 			get("Save").setEnabled(false);
 		
 		this.childs = new ArrayList<ConfigSegment>(segments);
 		height = 5;
 		index = 0;
 		
-		if(element instanceof ConfigBranch)
+		if (element instanceof ConfigBranch)
 			((ConfigBranch) element).onGuiCreatesSegments(this, childs);
 		
 		isCreatingControls = true;
@@ -104,24 +99,20 @@ public class SubGuiConfigSegement extends SubGui {
 	}
 	
 	@Override
-	public void onTick()
-	{
-		if(childs != null && (isCreatingControls || index < childs.size()))
-		{
+	public void onTick() {
+		if (childs != null && (isCreatingControls || index < childs.size())) {
 			isCreatingControls = true;
 			GuiScrollBox box = (GuiScrollBox) get("scrollbox");
 			int count = 0;
 			int countLoaded = 0;
 			String search = this.search.toLowerCase();
 			for (int i = index; i < childs.size() && countLoaded < loadPerTick; i++) {
-				if(search.equals("") || childs.get(i).canBeFound(search))
-				{
+				if (search.equals("") || childs.get(i).canBeFound(search)) {
 					ConfigSegment child = childs.get(i);
 					int x = 0;
 					int y = height;
 					
-					if(forceRecreation || child.getGuiControls() == null)
-					{
+					if (forceRecreation || child.getGuiControls() == null) {
 						ArrayList<GuiControl> guiControls = child.createGuiControls(this, x, y, maxWidth);
 						ArrayList<ContainerControl> containerControls = child.createContainerControls(container, x, y, maxWidth);
 						
@@ -140,19 +131,19 @@ public class SubGuiConfigSegement extends SubGui {
 							child.getGuiControls().add(control);
 						}
 						
-						if(element instanceof ConfigBranch)
+						if (element instanceof ConfigBranch)
 							((ConfigBranch) element).onGuiLoadSegment(this, box, childs, child);
-					}else{
+					} else {
 						for (int j = 0; j < child.getGuiControls().size(); j++) {
 							GuiControl control = child.getGuiControls().get(j);
-							control.posX = control.posX-child.lastX+x;
-							control.posY = control.posY-child.lastY+y;
+							control.posX = control.posX - child.lastX + x;
+							control.posY = control.posY - child.lastY + y;
 							box.addControl(control);
 						}
 						child.onSegmentLoaded(x, y, maxWidth);
 					}
 					
-					height += child.getHeight()+5;
+					height += child.getHeight() + 5;
 					
 					countLoaded++;
 				}
@@ -160,19 +151,16 @@ public class SubGuiConfigSegement extends SubGui {
 				count++;
 			}
 			
-			if(aimedScrollPos != -1)
-			{
+			if (aimedScrollPos != -1) {
 				box.scrolled = Math.min(height, aimedScrollPos);
-				if(height >= aimedScrollPos)
+				if (height >= aimedScrollPos)
 					aimedScrollPos = -1;
 			}
 			
 			index += count;
-			if(index >= childs.size())
-			{
-				if(element instanceof ConfigBranch)
-				{
-					if(has("Save"))
+			if (index >= childs.size()) {
+				if (element instanceof ConfigBranch) {
+					if (has("Save"))
 						get("Save").setEnabled(true);
 					((ConfigBranch) element).onGuiLoadedAllSegments(this, box, childs);
 					isCreatingControls = false;
@@ -183,11 +171,9 @@ public class SubGuiConfigSegement extends SubGui {
 	}
 	
 	@Override
-	public boolean closeGuiUsingEscape()
-	{
-		if(element instanceof ConfigBranch)
-		{
-			if(!Minecraft.getMinecraft().isSingleplayer())
+	public boolean closeGuiUsingEscape() {
+		if (element instanceof ConfigBranch) {
+			if (!Minecraft.getMinecraft().isSingleplayer())
 				Minecraft.getMinecraft().addScheduledTask(new Runnable() {
 					
 					@Override
@@ -208,14 +194,13 @@ public class SubGuiConfigSegement extends SubGui {
 			@Override
 			public void onClicked(int x, int y, int button) {
 				closeGuiUsingEscape();
-				if(element.parent != null)
+				if (element.parent != null)
 					IGCMGuiManager.openConfigGui(getPlayer(), element.parent.getPath());
 				else
 					closeGui();
 			}
 		});
-		if(element instanceof ConfigBranch)
-		{
+		if (element instanceof ConfigBranch) {
 			controls.add((GuiControl) new GuiButton("Save", 194, 228, 50) {
 				
 				@Override
@@ -224,8 +209,7 @@ public class SubGuiConfigSegement extends SubGui {
 					for (int i = 0; i < parent.childs.size(); i++) {
 						parent.childs.get(i).saveFromControls();
 					}
-					if(element instanceof ConfigBranch)
-					{
+					if (element instanceof ConfigBranch) {
 						((ConfigBranch) element).onGuiSavesSegments((SubGuiConfigSegement) getParent(), parent.childs);
 						IGCM.sendUpdatePacket((ConfigBranch) element);
 					}
@@ -233,12 +217,10 @@ public class SubGuiConfigSegement extends SubGui {
 			}.setEnabled(false));
 		}
 		controls.add(new GuiTextfield("search", "", 60, 228, 124, 14));
-		if(element == ConfigTab.root)
-		{
+		if (element == ConfigTab.root) {
 			controls.add(new GuiButton("Profiles", 194, 228, 50) {
 				@Override
-				public void onClicked(int x, int y, int button)
-				{
+				public void onClicked(int x, int y, int button) {
 					IGCMGuiManager.openProfileGui(container.player);
 				}
 			});
@@ -249,18 +231,15 @@ public class SubGuiConfigSegement extends SubGui {
 	public GuiSlotControl openedSlot;
 	
 	@CustomEventSubscribe
-	public void onButtonClicked(GuiControlClickEvent event)
-	{
-		if(event.source instanceof GuiSlotControl){
-			if(((GuiSlotControl)event.source).slot instanceof InfoSlotControl)
-			{
+	public void onButtonClicked(GuiControlClickEvent event) {
+		if (event.source instanceof GuiSlotControl) {
+			if (((GuiSlotControl) event.source).slot instanceof InfoSlotControl) {
 				openedSlot = (GuiSlotControl) event.source;
 				NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setBoolean("ItemDialog", true);
 				nbt.setBoolean("fullEdit", true);
 				openNewLayer(nbt);
-			}else if(((GuiSlotControl)event.source).slot instanceof SlotControlNoSync)
-			{
+			} else if (((GuiSlotControl) event.source).slot instanceof SlotControlNoSync) {
 				openedSlot = (GuiSlotControl) event.source;
 				NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setBoolean("ItemDialog", true);
@@ -271,50 +250,41 @@ public class SubGuiConfigSegement extends SubGui {
 	}
 	
 	@Override
-	public void onLayerClosed(SubGui gui, NBTTagCompound nbt)
-    {
-		if(gui instanceof SubGuiFullItemDialog && !nbt.getBoolean("canceled") && openedSlot != null)
-		{
-			((InfoSlotControl)openedSlot.slot).putInfo(((SubGuiFullItemDialog) gui).info);
+	public void onLayerClosed(SubGui gui, NBTTagCompound nbt) {
+		if (gui instanceof SubGuiFullItemDialog && !nbt.getBoolean("canceled") && openedSlot != null) {
+			((InfoSlotControl) openedSlot.slot).putInfo(((SubGuiFullItemDialog) gui).info);
 		}
-		if(gui instanceof SubGuiItemDialog && !nbt.getBoolean("canceled") && openedSlot != null)
-		{
+		if (gui instanceof SubGuiItemDialog && !nbt.getBoolean("canceled") && openedSlot != null) {
 			openedSlot.slot.slot.putStack(((SubGuiItemDialog) gui).stack);
 		}
 		openedSlot = null;
-    }
+	}
 	
 	@Override
-	public SubGui createLayerFromPacket(World world, EntityPlayer player, NBTTagCompound nbt)
-    {
+	public SubGui createLayerFromPacket(World world, EntityPlayer player, NBTTagCompound nbt) {
 		SubGui gui = super.createLayerFromPacket(world, player, nbt);
-		if(!(element instanceof ConfigBranch))
+		if (!(element instanceof ConfigBranch))
 			return null;
-		if(gui == null && nbt.getBoolean("ItemDialog"))
-		{
-			if(nbt.getBoolean("fullEdit"))
-			{
+		if (gui == null && nbt.getBoolean("ItemDialog")) {
+			if (nbt.getBoolean("fullEdit")) {
 				SubGuiFullItemDialog dialog = new SubGuiFullItemDialog(((ConfigBranch) element).doesInputSupportStackSize());
-				dialog.info = ((InfoSlotControl)openedSlot.slot).info;
+				dialog.info = ((InfoSlotControl) openedSlot.slot).info;
 				return dialog;
-			}else{
+			} else {
 				SubGuiItemDialog dialog = new SubGuiItemDialog();
 				dialog.stack = openedSlot.slot.slot.getStack();
-				if(dialog.stack != null)
+				if (dialog.stack != null)
 					dialog.stack = dialog.stack.copy();
 				return dialog;
 			}
 		}
 		return gui;
-    }
-	
+	}
 	
 	@CustomEventSubscribe
-	public void onTextfieldChanged(GuiControlChangedEvent event)
-	{
-		if(event.source instanceof GuiTextfield && event.source.is("search"))
-		{
-			search = ((GuiTextfield)event.source).text.toLowerCase();
+	public void onTextfieldChanged(GuiControlChangedEvent event) {
+		if (event.source instanceof GuiTextfield && event.source.is("search")) {
+			search = ((GuiTextfield) event.source).text.toLowerCase();
 			
 			//Temporarily
 			createSegmentControls(false);

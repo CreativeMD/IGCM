@@ -1,6 +1,5 @@
 package com.creativemd.igcm.api.segments;
 
-import net.minecraft.client.util.JsonException;
 import net.minecraft.command.CommandException;
 
 public interface ICommandSupport {

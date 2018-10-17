@@ -36,8 +36,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
@@ -49,16 +47,13 @@ import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.registries.ForgeRegistry;
-import net.minecraftforge.registries.GameData;
 
-@Mod(modid = IGCM.modid, version = IGCM.version, name = "InGameConfigManager",acceptedMinecraftVersions="", dependencies = "required-before:creativecore")
+@Mod(modid = IGCM.modid, version = IGCM.version, name = "InGameConfigManager", acceptedMinecraftVersions = "", dependencies = "required-before:creativecore")
 public class IGCM {
 	
-public static Logger logger = LogManager.getLogger(IGCM.modid);
+	public static Logger logger = LogManager.getLogger(IGCM.modid);
 	
 	public static final String modid = "igcm";
 	public static final String version = "1.2.2";
@@ -76,8 +71,7 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 	public static final String guiID = "IGCM";
 	
 	@EventHandler
-	public static void preInit(FMLPreInitializationEvent event)
-	{
+	public static void preInit(FMLPreInitializationEvent event) {
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 		enableWorkbench = config.getBoolean("enableWorkbench", "Module", true, "If false you will not be able to modify crafting recipes. Needs to be equal on client & server (otherwise it will crash)");
@@ -107,50 +101,46 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		advancedWorkbenchBlock = new BlockAdvancedWorkbench().setUnlocalizedName("advancedWorkbench").setRegistryName(IGCM.modid, "advancedworkbench").setCreativeTab(CreativeTabs.DECORATIONS);
-	    event.getRegistry().registerAll(advancedWorkbenchBlock);
+		event.getRegistry().registerAll(advancedWorkbenchBlock);
 	}
 	
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		advancedWorkbenchItem = new ItemBlock(advancedWorkbenchBlock).setRegistryName(advancedWorkbenchBlock.getRegistryName()).setCreativeTab(CreativeTabs.DECORATIONS);
-	    event.getRegistry().registerAll(advancedWorkbenchItem);
-	    
-	    if(FMLCommonHandler.instance().getSide().isClient())
+		event.getRegistry().registerAll(advancedWorkbenchItem);
+		
+		if (FMLCommonHandler.instance().getSide().isClient())
 			initClientPre();
 	}
 	
 	@EventHandler
-	public static void Init(FMLInitializationEvent event)
-	{		
+	public static void Init(FMLInitializationEvent event) {
 		GuiHandler.registerGuiHandler(guiID, new IGCMGuiManager());
 		
-		if(FMLCommonHandler.instance().getSide().isClient())
+		if (FMLCommonHandler.instance().getSide().isClient())
 			initClient();
 		
-		if(enableWorkbench)
+		if (enableWorkbench)
 			workbench = new WorkbenchMachine("workbench", "Crafting Table", new ItemStack(Blocks.CRAFTING_TABLE));
-		if(enableFurnace)
+		if (enableFurnace)
 			furnace = new FurnaceMachine("furnace", "Furnace", new ItemStack(Blocks.FURNACE));
 		advancedWorkbench = new AdvancedWorkbench("advWorkbench", "Advanced Workbench", new ItemStack(advancedWorkbenchBlock));
-		if(enableBrewing)
+		if (enableBrewing)
 			brewingStand = new BrewingStandMachine("brewing", "Brewing Stand", new ItemStack(Items.BREWING_STAND));
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public static void initClientPre()
-	{
+	public static void initClientPre() {
 		IGCMClient.initClientPre();
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public static void initClient()
-	{
+	public static void initClient() {
 		IGCMClient.initClient();
 	}
 	
 	@EventHandler
-	public static void postLoading(FMLLoadCompleteEvent event)
-	{
+	public static void postLoading(FMLLoadCompleteEvent event) {
 		ConfigTab.root.initCore();
 	}
 	
@@ -158,8 +148,7 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 	public static CommandBase set;
 	
 	@EventHandler
-	public static void serverStarting(FMLServerStartingEvent event)
-	{
+	public static void serverStarting(FMLServerStartingEvent event) {
 		gui = new CommandGUI();
 		set = new CommandSET();
 		event.registerServerCommand(gui);
@@ -168,17 +157,14 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public static boolean needsSynchronization()
-	{
+	public static boolean needsSynchronization() {
 		return !Minecraft.getMinecraft().isSingleplayer();
 	}
 	
-	public static void sendAllUpdatePackets(EntityPlayer player)
-	{
+	public static void sendAllUpdatePackets(EntityPlayer player) {
 		ArrayList<ConfigElement> elements = new ArrayList<>(ConfigTab.root.getChilds());
-		while(elements.size() > 0)
-		{
-			if(elements.get(0) instanceof ConfigBranch)
+		while (elements.size() > 0) {
+			if (elements.get(0) instanceof ConfigBranch)
 				sendUpdatePacket((ConfigBranch) elements.get(0), player);
 			else
 				elements.addAll(elements.get(0).getChilds());
@@ -186,22 +172,19 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 		}
 	}
 	
-	public static void sendUpdatePacket(ConfigBranch branch, EntityPlayer player)
-	{
-		if(!branch.requiresSynchronization())
-			return ;
-		if(player.world.isRemote)
+	public static void sendUpdatePacket(ConfigBranch branch, EntityPlayer player) {
+		if (!branch.requiresSynchronization())
+			return;
+		if (player.world.isRemote)
 			PacketHandler.sendPacketToServer(new BranchInformationPacket(branch));
 		else
 			PacketHandler.sendPacketToPlayer(new BranchInformationPacket(branch), (EntityPlayerMP) player);
 	}
 	
-	public static void sendAllUpdatePackets()
-	{
+	public static void sendAllUpdatePackets() {
 		ArrayList<ConfigElement> elements = new ArrayList<>(ConfigTab.root.getChilds());
-		while(elements.size() > 0)
-		{
-			if(elements.get(0) instanceof ConfigBranch)
+		while (elements.size() > 0) {
+			if (elements.get(0) instanceof ConfigBranch)
 				sendUpdatePacket((ConfigBranch) elements.get(0));
 			else
 				elements.addAll(elements.get(0).getChilds());
@@ -209,11 +192,10 @@ public static Logger logger = LogManager.getLogger(IGCM.modid);
 		}
 	}
 	
-	public static void sendUpdatePacket(ConfigBranch branch)
-	{
-		if(!branch.requiresSynchronization())
-			return ;
-		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
+	public static void sendUpdatePacket(ConfigBranch branch) {
+		if (!branch.requiresSynchronization())
+			return;
+		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
 			PacketHandler.sendPacketToServer(new BranchInformationPacket(branch));
 		else
 			PacketHandler.sendPacketToAllPlayers(new BranchInformationPacket(branch));

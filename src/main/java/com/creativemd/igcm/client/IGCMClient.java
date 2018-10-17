@@ -13,13 +13,11 @@ public class IGCMClient {
 	
 	public static KeyBinding openConfig;
 	
-	public static void initClientPre()
-	{
+	public static void initClientPre() {
 		CreativeCoreClient.registerBlockItem(IGCM.advancedWorkbenchBlock);
 	}
 	
-	public static void initClient()
-	{
+	public static void initClient() {
 		openConfig = new KeyBinding("key.openConfig", Keyboard.KEY_V, "key.categories.IGCM");
 		ClientRegistry.registerKeyBinding(openConfig);
 		

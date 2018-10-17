@@ -8,16 +8,14 @@ import com.creativemd.igcm.api.ConfigTab;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class RequestInformationPacket extends CreativeCorePacket{
+public class RequestInformationPacket extends CreativeCorePacket {
 	
-	public RequestInformationPacket()
-	{
+	public RequestInformationPacket() {
 	}
 	
 	public String path;
 	
-	public RequestInformationPacket(ConfigBranch branch)
-	{
+	public RequestInformationPacket(ConfigBranch branch) {
 		this.path = branch.getPath();
 	}
 	
@@ -25,26 +23,25 @@ public class RequestInformationPacket extends CreativeCorePacket{
 	public void writeBytes(ByteBuf buf) {
 		writeString(buf, path);
 	}
-
+	
 	@Override
 	public void readBytes(ByteBuf buf) {
 		path = readString(buf);
 	}
-
+	
 	@Override
 	public void executeClient(EntityPlayer player) {
 		
 	}
-
+	
 	@Override
 	public void executeServer(EntityPlayer player) {
 		ConfigBranch branch = (ConfigBranch) ConfigTab.getSegmentByPath(path);
-		if(branch != null)
-		{
+		if (branch != null) {
 			IGCM.sendUpdatePacket(branch, player);
-		}else{
+		} else {
 			IGCM.sendAllUpdatePackets(player);
 		}
 	}
-
+	
 }

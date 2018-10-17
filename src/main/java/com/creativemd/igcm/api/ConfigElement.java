@@ -1,14 +1,9 @@
 package com.creativemd.igcm.api;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Set;
-import java.util.Map.Entry;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class ConfigElement<T extends ConfigElement> {
 	
@@ -24,12 +19,10 @@ public class ConfigElement<T extends ConfigElement> {
 	
 	protected LinkedHashMap<String, T> childs = new LinkedHashMap<>();
 	
-	public T registerElement(String key, T element)
-	{
+	public T registerElement(String key, T element) {
 		int index = 1;
 		String tempKey = key;
-		while(childs.containsKey(tempKey))
-		{
+		while (childs.containsKey(tempKey)) {
 			index++;
 			tempKey = key + index;
 		}
@@ -39,49 +32,43 @@ public class ConfigElement<T extends ConfigElement> {
 		return element;
 	}
 	
-	public void initDefault()
-	{
+	public void initDefault() {
 		for (Iterator<T> iterator = childs.values().iterator(); iterator.hasNext();) {
-			iterator.next().initDefault();;
+			iterator.next().initDefault();
+			;
 		}
 	}
 	
-	public void initCore()
-	{
+	public void initCore() {
 		for (Iterator<T> iterator = childs.values().iterator(); iterator.hasNext();) {
-			iterator.next().initCore();;
+			iterator.next().initCore();
+			;
 		}
 	}
 	
-	public String getKey()
-	{
+	public String getKey() {
 		return key;
 	}
 	
-	public String getPath()
-	{
-		if(parent == null)
+	public String getPath() {
+		if (parent == null)
 			return title;
 		return parent.getPath() + "." + key;
 	}
 	
-	public Collection<T> getChilds()
-	{
+	public Collection<T> getChilds() {
 		return childs.values();
 	}
 	
-	public Set<String> getChildKeys()
-	{
+	public Set<String> getChildKeys() {
 		return childs.keySet();
 	}
 	
-	public T getChildByKey(String key)
-	{
+	public T getChildByKey(String key) {
 		return childs.get(key);
 	}
 	
-	public void clearChilds()
-	{
+	public void clearChilds() {
 		childs.clear();
 	}
 	

@@ -9,25 +9,21 @@ import net.minecraft.item.ItemStack;
 
 public class SearchUtils {
 	
-	public static boolean canStackBeFound(ItemStack stack, String search)
-	{
-		try
-		{
-			if(stack.getItem() instanceof ItemBlock)
-				if(Block.REGISTRY.getNameForObject(Block.getBlockFromItem(stack.getItem())).toString().toLowerCase().contains(search))
+	public static boolean canStackBeFound(ItemStack stack, String search) {
+		try {
+			if (stack.getItem() instanceof ItemBlock)
+				if (Block.REGISTRY.getNameForObject(Block.getBlockFromItem(stack.getItem())).toString().toLowerCase().contains(search))
 					return true;
-			else
-				if(Item.REGISTRY.getNameForObject(stack.getItem()).toString().toLowerCase().contains(search))
+				else if (Item.REGISTRY.getNameForObject(stack.getItem()).toString().toLowerCase().contains(search))
 					return true;
-			
+				
 			return stack.getDisplayName().toLowerCase().contains(search);
-		}catch(Exception e){
+		} catch (Exception e) {
 			return false;
 		}
 	}
 	
-	public static boolean canInfoBeFound(InfoStack info, String search)
-	{
+	public static boolean canInfoBeFound(InfoStack info, String search) {
 		return info == null ? false : canStackBeFound(info.getItemStack(), search);
 	}
 	

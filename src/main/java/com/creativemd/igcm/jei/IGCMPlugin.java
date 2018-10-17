@@ -7,28 +7,24 @@ import com.creativemd.creativecore.common.recipe.BetterShapelessRecipe;
 import com.creativemd.igcm.IGCM;
 import com.creativemd.igcm.block.AdvancedGridRecipe;
 
-import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
-import mezz.jei.gui.GuiHelper;
 import net.minecraft.item.ItemStack;
 
 @JEIPlugin
 public class IGCMPlugin implements IModPlugin {
 	
 	@Override
-	public void registerCategories(IRecipeCategoryRegistration registry)
-	{
+	public void registerCategories(IRecipeCategoryRegistration registry) {
 		registry.addRecipeCategories(new AdvCraftingRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
 	}
 	
 	@Override
-	public void onRuntimeAvailable(IJeiRuntime jeiRuntime)
-	{
+	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
 		JEIHandler.recipeRegistry = jeiRuntime.getRecipeRegistry();
 	}
 	

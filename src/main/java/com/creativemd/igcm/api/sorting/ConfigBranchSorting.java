@@ -9,7 +9,6 @@ import com.creativemd.creativecore.gui.controls.gui.GuiScrollBox;
 import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.ConfigSegment;
 import com.creativemd.igcm.api.segments.BooleanSegment;
-import com.creativemd.igcm.api.segments.advanced.AddRecipeSegment;
 import com.creativemd.igcm.api.segments.advanced.InfoSegment;
 import com.creativemd.igcm.client.gui.SubGuiConfigSegement;
 
@@ -24,13 +23,13 @@ public class ConfigBranchSorting extends ConfigBranch {
 	public SortingList defaultList;
 	
 	public SortingList sortingList;
-
+	
 	public ConfigBranchSorting(String title, ItemStack avatar, SortingList defaultList) {
 		super(title, avatar);
 		this.defaultList = new SortingList(defaultList);
 		sortingList = defaultList;
 	}
-
+	
 	@Override
 	public void createChildren() {
 		registerElement("whitelist", new BooleanSegment("Whiltelist", defaultList.isWhitelist()));
@@ -38,8 +37,7 @@ public class ConfigBranchSorting extends ConfigBranch {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onGuiCreatesSegments(SubGuiConfigSegement gui, ArrayList<ConfigSegment> segments)
-	{
+	public void onGuiCreatesSegments(SubGuiConfigSegement gui, ArrayList<ConfigSegment> segments) {
 		for (int i = 0; i < sortingList.size(); i++) {
 			segments.add(new InfoSegment("Info", sortingList.get(i)));
 		}
@@ -47,8 +45,7 @@ public class ConfigBranchSorting extends ConfigBranch {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onGuiLoadedAllSegments(SubGuiConfigSegement gui, GuiScrollBox box, ArrayList<ConfigSegment> segments)
-	{
+	public void onGuiLoadedAllSegments(SubGuiConfigSegement gui, GuiScrollBox box, ArrayList<ConfigSegment> segments) {
 		box.addControl(new GuiButton("add filter", 5, gui.height) {
 			
 			@Override
@@ -61,10 +58,8 @@ public class ConfigBranchSorting extends ConfigBranch {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onGuiLoadSegment(SubGuiConfigSegement gui, GuiScrollBox box, ArrayList<ConfigSegment> segments, ConfigSegment segment)
-	{
-		if(segment instanceof InfoSegment)
-		{
+	public void onGuiLoadSegment(SubGuiConfigSegement gui, GuiScrollBox box, ArrayList<ConfigSegment> segments, ConfigSegment segment) {
+		if (segment instanceof InfoSegment) {
 			GuiButton button = new GuiButton("X", 200, gui.height, 14) {
 				
 				@Override
@@ -80,8 +75,7 @@ public class ConfigBranchSorting extends ConfigBranch {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onGuiSavesSegments(SubGuiConfigSegement gui, ArrayList<ConfigSegment> segments)
-	{
+	public void onGuiSavesSegments(SubGuiConfigSegement gui, ArrayList<ConfigSegment> segments) {
 		for (int i = 0; i < segments.size(); i++) {
 			segments.get(i).saveFromControls();
 		}
@@ -90,21 +84,21 @@ public class ConfigBranchSorting extends ConfigBranch {
 		
 		for (int i = 0; i < segments.size(); i++) {
 			ConfigSegment segment = segments.get(i);
-			if(segment instanceof InfoSegment && ((InfoSegment) segment).value != null)
+			if (segment instanceof InfoSegment && ((InfoSegment) segment).value != null)
 				sortingList.add(((InfoSegment) segment).value);
 		}
 	}
-
+	
 	@Override
 	public boolean requiresSynchronization() {
 		return true;
 	}
-
+	
 	@Override
 	public void onRecieveFrom(Side side) {
 		sortingList.setListType((Boolean) getValue("whitelist"));
 	}
-
+	
 	@Override
 	public void loadExtra(NBTTagCompound nbt) {
 		sortingList.clear();
@@ -114,45 +108,43 @@ public class ConfigBranchSorting extends ConfigBranch {
 		NBTTagList list = nbt.getTagList(getKey() + "removed", 10);
 		for (int i = 0; i < list.tagCount(); i++) {
 			InfoStack info = InfoStack.parseNBT(list.getCompoundTagAt(i));
-			if(info != null)
+			if (info != null)
 				removed.add(info);
 		}
 		
 		for (int i = 0; i < defaultList.size(); i++) {
-			if(!removed.contains(defaultList.get(i)))
+			if (!removed.contains(defaultList.get(i)))
 				sortingList.add(defaultList.get(i));
 		}
-		
 		
 		list = nbt.getTagList(getKey() + "added", 10);
 		for (int i = 0; i < list.tagCount(); i++) {
 			InfoStack info = InfoStack.parseNBT(list.getCompoundTagAt(i));
-			if(info != null)
+			if (info != null)
 				sortingList.add(info);
 		}
 	}
-
+	
 	@Override
 	public void saveExtra(NBTTagCompound nbt) {
 		NBTTagList removed = new NBTTagList();
 		for (int i = 0; i < defaultList.size(); i++) {
-			if(!sortingList.contains(defaultList.get(i)))
+			if (!sortingList.contains(defaultList.get(i)))
 				removed.appendTag(defaultList.get(i).writeToNBT(new NBTTagCompound()));
 		}
 		nbt.setTag(getKey() + "removed", removed);
 		
 		NBTTagList added = new NBTTagList();
 		for (int i = 0; i < sortingList.size(); i++) {
-			if(!defaultList.contains(sortingList.get(i)))
+			if (!defaultList.contains(sortingList.get(i)))
 				added.appendTag(sortingList.get(i).writeToNBT(new NBTTagCompound()));
 		}
 		nbt.setTag(getKey() + "added", added);
 	}
 	
 	@Override
-	public boolean doesInputSupportStackSize()
-	{
+	public boolean doesInputSupportStackSize() {
 		return false;
 	}
-
+	
 }

@@ -5,7 +5,7 @@ import com.creativemd.creativecore.common.utils.stack.InfoStack;
 
 import net.minecraft.item.ItemStack;
 
-public class AdvancedGridRecipe extends GridRecipe{
+public class AdvancedGridRecipe extends GridRecipe {
 	
 	public int duration;
 	
@@ -13,5 +13,5 @@ public class AdvancedGridRecipe extends GridRecipe{
 		super(output, width, height, input);
 		this.duration = duration;
 	}
-
+	
 }

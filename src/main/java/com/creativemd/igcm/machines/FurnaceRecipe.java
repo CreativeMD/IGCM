@@ -4,7 +4,7 @@ import com.creativemd.creativecore.common.recipe.Recipe;
 
 import net.minecraft.item.ItemStack;
 
-public class FurnaceRecipe extends Recipe{
+public class FurnaceRecipe extends Recipe {
 	
 	public float experience;
 	
@@ -12,5 +12,5 @@ public class FurnaceRecipe extends Recipe{
 		super(output, input);
 		this.experience = experience;
 	}
-
+	
 }

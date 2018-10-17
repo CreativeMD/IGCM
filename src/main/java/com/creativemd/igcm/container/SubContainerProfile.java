@@ -3,7 +3,6 @@ package com.creativemd.igcm.container;
 import java.util.ArrayList;
 
 import com.creativemd.creativecore.gui.container.SubContainer;
-import com.creativemd.creativecore.gui.controls.gui.GuiComboBox;
 import com.creativemd.igcm.IGCM;
 import com.creativemd.igcm.IGCMConfig;
 import com.creativemd.igcm.IGCMGuiManager;
@@ -13,16 +12,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
-public class SubContainerProfile extends SubContainer{
-
+public class SubContainerProfile extends SubContainer {
+	
 	public SubContainerProfile(EntityPlayer player) {
 		super(player);
 	}
-
+	
 	@Override
 	public void createControls() {
-		if(!player.world.isRemote)
-		{
+		if (!player.world.isRemote) {
 			NBTTagCompound nbt = new NBTTagCompound();
 			nbt.setString("profile", IGCMConfig.profileName);
 			NBTTagList list = new NBTTagList();
@@ -33,7 +31,7 @@ public class SubContainerProfile extends SubContainer{
 			sendNBTToGui(nbt);
 		}
 	}
-
+	
 	@Override
 	public void onPacketReceive(NBTTagCompound nbt) {
 		IGCMConfig.profileName = nbt.getString("profile");
@@ -48,5 +46,5 @@ public class SubContainerProfile extends SubContainer{
 		IGCMGuiManager.openConfigGui(getPlayer());
 		IGCMConfig.saveConfig();
 	}
-
+	
 }

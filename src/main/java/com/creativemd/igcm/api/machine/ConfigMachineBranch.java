@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class ConfigMachineBranch<T> extends ConfigBranch {
 	
-	public static String[] states = new String[]{"all", "addedonly", "noadded", "none"};
+	public static String[] states = new String[] { "all", "addedonly", "noadded", "none" };
 	
 	public RecipeMachine<T> machine;
 	
@@ -27,19 +27,17 @@ public class ConfigMachineBranch<T> extends ConfigBranch {
 	public ConfigMachineBranch(String title, ItemStack avatar, RecipeMachine<T> machine) {
 		super(title, avatar);
 		this.state = 0;
-		this.machine = machine;		
+		this.machine = machine;
 	}
-
+	
 	@Override
 	public void createChildren() {
-		if(machine.hasDisableBranch())
-		{
+		if (machine.hasDisableBranch()) {
 			machine.disableBranch = new ConfigMachineDisableBranch(title + " Disable", machine);
 			registerElement(getKey() + "_disable", machine.disableBranch);
 		}
 		
-		if(machine.hasAddedBranch())
-		{
+		if (machine.hasAddedBranch()) {
 			machine.addBranch = new ConfigMachineAddBranch(title + " Add", machine);
 			registerElement(getKey() + "_add", machine.addBranch);
 		}
@@ -48,12 +46,12 @@ public class ConfigMachineBranch<T> extends ConfigBranch {
 		
 		machine.createExtraSegments();
 	}
-
+	
 	@Override
 	public boolean requiresSynchronization() {
 		return true;
 	}
-
+	
 	@Override
 	public void onRecieveFrom(Side side) {
 		machine.clearRecipeList(side);
@@ -62,32 +60,26 @@ public class ConfigMachineBranch<T> extends ConfigBranch {
 		SelectSegment select = (SelectSegment) getChildByKey("state");
 		int mode = select.getIndex();
 		
-		if(machine.hasDisableBranch())
-		{
-			if(mode == 0 || mode == 2)
-			{
+		if (machine.hasDisableBranch()) {
+			if (mode == 0 || mode == 2) {
 				Collection<ConfigSegment> segments = machine.disableBranch.getChilds();
 				for (Iterator iterator = segments.iterator(); iterator.hasNext();) {
 					ConfigSegment segment = (ConfigSegment) iterator.next();
-					if(segment instanceof DisableRecipeSegment)
-					{
+					if (segment instanceof DisableRecipeSegment) {
 						//if(!(Boolean)collection.asList().get(i).value)
-							//disabledRecipes.add(((DisableRecipeSegment)collection.asList().get(i)).recipe);
-						if(!((DisableRecipeSegment) segment).value)
-							machine.addRecipeToList(side, (T) ((DisableRecipeSegment)segment).recipe);
+						//disabledRecipes.add(((DisableRecipeSegment)collection.asList().get(i)).recipe);
+						if (!((DisableRecipeSegment) segment).value)
+							machine.addRecipeToList(side, (T) ((DisableRecipeSegment) segment).recipe);
 					}
 				}
 			}
 		}
 		
-		if(machine.hasAddedBranch())
-		{
-			if(mode == 0 || mode == 1)
-			{
+		if (machine.hasAddedBranch()) {
+			if (mode == 0 || mode == 1) {
 				for (Iterator iterator = machine.addBranch.recipes.iterator(); iterator.hasNext();) {
 					ConfigSegment segment = (ConfigSegment) iterator.next();
-					if(segment instanceof AddRecipeSegment && ((AddRecipeSegment) segment).value != null)
-					{
+					if (segment instanceof AddRecipeSegment && ((AddRecipeSegment) segment).value != null) {
 						machine.addRecipeToList(side, (T) ((AddRecipeSegment) segment).value);
 					}
 				}
@@ -108,17 +100,17 @@ public class ConfigMachineBranch<T> extends ConfigBranch {
 			}
 		});
 	}
-
+	
 	@Override
 	public boolean doesInputSupportStackSize() {
 		return machine.doesSupportStackSize();
 	}
-
+	
 	@Override
 	public void loadExtra(NBTTagCompound nbt) {
 		state = nbt.getInteger("state");
 	}
-
+	
 	@Override
 	public void saveExtra(NBTTagCompound nbt) {
 		nbt.setInteger("state", state);

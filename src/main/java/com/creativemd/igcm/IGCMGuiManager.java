@@ -1,14 +1,9 @@
 package com.creativemd.igcm;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.creativemd.creativecore.gui.container.SubContainer;
 import com.creativemd.creativecore.gui.container.SubGui;
 import com.creativemd.creativecore.gui.opener.CustomGuiHandler;
 import com.creativemd.creativecore.gui.opener.GuiHandler;
-import com.creativemd.igcm.api.ConfigBranch;
-import com.creativemd.igcm.api.ConfigSegment;
 import com.creativemd.igcm.api.ConfigTab;
 import com.creativemd.igcm.block.SubContainerAdvancedWorkbench;
 import com.creativemd.igcm.block.SubGuiAdvancedWorkbench;
@@ -19,28 +14,23 @@ import com.creativemd.igcm.container.SubContainerProfile;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class IGCMGuiManager extends CustomGuiHandler{
+public class IGCMGuiManager extends CustomGuiHandler {
 	
-	public static void openConfigGui(EntityPlayer player)
-	{
+	public static void openConfigGui(EntityPlayer player) {
 		openConfigGui(player, "root");
 	}
 	
-	public static void openConfigGui(EntityPlayer player, String path)
-	{
+	public static void openConfigGui(EntityPlayer player, String path) {
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setInteger("gui", 0);
 		nbt.setString("path", path);
 		GuiHandler.openGui(IGCM.guiID, nbt, player);
 	}
 	
-	public static void openProfileGui(EntityPlayer player)
-	{
+	public static void openProfileGui(EntityPlayer player) {
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setInteger("gui", 1);
 		nbt.setInteger("index", 0);
@@ -51,8 +41,7 @@ public class IGCMGuiManager extends CustomGuiHandler{
 	public SubContainer getContainer(EntityPlayer player, NBTTagCompound nbt) {
 		int gui = nbt.getInteger("gui");
 		String name = nbt.getString("path");
-		switch(gui)
-		{
+		switch (gui) {
 		case 0:
 			return new SubContainerConfigSegment(player, ConfigTab.getSegmentByPath(name));
 		case 1:
@@ -62,14 +51,13 @@ public class IGCMGuiManager extends CustomGuiHandler{
 		}
 		return null;
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public SubGui getGui(EntityPlayer player, NBTTagCompound nbt) {
 		int gui = nbt.getInteger("gui");
 		String name = nbt.getString("path");
-		switch(gui)
-		{
+		switch (gui) {
 		case 0:
 			return new SubGuiConfigSegement(ConfigTab.getSegmentByPath(name));
 		case 1:
