@@ -17,17 +17,15 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BranchInformationPacket extends CreativeCorePacket{
+public class BranchInformationPacket extends CreativeCorePacket {
 	
 	public ConfigBranch branch;
 	
-	public BranchInformationPacket()
-	{
+	public BranchInformationPacket() {
 		
 	}
 	
-	public BranchInformationPacket(ConfigBranch branch)
-	{
+	public BranchInformationPacket(ConfigBranch branch) {
 		this.branch = branch;
 	}
 	
@@ -36,7 +34,8 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		Side side = FMLCommonHandler.instance().getEffectiveSide();
 		branch.onPacketSend(side);
 		
-		writeString(buf, branch.getPath());;
+		writeString(buf, branch.getPath());
+		;
 		
 		NBTTagCompound nbt = new NBTTagCompound();
 		branch.save(nbt);
@@ -52,51 +51,47 @@ public class BranchInformationPacket extends CreativeCorePacket{
 		branch.load(readNBT(buf));
 	}
 	
-	public void receiveUpdate(Side side)
-	{
+	public void receiveUpdate(Side side) {
 		
 		branch.onRecieveFromPre(side);
 		branch.onRecieveFrom(side);
 		branch.onRecieveFromPost(side);
 		
-		if(side == Side.CLIENT && JEIHandler.isActive)
+		if (side == Side.CLIENT && JEIHandler.isActive)
 			branch.updateJEI();
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void executeClient(EntityPlayer player) {
 		receiveUpdate(Side.CLIENT);
 		
-		if(player!= null && player.openContainer instanceof ContainerSub && ((ContainerSub) player.openContainer).gui.getTopLayer() instanceof SubGuiConfigSegement)
-		{
+		if (player != null && player.openContainer instanceof ContainerSub && ((ContainerSub) player.openContainer).gui.getTopLayer() instanceof SubGuiConfigSegement) {
 			SubGuiConfigSegement gui = (SubGuiConfigSegement) ((ContainerSub) player.openContainer).gui.getTopLayer();
-			if(gui.element == branch)
-			{
+			if (gui.element == branch) {
 				double scrolled = ((GuiScrollBox) gui.get("scrollbox")).scrolled;
 				gui.createSegmentControls(true);
 				GuiScrollBox box = (GuiScrollBox) gui.get("scrollbox");
 				box.scrolled = scrolled;
-				if(box.scrolled > box.maxScroll)
+				if (box.scrolled > box.maxScroll)
 					box.scrolled = box.maxScroll;
 			}
 			//InGameConfigManager.openBranchGui(player, branch);
 		}
 	}
-
+	
 	@Override
 	public void executeServer(EntityPlayer player) {
 		
-		if(IGCM.gui.checkPermission(player.getServer(), player))
-		{
+		if (IGCM.gui.checkPermission(player.getServer(), player)) {
 			receiveUpdate(Side.SERVER);
 			
 			IGCM.sendUpdatePacket(branch);
 			IGCMConfig.saveConfig();
 			
 			branch.onUpdateSendToClient(player);
-		}else
+		} else
 			IGCM.sendUpdatePacket(branch, player);
 	}
-
+	
 }

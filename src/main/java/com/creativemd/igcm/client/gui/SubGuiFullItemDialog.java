@@ -19,7 +19,7 @@ import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-public class SubGuiFullItemDialog extends SubGui{
+public class SubGuiFullItemDialog extends SubGui {
 	
 	public static ArrayList<InfoStack> latest = new ArrayList<InfoStack>();
 	
@@ -27,8 +27,7 @@ public class SubGuiFullItemDialog extends SubGui{
 	
 	public boolean supportStackSize;
 	
-	public SubGuiFullItemDialog(boolean supportStackSize)
-	{
+	public SubGuiFullItemDialog(boolean supportStackSize) {
 		super(150, 230);
 		this.supportStackSize = supportStackSize;
 	}
@@ -41,7 +40,7 @@ public class SubGuiFullItemDialog extends SubGui{
 		handler = GuiInfoHandler.getHandler(info);
 		
 		GuiComboBox box = (GuiComboBox) get("type");
-		if(box != null)
+		if (box != null)
 			handler = GuiInfoHandler.getHandler(box.caption);
 		
 		controls.clear();
@@ -55,11 +54,10 @@ public class SubGuiFullItemDialog extends SubGui{
 		
 		handler.createControls(this, info);
 		
-		if(supportStackSize)
-		{
+		if (supportStackSize) {
 			controls.add(new GuiLabel("StackSize:", 5, 210));
 			GuiTextfield field = new GuiTextfield("stacksize", "1", 110, 208, 30, 14).setNumbersOnly();
-			if(info != null)
+			if (info != null)
 				field.text = "" + info.stackSize;
 			controls.add(field);
 		}
@@ -67,10 +65,10 @@ public class SubGuiFullItemDialog extends SubGui{
 		GuiScrollBox scroll = new GuiScrollBox("latest", 0, 155, 144, supportStackSize ? 45 : 65);
 		int latestPerRow = 4;
 		for (int i = 0; i < latest.size(); i++) {
-			int row = i/latestPerRow;
-			int cell = i-(row*latestPerRow);
+			int row = i / latestPerRow;
+			int cell = i - (row * latestPerRow);
 			
-			GuiAvatarLabelClickable avatar = new GuiAvatarLabelClickable("" + i, cell*32, row*18, ColorUtils.WHITE, new AvatarItemStack(latest.get(i).getItemStack())) {
+			GuiAvatarLabelClickable avatar = new GuiAvatarLabelClickable("" + i, cell * 32, row * 18, ColorUtils.WHITE, new AvatarItemStack(latest.get(i).getItemStack())) {
 				
 				@Override
 				public void onClicked(int x, int y, int button) {
@@ -85,51 +83,49 @@ public class SubGuiFullItemDialog extends SubGui{
 		controls.add(new GuiButton("Cancel", 0, 130, 41) {
 			
 			@Override
-			public void onClicked(int x, int y, int button) {}
+			public void onClicked(int x, int y, int button) {
+			}
 		});
 		controls.add(new GuiButton("Remove", 50, 130, 41) {
 			
 			@Override
-			public void onClicked(int x, int y, int button) {}
+			public void onClicked(int x, int y, int button) {
+			}
 		});
 		controls.add(new GuiButton("Save", 100, 130, 41) {
 			
 			@Override
-			public void onClicked(int x, int y, int button) {}
+			public void onClicked(int x, int y, int button) {
+			}
 		});
 	}
 	
 	@CustomEventSubscribe
-	public void onClicked(GuiControlClickEvent event)
-	{
-		if(event.source.is("Save"))
-		{
+	public void onClicked(GuiControlClickEvent event) {
+		if (event.source.is("Save")) {
 			int stackSize = 0;
-			try{
-				if(supportStackSize)
-					stackSize = Integer.parseInt(((GuiTextfield)get("stacksize")).text);
+			try {
+				if (supportStackSize)
+					stackSize = Integer.parseInt(((GuiTextfield) get("stacksize")).text);
 				else
 					stackSize = 1;
-			}catch (Exception e){
+			} catch (Exception e) {
 				stackSize = 1;
 			}
 			
 			InfoStack info = handler.parseInfo(this, stackSize);
-			if(info != null)
-			{
+			if (info != null) {
 				this.info = info;
-				if(!latest.contains(info))
+				if (!latest.contains(info))
 					latest.add(0, info.copy());
 				closeLayer(new NBTTagCompound());
 			}
 		}
-		if(event.source.is("Remove"))
-		{
+		if (event.source.is("Remove")) {
 			this.info = null;
 			closeLayer(new NBTTagCompound());
 		}
-		if(event.source.is("Cancel"))
-		{
+		if (event.source.is("Cancel")) {
 			NBTTagCompound nbt = new NBTTagCompound();
 			nbt.setBoolean("canceled", true);
 			closeLayer(nbt);
@@ -137,24 +133,20 @@ public class SubGuiFullItemDialog extends SubGui{
 	}
 	
 	@CustomEventSubscribe
-	public void onToolTip(GuiToolTipEvent event)
-	{
-		if(event.source.is("stacksize"))
-		{
+	public void onToolTip(GuiToolTipEvent event) {
+		if (event.source.is("stacksize")) {
 			event.tooltip.add("0: no consumption");
 			event.tooltip.add("1: normal");
 		}
 	}
 	
 	@CustomEventSubscribe
-	public void onChanged(GuiControlChangedEvent event)
-	{
-		if(event.source.is("type"))
-		{
+	public void onChanged(GuiControlChangedEvent event) {
+		if (event.source.is("type")) {
 			createControls();
 			refreshControls();
-		}else
+		} else
 			handler.onChanged(this, event);
 	}
-
+	
 }
