@@ -67,6 +67,7 @@ public class IGCM {
 	public static boolean enableWorkbench;
 	public static boolean enableFurnace;
 	public static boolean enableBrewing;
+	public static boolean enableSwitchButton;
 	
 	public static final String guiID = "IGCM";
 	
@@ -77,6 +78,7 @@ public class IGCM {
 		enableWorkbench = config.getBoolean("enableWorkbench", "Module", true, "If false you will not be able to modify crafting recipes. Needs to be equal on client & server (otherwise it will crash)");
 		enableFurnace = config.getBoolean("enableFurnace", "Module", true, "If false you will not be able to modify furnace recipes. Needs to be equal on client & server (otherwise it will crash)");
 		enableBrewing = config.getBoolean("enableBrewing", "Module", true, "If false you will not be able to modify brewing recipes. Needs to be equal on client & server (otherwise it will crash)");
+		enableSwitchButton = config.getBoolean("enableSwitchButton", "Module", true, "Whether a switch button in the workbench should be displayed or not");
 		config.save();
 		
 		event.getModMetadata().version = version;

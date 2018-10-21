@@ -66,7 +66,7 @@ public class ConfigEventHandler {
 	@SubscribeEvent
 	public void tick(RenderTickEvent event) {
 		Minecraft mc = Minecraft.getMinecraft();
-		if (event.phase == Phase.END && mc.player != null && mc.player.openContainer instanceof ContainerWorkbench) {
+		if (event.phase == Phase.END && mc.player != null && IGCM.enableSwitchButton && mc.player.openContainer instanceof ContainerWorkbench) {
 			ContainerWorkbench container = (ContainerWorkbench) mc.player.openContainer;
 			boolean changed = false;
 			for (int i = 0; i < craftMatrix.length; i++) {
