@@ -69,12 +69,12 @@ public class BranchInformationPacket extends CreativeCorePacket {
 		if (player != null && player.openContainer instanceof ContainerSub && ((ContainerSub) player.openContainer).gui.getTopLayer() instanceof SubGuiConfigSegement) {
 			SubGuiConfigSegement gui = (SubGuiConfigSegement) ((ContainerSub) player.openContainer).gui.getTopLayer();
 			if (gui.element == branch) {
-				double scrolled = ((GuiScrollBox) gui.get("scrollbox")).scrolled;
+				double scrolled = ((GuiScrollBox) gui.get("scrollbox")).scrolled.aimed();
 				gui.createSegmentControls(true);
 				GuiScrollBox box = (GuiScrollBox) gui.get("scrollbox");
-				box.scrolled = scrolled;
-				if (box.scrolled > box.maxScroll)
-					box.scrolled = box.maxScroll;
+				box.scrolled.setStart(scrolled);
+				if (box.scrolled.aimed() > box.maxScroll)
+					box.scrolled.setStart(box.maxScroll);
 			}
 			//InGameConfigManager.openBranchGui(player, branch);
 		}

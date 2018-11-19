@@ -59,7 +59,7 @@ public class SubGuiConfigSegement extends SubGui {
 				GuiScrollBox box = (GuiScrollBox) get("scrollbox");
 				box.controls.clear();
 				box.maxScroll = 0;
-				box.scrolled = 0;
+				box.scrolled.setStart(0);
 				
 				if (get("Save") != null)
 					get("Save").setEnabled(false);
@@ -78,10 +78,10 @@ public class SubGuiConfigSegement extends SubGui {
 		forceRecreation = force;
 		GuiScrollBox box = (GuiScrollBox) get("scrollbox");
 		Collection<ConfigSegment> segments = element.getChilds();
-		aimedScrollPos = box.aimedScrolled;
+		aimedScrollPos = (int) box.scrolled.aimed();
 		box.controls.clear();
 		box.maxScroll = 0;
-		box.scrolled = 0;
+		box.scrolled.setStart(0);
 		
 		if (get("Save") != null)
 			get("Save").setEnabled(false);
@@ -152,7 +152,7 @@ public class SubGuiConfigSegement extends SubGui {
 			}
 			
 			if (aimedScrollPos != -1) {
-				box.scrolled = Math.min(height, aimedScrollPos);
+				box.scrolled.setStart(Math.min(height, aimedScrollPos));
 				if (height >= aimedScrollPos)
 					aimedScrollPos = -1;
 			}
