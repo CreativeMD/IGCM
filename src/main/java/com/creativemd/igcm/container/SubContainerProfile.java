@@ -2,7 +2,7 @@ package com.creativemd.igcm.container;
 
 import java.util.ArrayList;
 
-import com.creativemd.creativecore.gui.container.SubContainer;
+import com.creativemd.creativecore.common.gui.container.SubContainer;
 import com.creativemd.igcm.IGCM;
 import com.creativemd.igcm.IGCMConfig;
 import com.creativemd.igcm.IGCMGuiManager;

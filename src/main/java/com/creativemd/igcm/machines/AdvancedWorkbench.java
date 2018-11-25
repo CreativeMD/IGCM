@@ -3,10 +3,10 @@ package com.creativemd.igcm.machines;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.creativemd.creativecore.common.gui.ContainerControl;
+import com.creativemd.creativecore.common.gui.GuiControl;
+import com.creativemd.creativecore.common.gui.controls.gui.GuiTextfield;
 import com.creativemd.creativecore.common.utils.stack.InfoStack;
-import com.creativemd.creativecore.gui.ContainerControl;
-import com.creativemd.creativecore.gui.GuiControl;
-import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
 import com.creativemd.igcm.IGCM;
 import com.creativemd.igcm.api.machine.RecipeMachine;
 import com.creativemd.igcm.api.segments.BooleanSegment;

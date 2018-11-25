@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import com.creativemd.creativecore.gui.ContainerControl;
-import com.creativemd.creativecore.gui.GuiControl;
-import com.creativemd.creativecore.gui.container.SubContainer;
-import com.creativemd.creativecore.gui.container.SubGui;
+import com.creativemd.creativecore.common.gui.ContainerControl;
+import com.creativemd.creativecore.common.gui.GuiControl;
+import com.creativemd.creativecore.common.gui.container.SubContainer;
+import com.creativemd.creativecore.common.gui.container.SubGui;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;

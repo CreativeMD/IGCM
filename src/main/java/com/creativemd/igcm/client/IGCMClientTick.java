@@ -1,7 +1,7 @@
 package com.creativemd.igcm.client;
 
+import com.creativemd.creativecore.common.gui.mc.ContainerSub;
 import com.creativemd.creativecore.common.packet.PacketHandler;
-import com.creativemd.creativecore.gui.mc.ContainerSub;
 import com.creativemd.igcm.packets.OpenGUIPacket;
 
 import net.minecraft.client.Minecraft;

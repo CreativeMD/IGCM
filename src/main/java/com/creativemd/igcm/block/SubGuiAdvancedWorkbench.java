@@ -1,10 +1,10 @@
 package com.creativemd.igcm.block;
 
-import com.creativemd.creativecore.gui.container.SubGui;
-import com.creativemd.creativecore.gui.controls.container.client.GuiSlotControl;
-import com.creativemd.creativecore.gui.controls.gui.GuiButton;
-import com.creativemd.creativecore.gui.controls.gui.GuiProgressBar;
-import com.creativemd.creativecore.gui.event.gui.GuiControlClickEvent;
+import com.creativemd.creativecore.common.gui.container.SubGui;
+import com.creativemd.creativecore.common.gui.controls.container.client.GuiSlotControl;
+import com.creativemd.creativecore.common.gui.controls.gui.GuiButton;
+import com.creativemd.creativecore.common.gui.controls.gui.GuiProgressBar;
+import com.creativemd.creativecore.common.gui.event.gui.GuiControlClickEvent;
 import com.n247s.api.eventapi.eventsystem.CustomEventSubscribe;
 
 import net.minecraft.nbt.NBTTagCompound;

@@ -4,9 +4,9 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.creativemd.creativecore.gui.GuiRenderHelper;
-import com.creativemd.creativecore.gui.client.style.Style;
-import com.creativemd.creativecore.gui.controls.container.client.GuiSlotControl;
+import com.creativemd.creativecore.common.gui.GuiRenderHelper;
+import com.creativemd.creativecore.common.gui.client.style.Style;
+import com.creativemd.creativecore.common.gui.controls.container.client.GuiSlotControl;
 import com.creativemd.igcm.IGCM;
 import com.creativemd.igcm.block.BlockAdvancedWorkbench;
 

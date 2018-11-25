@@ -2,7 +2,7 @@ package com.creativemd.igcm.api;
 
 import java.util.ArrayList;
 
-import com.creativemd.creativecore.gui.controls.gui.GuiScrollBox;
+import com.creativemd.creativecore.common.gui.controls.gui.GuiScrollBox;
 import com.creativemd.igcm.api.segments.ValueSegment;
 import com.creativemd.igcm.client.gui.SubGuiConfigSegement;
 

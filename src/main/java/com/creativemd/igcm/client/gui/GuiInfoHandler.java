@@ -6,6 +6,13 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
+import com.creativemd.creativecore.common.gui.controls.gui.GuiComboBox;
+import com.creativemd.creativecore.common.gui.controls.gui.GuiLabel;
+import com.creativemd.creativecore.common.gui.controls.gui.GuiStateButton;
+import com.creativemd.creativecore.common.gui.controls.gui.GuiTextfield;
+import com.creativemd.creativecore.common.gui.controls.gui.custom.GuiStackSelectorAll;
+import com.creativemd.creativecore.common.gui.controls.gui.custom.GuiStackSelectorAll.SearchSelector;
+import com.creativemd.creativecore.common.gui.event.gui.GuiControlChangedEvent;
 import com.creativemd.creativecore.common.utils.stack.InfoBlock;
 import com.creativemd.creativecore.common.utils.stack.InfoFuel;
 import com.creativemd.creativecore.common.utils.stack.InfoItem;
@@ -14,13 +21,6 @@ import com.creativemd.creativecore.common.utils.stack.InfoMaterial;
 import com.creativemd.creativecore.common.utils.stack.InfoName;
 import com.creativemd.creativecore.common.utils.stack.InfoOre;
 import com.creativemd.creativecore.common.utils.stack.InfoStack;
-import com.creativemd.creativecore.gui.controls.gui.GuiComboBox;
-import com.creativemd.creativecore.gui.controls.gui.GuiLabel;
-import com.creativemd.creativecore.gui.controls.gui.GuiStateButton;
-import com.creativemd.creativecore.gui.controls.gui.GuiTextfield;
-import com.creativemd.creativecore.gui.controls.gui.custom.GuiStackSelectorAll;
-import com.creativemd.creativecore.gui.controls.gui.custom.GuiStackSelectorAll.SearchSelector;
-import com.creativemd.creativecore.gui.event.gui.GuiControlChangedEvent;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;

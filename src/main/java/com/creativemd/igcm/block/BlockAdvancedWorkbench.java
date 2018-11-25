@@ -2,10 +2,10 @@ package com.creativemd.igcm.block;
 
 import java.util.ArrayList;
 
-import com.creativemd.creativecore.gui.container.SubContainer;
-import com.creativemd.creativecore.gui.container.SubGui;
-import com.creativemd.creativecore.gui.opener.GuiHandler;
-import com.creativemd.creativecore.gui.opener.IGuiCreator;
+import com.creativemd.creativecore.common.gui.container.SubContainer;
+import com.creativemd.creativecore.common.gui.container.SubGui;
+import com.creativemd.creativecore.common.gui.opener.GuiHandler;
+import com.creativemd.creativecore.common.gui.opener.IGuiCreator;
 
 import net.minecraft.block.BlockWorkbench;
 import net.minecraft.block.state.IBlockState;

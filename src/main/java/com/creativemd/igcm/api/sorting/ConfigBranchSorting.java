@@ -2,10 +2,10 @@ package com.creativemd.igcm.api.sorting;
 
 import java.util.ArrayList;
 
+import com.creativemd.creativecore.common.gui.controls.gui.GuiButton;
+import com.creativemd.creativecore.common.gui.controls.gui.GuiScrollBox;
 import com.creativemd.creativecore.common.utils.stack.InfoStack;
 import com.creativemd.creativecore.common.utils.type.SortingList;
-import com.creativemd.creativecore.gui.controls.gui.GuiButton;
-import com.creativemd.creativecore.gui.controls.gui.GuiScrollBox;
 import com.creativemd.igcm.api.ConfigBranch;
 import com.creativemd.igcm.api.ConfigSegment;
 import com.creativemd.igcm.api.segments.BooleanSegment;

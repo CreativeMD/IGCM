@@ -3,9 +3,9 @@ package com.creativemd.igcm.api.machine;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.creativemd.creativecore.common.gui.ContainerControl;
+import com.creativemd.creativecore.common.gui.GuiControl;
 import com.creativemd.creativecore.common.utils.stack.InfoStack;
-import com.creativemd.creativecore.gui.ContainerControl;
-import com.creativemd.creativecore.gui.GuiControl;
 import com.creativemd.igcm.api.ConfigElement;
 import com.creativemd.igcm.api.ConfigSegment;
 import com.creativemd.igcm.api.ConfigTab;

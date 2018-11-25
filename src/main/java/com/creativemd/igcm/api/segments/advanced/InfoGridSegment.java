@@ -2,9 +2,9 @@ package com.creativemd.igcm.api.segments.advanced;
 
 import java.util.ArrayList;
 
+import com.creativemd.creativecore.common.gui.ContainerControl;
+import com.creativemd.creativecore.common.gui.container.SubContainer;
 import com.creativemd.creativecore.common.utils.stack.InfoStack;
-import com.creativemd.creativecore.gui.ContainerControl;
-import com.creativemd.creativecore.gui.container.SubContainer;
 import com.creativemd.igcm.api.machine.RecipeMachine;
 import com.creativemd.igcm.api.segments.ValueSegment;
 import com.creativemd.igcm.container.controls.InfoSlotControl;

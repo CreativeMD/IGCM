@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import com.creativemd.creativecore.common.gui.opener.GuiHandler;
 import com.creativemd.creativecore.common.packet.PacketHandler;
-import com.creativemd.creativecore.gui.opener.GuiHandler;
 import com.creativemd.igcm.IGCM;
 import com.creativemd.igcm.packets.CraftResultPacket;
 import com.creativemd.igcm.utils.WorkbenchSwitchHelper;

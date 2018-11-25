@@ -2,9 +2,9 @@ package com.creativemd.igcm.api.segments.advanced;
 
 import java.util.ArrayList;
 
+import com.creativemd.creativecore.common.gui.GuiControl;
+import com.creativemd.creativecore.common.gui.container.SubGui;
 import com.creativemd.creativecore.common.utils.stack.InfoStack;
-import com.creativemd.creativecore.gui.GuiControl;
-import com.creativemd.creativecore.gui.container.SubGui;
 import com.creativemd.igcm.api.machine.RecipeMachine;
 
 import net.minecraft.nbt.NBTTagCompound;

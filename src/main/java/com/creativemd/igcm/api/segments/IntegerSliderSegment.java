@@ -2,9 +2,9 @@ package com.creativemd.igcm.api.segments;
 
 import java.util.ArrayList;
 
-import com.creativemd.creativecore.gui.GuiControl;
-import com.creativemd.creativecore.gui.container.SubGui;
-import com.creativemd.creativecore.gui.controls.gui.GuiSteppedSlider;
+import com.creativemd.creativecore.common.gui.GuiControl;
+import com.creativemd.creativecore.common.gui.container.SubGui;
+import com.creativemd.creativecore.common.gui.controls.gui.GuiSteppedSlider;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

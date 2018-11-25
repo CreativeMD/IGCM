@@ -1,9 +1,9 @@
 package com.creativemd.igcm.block;
 
+import com.creativemd.creativecore.common.gui.container.SubContainer;
+import com.creativemd.creativecore.common.slots.SlotOutput;
 import com.creativemd.creativecore.common.utils.mc.InventoryUtils;
 import com.creativemd.creativecore.common.utils.mc.WorldUtils;
-import com.creativemd.creativecore.gui.container.SubContainer;
-import com.creativemd.creativecore.slots.SlotOutput;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;

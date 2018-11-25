@@ -2,13 +2,13 @@ package com.creativemd.igcm.api.segments.advanced;
 
 import java.util.ArrayList;
 
-import com.creativemd.creativecore.gui.ContainerControl;
-import com.creativemd.creativecore.gui.GuiControl;
-import com.creativemd.creativecore.gui.container.SubContainer;
-import com.creativemd.creativecore.gui.container.SubGui;
-import com.creativemd.creativecore.gui.controls.container.SlotControl;
-import com.creativemd.creativecore.gui.controls.container.SlotControlNoSync;
-import com.creativemd.creativecore.slots.SlotPreview;
+import com.creativemd.creativecore.common.gui.ContainerControl;
+import com.creativemd.creativecore.common.gui.GuiControl;
+import com.creativemd.creativecore.common.gui.container.SubContainer;
+import com.creativemd.creativecore.common.gui.container.SubGui;
+import com.creativemd.creativecore.common.gui.controls.container.SlotControl;
+import com.creativemd.creativecore.common.gui.controls.container.SlotControlNoSync;
+import com.creativemd.creativecore.common.slots.SlotPreview;
 import com.creativemd.igcm.api.machine.RecipeMachine;
 import com.creativemd.igcm.api.segments.ValueSegment;
 import com.creativemd.igcm.utils.SearchUtils;

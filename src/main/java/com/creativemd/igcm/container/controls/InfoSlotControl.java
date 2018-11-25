@@ -1,8 +1,8 @@
 package com.creativemd.igcm.container.controls;
 
+import com.creativemd.creativecore.common.gui.controls.container.SlotControlNoSync;
+import com.creativemd.creativecore.common.slots.SlotPreview;
 import com.creativemd.creativecore.common.utils.stack.InfoStack;
-import com.creativemd.creativecore.gui.controls.container.SlotControlNoSync;
-import com.creativemd.creativecore.slots.SlotPreview;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;

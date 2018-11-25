@@ -1,8 +1,8 @@
 package com.creativemd.igcm.packets;
 
+import com.creativemd.creativecore.common.gui.controls.gui.GuiScrollBox;
+import com.creativemd.creativecore.common.gui.mc.ContainerSub;
 import com.creativemd.creativecore.common.packet.CreativeCorePacket;
-import com.creativemd.creativecore.gui.controls.gui.GuiScrollBox;
-import com.creativemd.creativecore.gui.mc.ContainerSub;
 import com.creativemd.igcm.IGCM;
 import com.creativemd.igcm.IGCMConfig;
 import com.creativemd.igcm.api.ConfigBranch;

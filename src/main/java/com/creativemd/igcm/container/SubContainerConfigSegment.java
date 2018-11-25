@@ -1,7 +1,7 @@
 package com.creativemd.igcm.container;
 
-import com.creativemd.creativecore.gui.container.SubContainer;
-import com.creativemd.creativecore.gui.premade.SubContainerEmpty;
+import com.creativemd.creativecore.common.gui.container.SubContainer;
+import com.creativemd.creativecore.common.gui.premade.SubContainerEmpty;
 import com.creativemd.igcm.api.ConfigSegment;
 
 import net.minecraft.entity.player.EntityPlayer;

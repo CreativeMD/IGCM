@@ -1,9 +1,9 @@
 package com.creativemd.igcm;
 
-import com.creativemd.creativecore.gui.container.SubContainer;
-import com.creativemd.creativecore.gui.container.SubGui;
-import com.creativemd.creativecore.gui.opener.CustomGuiHandler;
-import com.creativemd.creativecore.gui.opener.GuiHandler;
+import com.creativemd.creativecore.common.gui.container.SubContainer;
+import com.creativemd.creativecore.common.gui.container.SubGui;
+import com.creativemd.creativecore.common.gui.opener.CustomGuiHandler;
+import com.creativemd.creativecore.common.gui.opener.GuiHandler;
 import com.creativemd.igcm.api.ConfigTab;
 import com.creativemd.igcm.block.SubContainerAdvancedWorkbench;
 import com.creativemd.igcm.block.SubGuiAdvancedWorkbench;

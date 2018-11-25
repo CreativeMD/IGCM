@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
+import com.creativemd.creativecore.common.gui.ContainerControl;
+import com.creativemd.creativecore.common.gui.GuiControl;
+import com.creativemd.creativecore.common.gui.controls.gui.GuiStateButton;
 import com.creativemd.creativecore.common.recipe.BetterShapedRecipe;
 import com.creativemd.creativecore.common.recipe.BetterShapelessRecipe;
 import com.creativemd.creativecore.common.recipe.RecipeLoader;
 import com.creativemd.creativecore.common.utils.stack.InfoStack;
-import com.creativemd.creativecore.gui.ContainerControl;
-import com.creativemd.creativecore.gui.GuiControl;
-import com.creativemd.creativecore.gui.controls.gui.GuiStateButton;
 import com.creativemd.igcm.IGCM;
 import com.creativemd.igcm.api.machine.RecipeMachine;
 import com.creativemd.igcm.api.segments.advanced.AddRecipeSegment;
