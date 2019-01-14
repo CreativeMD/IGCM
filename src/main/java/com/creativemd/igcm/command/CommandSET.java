@@ -7,11 +7,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.creativemd.creativecore.common.utils.mc.ChatFormatting;
 import com.creativemd.igcm.IGCM;
 import com.creativemd.igcm.api.ConfigSegment;
 import com.creativemd.igcm.api.ConfigTab;
 import com.creativemd.igcm.api.segments.ICommandSupport;
-import com.mojang.realmsclient.gui.ChatFormatting;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
