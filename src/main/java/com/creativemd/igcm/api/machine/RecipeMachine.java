@@ -109,16 +109,12 @@ public abstract class RecipeMachine<T> {
 	
 	public abstract int getOutputCount();
 	
-	/**
-	 * Add the recipe to the "main" list of the "real" machine/block/whatever.
-	 * Workbench: Add it to the crafting list
-	 */
+	/** Add the recipe to the "main" list of the "real" machine/block/whatever.
+	 * Workbench: Add it to the crafting list */
 	public abstract void addRecipeToList(Side side, T recipe);
 	
-	/**
-	 * Clear the "main" list of the "real" machine/block/whatever.
-	 * Workbench: Remove all existing crafting recipes
-	 */
+	/** Clear the "main" list of the "real" machine/block/whatever.
+	 * Workbench: Remove all existing crafting recipes */
 	public abstract void clearRecipeList(Side side);
 	
 	public abstract ItemStack[] getOutput(T recipe);

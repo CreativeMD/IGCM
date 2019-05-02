@@ -123,6 +123,8 @@ public class BrewingStandMachine extends RecipeMachine<IBrewingRecipe> {
 	
 	@Override
 	public IBrewingRecipe parseRecipe(InfoStack[] input, ItemStack[] output, NBTTagCompound nbt, int width, int height) {
+		if (input.length < 2)
+			return null;
 		return new IGCMBrewingRecipe(input[1], input[0], output[0]);
 	}
 	
