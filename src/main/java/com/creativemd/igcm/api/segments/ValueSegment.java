@@ -25,7 +25,11 @@ public abstract class ValueSegment<T> extends ConfigSegment implements ICommandS
 	
 	@Override
 	public boolean contains(String search) {
-		return title.toLowerCase().contains(search) || getKey().toLowerCase().contains(search) || value.toString().toLowerCase().contains(search);
+		if (title != null && title.toLowerCase().contains(search))
+			return true;
+		if (value != null && value.toString().toLowerCase().contains(search))
+			return true;
+		return getKey().toLowerCase().contains(search);
 	}
 	
 	public abstract void set(T newValue);
