@@ -145,7 +145,7 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 	
 	@Override
 	public String recipeToString(IRecipe recipe) {
-		return ((IRecipe) recipe).getRegistryName().toString();
+		return recipe.getRegistryName().toString();
 	}
 	
 	@Override
@@ -332,6 +332,7 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 		return registry.getValues();
 	}
 	
+	@Override
 	@Method(modid = "jei")
 	public void updateJEI() {
 		super.updateJEI();
@@ -351,8 +352,8 @@ public class WorkbenchMachine extends RecipeMachine<IRecipe> {
 		//((EntityPlayerMP) player).getRecipeBook().init((EntityPlayerMP) player);
 	}
 	
-	public static final Field recipePlayer = ReflectionHelper.findField(RecipeBook.class, "recipes", "field_194077_a");
-	public static final Field newRecipePlayer = ReflectionHelper.findField(RecipeBook.class, "newRecipes", "field_194078_b");
+	public static final Field recipePlayer = ReflectionHelper.findField(RecipeBook.class, new String[] { "recipes", "field_194077_a" });
+	public static final Field newRecipePlayer = ReflectionHelper.findField(RecipeBook.class, new String[] { "newRecipes", "field_194078_b" });
 	
 	public class RecipeBookCache {
 		
