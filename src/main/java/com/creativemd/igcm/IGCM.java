@@ -85,10 +85,10 @@ public class IGCM {
 		MinecraftForge.EVENT_BUS.register(eventHandler);
 		//FMLCommonHandler.instance().bus().register(eventHandler);
 		
-		CreativeCorePacket.registerPacket(BranchInformationPacket.class, "IGCMBranch");
-		CreativeCorePacket.registerPacket(RequestInformationPacket.class, "IGCMRequest");
-		CreativeCorePacket.registerPacket(CraftResultPacket.class, "IGCMCraftResult");
-		CreativeCorePacket.registerPacket(OpenGUIPacket.class, "IGCMGUI");
+		CreativeCorePacket.registerPacket(BranchInformationPacket.class);
+		CreativeCorePacket.registerPacket(RequestInformationPacket.class);
+		CreativeCorePacket.registerPacket(CraftResultPacket.class);
+		CreativeCorePacket.registerPacket(OpenGUIPacket.class);
 		
 		IGCMConfig.initConfig(event);
 		

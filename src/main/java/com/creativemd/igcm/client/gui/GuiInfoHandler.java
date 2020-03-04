@@ -205,7 +205,7 @@ public abstract class GuiInfoHandler {
 			
 			@Override
 			public void createControls(SubGuiFullItemDialog gui, InfoStack info) {
-				GuiStackSelectorAll selector = new GuiStackSelectorAll("inv", 0, 30, 122, gui.container.player, new GuiStackSelectorAll.CreativeCollector(new GuiStackSelectorAll.BlockSelector()));
+				GuiStackSelectorAll selector = new GuiStackSelectorAll("inv", 0, 30, 122, gui.container.player, new GuiStackSelectorAll.CreativeCollector(new GuiStackSelectorAll.GuiBlockSelector()));
 				gui.controls.add(selector);
 				if (info instanceof InfoMaterial)
 					selector.setSelectedForce(info.getItemStack());

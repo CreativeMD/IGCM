@@ -2,7 +2,7 @@ package com.creativemd.igcm.client;
 
 import org.lwjgl.input.Keyboard;
 
-import com.creativemd.creativecore.core.CreativeCoreClient;
+import com.creativemd.creativecore.client.CreativeCoreClient;
 import com.creativemd.igcm.IGCM;
 
 import net.minecraft.client.settings.KeyBinding;
