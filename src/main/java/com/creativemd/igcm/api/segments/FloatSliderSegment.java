@@ -28,7 +28,7 @@ public class FloatSliderSegment extends FloatSegment {
 	public void saveFromControls() {
 		float valueBefore = value;
 		try {
-			set(((GuiAnalogeSlider) getGuiControl(getKey())).value);
+			set((float) ((GuiAnalogeSlider) getGuiControl(getKey())).value);
 		} catch (Exception e) {
 			value = valueBefore;
 		}
